@@ -1,0 +1,134 @@
+﻿<Page
+    x:Class="eDay.PivotPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:eDay"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:eDay.Data"
+    mc:Ignorable="d"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <JumpListItemBackgroundConverter x:Key="JumpListItemBackgroundConverter"/>
+    </Page.Resources>
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <CommonNavigationTransitionInfo IsStaggeringEnabled="True"/>
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <Grid>
+        <Pivot x:Uid="Pivot" Title="EVERYDAY" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True">
+            <!--Сводный элемент один-->
+            <PivotItem x:Name="PivotItem1"
+                x:Uid="PivotItem1"
+                Margin="19,14.5,0,0"
+                Header="Расписание"
+                
+                CommonNavigationTransitionInfo.IsStaggerElement="True">
+                <PivotItem.DataContext>
+                    <local:GetEvents/>
+                </PivotItem.DataContext>
+                <!--список с переносом текста на новую строку-->
+                <ListView x:Name="listView"
+                    IsItemClickEnabled="True"
+                    ItemClick="ItemView_ItemClick"
+                    ContinuumNavigationTransitionInfo.ExitElementContainer="True" Margin="-10,0,9.833,0.167" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding events, Mode=TwoWay}">
+                    <ListView.DataContext>
+                        <local:GetEvents/>
+                    </ListView.DataContext>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+
+                            <Grid x:Name="grid" Margin="0,0,0,9.5" Background="#FF89C083">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="90"/>
+                                    <RowDefinition Height="90"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="250" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0"
+                                    Text="{Binding time}"
+                                    TextWrapping="Wrap"
+                                    Pivot.SlideInAnimationGroup="1"
+                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
+                                    Style="{ThemeResource ListViewItemTextBlockStyle}"
+                                    Margin="10,0,19,0" FontSize="21.333" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding confirmed, Mode=TwoWay}" VerticalAlignment="Center" />
+
+                                <TextBlock Grid.Column="1" Grid.Row="0"
+                                    Text="{Binding caption}"
+                                    TextWrapping="WrapWholeWords"
+                                    Pivot.SlideInAnimationGroup="2" 
+                                    CommonNavigationTransitionInfo.IsStaggerElement="True" 
+                                    Style="{ThemeResource ListViewItemContentTextBlockStyle}"
+                                    Margin="0,0,19,0" FontSize="24" VerticalAlignment="Center"/>
+                                <ListView x:Name="listItems" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding items}" Background="#FFF79999">
+                                    <ListView.DataContext>
+                                        <local:Events/>
+                                    </ListView.DataContext>
+                                    <TextBlock Text="{Binding name}">
+                                    </TextBlock>
+                                </ListView>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+
+            <!--Сводный элемент два-->
+            <PivotItem
+                x:Uid="PivotItem2"
+                Margin="19,14.5,0,0"
+                Header="Календарь"
+                DataContext="{Binding SecondGroup}"
+                d:DataContext="{Binding Groups[1], Source={d:DesignData Source=/DataModel/SampleData.json, Type=data:EverydayDataSource}}">
+                <!--Двухстрочный список без переноса текста на новую строку-->
+                <ListView
+                    ItemsSource="{Binding Items}"
+                    IsItemClickEnabled="True"
+                    ItemClick="ItemView_ItemClick"
+                    Loaded="SecondPivot_Loaded"
+                    ContinuumNavigationTransitionInfo.ExitElementContainer="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,9.5">
+                                <TextBlock
+                                    Text="{Binding Title}"
+                                    Pivot.SlideInAnimationGroup="1"
+                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
+                                    Style="{StaticResource ListViewItemTextBlockStyle}"/>
+                                <TextBlock
+                                    Text="{Binding Description}"
+                                    Pivot.SlideInAnimationGroup="2"
+                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
+                                    Style="{StaticResource ListViewItemContentTextBlockStyle}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Настройки"/>
+        </Pivot>
+    </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="AddAppBarButton" Label="add" Icon="Add" Click="AddAppBarButton_Click" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Uid="SecondaryButton1" x:Name="SecondaryButton1" Label="secondary command 1" />
+                <AppBarButton x:Uid="SecondaryButton2" x:Name="SecondaryButton2" Label="secondary command 2" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>
