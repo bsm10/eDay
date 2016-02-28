@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 
@@ -71,8 +72,8 @@ namespace eDay
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
-            var sampleDataGroup = await EverydayDataSource.GetGroupAsync("Group-1"); // ("");
-            DefaultViewModel[FirstGroupName] = sampleDataGroup;
+            var eDayDataGroup = await eDayDataSource.GetGroupAsync("2016-02-20"); // ("");
+            DefaultViewModel[FirstGroupName] = eDayDataGroup;
             await LoginEveryday();
         }
 
@@ -103,7 +104,7 @@ namespace eDay
                 response = await HttpQuery(qry);
                 GetEvents events = JsonConvert.DeserializeObject<GetEvents>(response);
                 //PivotItem1.DataContext = events;
-                listView.DataContext = events;
+                //listView.DataContext = events;
                 //listView.ItemsSource = events.events;
                 
 
@@ -171,23 +172,23 @@ namespace eDay
         /// </summary>
         private void AddAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            string groupName = pivot.SelectedIndex == 0 ? FirstGroupName : SecondGroupName;
-            var group = DefaultViewModel[groupName] as EverydayDataGroup;
-            var nextItemId = group.Items.Count + 1;
-            var newItem = new EverydayDataItem(
-                string.Format(CultureInfo.InvariantCulture, "Group-{0}-Item-{1}", pivot.SelectedIndex + 1, nextItemId),
-                string.Format(CultureInfo.CurrentCulture, resourceLoader.GetString("NewItemTitle"), nextItemId),
-                string.Empty,
-                string.Empty,
-                resourceLoader.GetString("NewItemDescription"),
-                string.Empty);
+            //string groupName = pivot.SelectedIndex == 0 ? FirstGroupName : SecondGroupName;
+            //var group = DefaultViewModel[groupName] as EverydayGroupEvents;
+            //var nextItemId = group.Items.Count + 1;
+            //var newItem = new EverydayEvents(
+            //    string.Format(CultureInfo.InvariantCulture, "Group-{0}-Item-{1}", pivot.SelectedIndex + 1, nextItemId),
+            //    string.Format(CultureInfo.CurrentCulture, resourceLoader.GetString("NewItemTitle"), nextItemId),
+            //    string.Empty,
+            //    string.Empty,
+            //    resourceLoader.GetString("NewItemDescription"),
+            //    string.Empty);
 
-            group.Items.Add(newItem);
+            //group.Items.Add(newItem);
 
-            // Прокручиваем, чтобы новый элемент оказался видимым.
-            var container = pivot.ContainerFromIndex(this.pivot.SelectedIndex) as ContentControl;
-            var listView = container.ContentTemplateRoot as ListView;
-            listView.ScrollIntoView(newItem, ScrollIntoViewAlignment.Leading);
+            //// Прокручиваем, чтобы новый элемент оказался видимым.
+            //var container = pivot.ContainerFromIndex(this.pivot.SelectedIndex) as ContentControl;
+            //var listView = container.ContentTemplateRoot as ListView;
+            //listView.ScrollIntoView(newItem, ScrollIntoViewAlignment.Leading);
         }
 
         /// <summary>
@@ -197,7 +198,7 @@ namespace eDay
         {
             // Переход к соответствующей странице назначения и настройка новой страницы
             // путем передачи необходимой информации в виде параметра навигации
-            var itemId = ((EverydayDataItem)e.ClickedItem).UniqueId;
+            var itemId = ((EverydayEvent)e.ClickedItem).Caption;
             if (!Frame.Navigate(typeof(ItemPage), itemId))
             {
                 throw new Exception(resourceLoader.GetString("NavigationFailedExceptionMessage"));
@@ -209,7 +210,7 @@ namespace eDay
         /// </summary>
         private async void SecondPivot_Loaded(object sender, RoutedEventArgs e)
         {
-            var sampleDataGroup = await EverydayDataSource.GetGroupAsync("Group-2");
+            var sampleDataGroup = await eDayDataSource.GetGroupAsync("Group-2");
             DefaultViewModel[SecondGroupName] = sampleDataGroup;
         }
 
@@ -237,8 +238,30 @@ namespace eDay
         {
             navigationHelper.OnNavigatedFrom(e);
         }
-
-        
         #endregion
     }
+    public class DoubleToBool : IValueConverter
+    {
+        // This converts the DateTime object to the string to display.
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value != null && value is double)
+            {
+                var val = (double)value; return (val == 0) ? false : true;
+            }
+            return null;
+        }
+
+        // No need to implement converting back on a one-way binding 
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            if (value != null && value is bool)
+            {
+                var val = (bool)value; return val ? 1 : 0;
+            }
+            return null;
+            //throw new NotImplementedException();
+        }
+    }
+
 }

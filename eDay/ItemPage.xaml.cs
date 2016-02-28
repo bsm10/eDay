@@ -55,7 +55,7 @@ namespace eDay
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Создайте соответствующую модель данных для своей проблемной области, чтобы заменить ими данные-пример.
-            var item = await EverydayDataSource.GetItemAsync((string)e.NavigationParameter);
+            var item = await eDayDataSource.GetItemAsync((string)e.NavigationParameter);
             this.DefaultViewModel["Item"] = item;
         }
 

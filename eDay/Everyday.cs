@@ -57,12 +57,26 @@ namespace eDay
     }
     public class Events : INotifyPropertyChanged
     {
+        public Events(int event_id, string img, string time,string expert, string caption, bool confirmed, int items_count, int a_day_events_count, int not_confirmed_events_count)
+        {
+            Event_id = event_id;
+            Img = img;
+            Time = time;
+            Expert = expert;
+            Caption = caption;
+            Items = new ObservableCollection<Items>();
+            Confirmed = confirmed;
+            Items_count = items_count;
+            A_day_events_count=a_day_events_count;
+            Not_confirmed_events_count = not_confirmed_events_count;
+        }
+
         private string _caption;
-        public string event_id { get; set; }
-        public string img { get; set; }
-        public string time { get; set; }
-        public string expert { get; set; }
-        public string caption
+        public int Event_id { get; set; }
+        public string Img { get; set; }
+        public string Time { get; set; }
+        public string Expert { get; set; }
+        public string Caption
         {
             get
             {
@@ -70,7 +84,7 @@ namespace eDay
             }
             set
             {
-                if (caption != value)
+                if (Caption != value)
                 {
                     _caption = value;
                     OnPropertyChanged("caption");
@@ -78,16 +92,16 @@ namespace eDay
             }
         }
         //public int confirmed { get; set; }
-        public bool confirmed { get; set; }
+        public bool Confirmed { get; set; }
 
-        public int items_count { get; set; }
-        public ObservableCollection<Items> items { get; set; }
-        public int a_day_events_count { get; set; }
-        public int not_confirmed_events_count { get; set; }
-        public float working_time { get; set; }
+        public int Items_count { get; set; }
+        public ObservableCollection<Items> Items { get; set; }
+        public int A_day_events_count { get; set; }
+        public int Not_confirmed_events_count { get; set; }
+        public float Working_time { get; set; }
         public override string ToString()
         {
-            return caption;
+            return Caption;
         }
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string info)
@@ -100,6 +114,7 @@ namespace eDay
         }
 
     }
+
     public class GetEvents
     {
         public int success { get; set; }
