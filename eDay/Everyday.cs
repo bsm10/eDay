@@ -41,165 +41,354 @@ namespace eDay
 
 
     }
-    public class Result
+    //public class Result
+    //{
+    //    public int success { get; set; }
+    //}
+    //public class Items
+    //{
+    //    public string id { get; set; }
+    //    public string name { get; set; }
+    //    public override string ToString()
+    //    {
+    //        return name;
+    //    }
+
+    //}
+
+    /// <summary>
+    /// Универсальная модель данных элементов.
+    /// </summary>
+    //public class Event : INotifyPropertyChanged
+    //{
+    //    public Event(double event_id, string img, string time, string expert, string caption, bool unscheduled, string items_count, double confirmed)
+    //    {
+    //        Event_id = event_id;
+    //        Img = img;
+    //        Time = time;
+    //        Expert = expert;
+    //        Caption = caption;
+    //        Items = new ObservableCollection<Items>();
+    //        Confirmed = confirmed;
+    //        Items_count = items_count;
+    //        Unscheduled = unscheduled;
+    //    }
+    //    private string _caption;
+    //    private double _confirmed;
+    //    public double Event_id { get; set; }
+    //    public string Img { get; set; }
+    //    public string Time { get; set; }
+    //    public string Expert { get; set; }
+    //    public string Caption
+    //    {
+    //        get
+    //        {
+    //            return _caption;
+    //        }
+    //        set
+    //        {
+    //            if (Caption != value)
+    //            {
+    //                _caption = value;
+    //                OnPropertyChanged("caption");
+    //            }
+    //        }
+    //    }
+    //    //public int confirmed { get; set; }
+    //    public double Confirmed
+    //    {
+    //        get
+    //        {
+    //            return _confirmed;
+    //        }
+    //        set
+    //        {
+    //            if (_confirmed != value)
+    //            {
+    //                _confirmed = value;
+    //                OnPropertyChanged("_confirmed");
+    //            }
+    //        }
+    //    }
+    //    public string Items_count { get; set; }
+    //    public ObservableCollection<Items> Items { get; set; }
+    //    public bool Unscheduled { get; set; }
+    //    //public double _Class { get; set; }
+    //    public override string ToString()
+    //    {
+    //        return Caption;
+    //    }
+    //    public event PropertyChangedEventHandler PropertyChanged;
+    //    private void OnPropertyChanged(string info)
+    //    {
+    //        PropertyChangedEventHandler handler = PropertyChanged;
+    //        if (handler != null)
+    //        {
+    //            handler(this, new PropertyChangedEventArgs(info));
+    //        }
+    //    }
+
+    //}
+
+    /// <summary>
+    /// Универсальная модель данных групп.
+    /// </summary>
+    public class GroupEvents
     {
+        public GroupEvents()
+        {
+            events = new ObservableCollection<Event>();
+        }
         public int success { get; set; }
-    }
-    public class Items
-    {
-        public string id { get; set; }
-        public string name { get; set; }
-        public override string ToString()
-        {
-            return name;
-        }
-
-    }
-    public class Events : INotifyPropertyChanged
-    {
-        public Events(int event_id, string img, string time,string expert, string caption, bool confirmed, int items_count, int a_day_events_count, int not_confirmed_events_count)
-        {
-            Event_id = event_id;
-            Img = img;
-            Time = time;
-            Expert = expert;
-            Caption = caption;
-            Items = new ObservableCollection<Items>();
-            Confirmed = confirmed;
-            Items_count = items_count;
-            A_day_events_count=a_day_events_count;
-            Not_confirmed_events_count = not_confirmed_events_count;
-        }
-
-        private string _caption;
-        public int Event_id { get; set; }
-        public string Img { get; set; }
-        public string Time { get; set; }
-        public string Expert { get; set; }
-        public string Caption
-        {
-            get
-            {
-                return _caption;
-            }
-            set
-            {
-                if (Caption != value)
-                {
-                    _caption = value;
-                    OnPropertyChanged("caption");
-                }
-            }
-        }
-        //public int confirmed { get; set; }
-        public bool Confirmed { get; set; }
-
-        public int Items_count { get; set; }
-        public ObservableCollection<Items> Items { get; set; }
-        public int A_day_events_count { get; set; }
-        public int Not_confirmed_events_count { get; set; }
-        public float Working_time { get; set; }
-        public override string ToString()
-        {
-            return Caption;
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string info)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(info));
-            }
-        }
-
-    }
-
-    public class GetEvents
-    {
-        public int success { get; set; }
-        public string a_day_string { get; set; }
-        public string a_day_date { get; set; }
-        public ObservableCollection<Events> events { get; set; }
+        public string last_events_update { get; set; }
+        public ObservableCollection<Event> events { get; set; }
+        public bool DevMode { get; set; }
+        public Result result { get; set; }
+        public Debug debug { get; set; }
         public override string ToString()
         {
             return "Events count " + events.Count;
         }
-
     }
-    public class AppSettings
+    public class Events
     {
-        public bool confirm_events { get; set; } // true,
-        public bool enable_report_eating { get; set; } // true,
-        public bool enable_report_preparats { get; set; } // true,
-        public int cache_period { get; set; } // 7
+        public ObservableCollection<Event> events { get; set; }
     }
-    public class GetUserInfo : INotifyPropertyChanged
+    public class Item
     {
-        private string _UserF;
-        private string _UserI;
-        private string _UserO;
-        public int success { get; set; }
-        
-        public string UserId { get; set; }
-        public string UserLogin { get; set; } // "elchukov",
-        public string UserImg { get; set; } //"avatars/1.png",
-        public string UserF
+        public string id { get; set; }
+        public string event_id { get; set; }
+        public string item_type_id { get; set; }
+        public string reference_item_id { get; set; }
+        public string dish_count { get; set; }
+        public object measure { get; set; }
+        public string proteins { get; set; }
+        public string fats { get; set; }
+        public string carbs { get; set; }
+        public string cellulose { get; set; }
+        public string kkal { get; set; }
+        public object repeats { get; set; }
+        public object sets { get; set; }
+        public object rest { get; set; }
+        public object exercises_count { get; set; }
+        public string caption { get; set; }
+        public override string ToString()
         {
-            get { return _UserF; }
-            set
-            {
-                _UserF = value;
-                NotifyPropertyChanged("UserF");
-            }
-        } //"Ельчуков",
-        public string UserI
-        {
-            get { return _UserI; }
-            set
-            {
-                _UserI = value;
-                NotifyPropertyChanged("UserI");
-            }
-        } // "Сергей",
-        public string UserO
-        {
-            get { return _UserO; }
-            set
-            {
-                _UserO = value;
-                NotifyPropertyChanged("UserO");
-            }
-        } // "Викторович",
-        public string UserDateReg { get; set; } //"2014-06-23 14:37:46",
-        public AppSettings Settings { get; set; }
-        public int not_confirmed_events_count { get; set; } // 12,          
-        public int new_notifications_count { get; set; } // 5,
-        public float working_time { get; set; } // 0.002
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            return caption;
         }
+
     }
 
-    public class Everyday
+    public class Event
+    {
+        public int event_class { get; set; }
+        public int id { get; set; }
+        public Img img { get; set; }
+        public string date { get; set; }
+        public string time { get; set; }
+        public string event_name { get; set; }
+        public string expert_name { get; set; }
+        public int confirmed { get; set; }
+        public string comment { get; set; }
+        public Details details { get; set; }
+        public string data_md5 { get; set; }
+        public override string ToString()
+        {
+            return string.Format("{0}, {1} - {2}", date, time, event_name);
+        }
+
+    }
+
+    public class Result
+    {
+        public ObservableCollection<object> errors { get; set; }
+        public ObservableCollection<object> warnings { get; set; }
+        public ObservableCollection<object> notifies { get; set; }
+    }
+
+    public class Messages
+    {
+        public ObservableCollection<object> errors { get; set; }
+        public ObservableCollection<object> warnings { get; set; }
+        public ObservableCollection<object> notifies { get; set; }
+    }
+    public class Img
+    {
+        public object path { get; set; }
+        public object md5 { get; set; }
+    }
+    public class Debug
+    {
+        public string client_id { get; set; }
+        public double runtime { get; set; }
+        public string script { get; set; }
+        public int queries { get; set; }
+        public Messages messages { get; set; }
+        public int responsesize { get; set; }
+    }
+    public class Performer
+    {
+        public string id { get; set; }
+        public string expert_name { get; set; }
+        public string expert_login { get; set; }
+        public string avatar { get; set; }
+        public string expert_sex { get; set; }
+        public string task_id { get; set; }
+        public string expert_id { get; set; }
+        public string mail { get; set; }
+    }
+
+    public class Details
+    {
+        public Details()
+        {
+            items = new ObservableCollection<Item>();
+            performers=new ObservableCollection<Performer>();
+        }
+
+        public string proteins { get; set; }
+        public string fats { get; set; }
+        public string carbs { get; set; }
+        public string cellulose { get; set; }
+        public string kkal { get; set; }
+        public ObservableCollection<Item> items { get; set; }
+        public string descr { get; set; }
+        public object assoc_client { get; set; }
+        public ObservableCollection<Performer> performers { get; set; }
+    }
+    //public class Event : INotifyPropertyChanged
+    //{
+    //    public Event(int event_id, string img, string time,string expert, string caption, bool confirmed)
+    //    {
+    //        Event_id = event_id;
+    //        Img = img;
+    //        Time = time;
+    //        Expert = expert;
+    //        Caption = caption;
+    //        Items = new ObservableCollection<Items>();
+    //        Confirmed = confirmed;
+    //    }
+
+    //    private string _caption;
+    //    public int Event_id { get; set; }
+    //    public string Img { get; set; }
+    //    public string Time { get; set; }
+    //    public string Expert { get; set; }
+    //    public string Caption
+    //    {
+    //        get
+    //        {
+    //            return _caption;
+    //        }
+    //        set
+    //        {
+    //            if (Caption != value)
+    //            {
+    //                _caption = value;
+    //                OnPropertyChanged("caption");
+    //            }
+    //        }
+    //    }
+    //    public bool Confirmed { get; set; }
+    //    public ObservableCollection<Items> Items { get; set; }
+    //    public override string ToString()
+    //    {
+    //        return Caption;
+    //    }
+    //    public event PropertyChangedEventHandler PropertyChanged;
+    //    private void OnPropertyChanged(string info)
+    //    {
+    //        PropertyChangedEventHandler handler = PropertyChanged;
+    //        if (handler != null)
+    //        {
+    //            handler(this, new PropertyChangedEventArgs(info));
+    //        }
+    //    }
+
+    //}
+
+    //public class Events
+    //{
+    //    public string a_day_date { get; set; }
+    //    public ObservableCollection<Event> events { get; set; }
+    //    public override string ToString()
+    //    {
+    //        return "Events count " + events.Count;
+    //    }
+    //}
+    //public class AppSettings
+    //{
+    //    public bool confirm_events { get; set; } // true,
+    //    public bool enable_report_eating { get; set; } // true,
+    //    public bool enable_report_preparats { get; set; } // true,
+    //    public int cache_period { get; set; } // 7
+    //}
+    //public class GetUserInfo : INotifyPropertyChanged
+    //{
+    //    private string _UserF;
+    //    private string _UserI;
+    //    private string _UserO;
+    //    public int success { get; set; }
+
+    //    public string UserId { get; set; }
+    //    public string UserLogin { get; set; } // "elchukov",
+    //    public string UserImg { get; set; } //"avatars/1.png",
+    //    public string UserF
+    //    {
+    //        get { return _UserF; }
+    //        set
+    //        {
+    //            _UserF = value;
+    //            NotifyPropertyChanged("UserF");
+    //        }
+    //    } //"Ельчуков",
+    //    public string UserI
+    //    {
+    //        get { return _UserI; }
+    //        set
+    //        {
+    //            _UserI = value;
+    //            NotifyPropertyChanged("UserI");
+    //        }
+    //    } // "Сергей",
+    //    public string UserO
+    //    {
+    //        get { return _UserO; }
+    //        set
+    //        {
+    //            _UserO = value;
+    //            NotifyPropertyChanged("UserO");
+    //        }
+    //    } // "Викторович",
+    //    public string UserDateReg { get; set; } //"2014-06-23 14:37:46",
+    //    public AppSettings Settings { get; set; }
+    //    public int not_confirmed_events_count { get; set; } // 12,          
+    //    public int new_notifications_count { get; set; } // 5,
+    //    public float working_time { get; set; } // 0.002
+
+    //    public event PropertyChangedEventHandler PropertyChanged;
+    //    private void NotifyPropertyChanged(string propertyName)
+    //    {
+    //        if (PropertyChanged != null)
+    //        {
+    //            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+    //        }
+    //    }
+    //}
+
+    public sealed class Everyday
     {
         public LoginData loginData = new LoginData();
         public ErrorStatus errStatus = new ErrorStatus();
-        public GetEvents getEvents = new GetEvents();
-        public GetUserInfo getUserInfo = new GetUserInfo();
+        //public Events getEvents = new Events();
+       // public GetUserInfo getUserInfo = new GetUserInfo();
         //public Events Ev;
 
 
         public string OSVersion = "Windows Phone";//Environment.OSVersion.ToString();
         public string SERVER = "http://api.go.pl.ua/"; //"http://everyday.mk.ua/";
-        public string deviceID;
-        public string response;
+        public string deviceID { get; set; }
+        public string response { get; set; }
         public string qry;
 
         //public Bitmap UserImg;
@@ -221,15 +410,15 @@ namespace eDay
             deviceID = GetDeviceId();
         }
         //==================================================================
-        public GetEvents GetEventsByData(string date) //date format "2014-08-20"
-        {
-            string qry = SERVER + "GetEvents.php?Token=" + loginData.token
-                         + "&Devid=" + deviceID
-                         + "&Platform=" + OSVersion.ToString()
-                         + "&Query={" + quote + "aday" + quote + ":" + quote + date + quote + "}";
-            MakeQueryToServer(qry);
-            return getEvents;
-        }
+        //public Events GetEventsByData(string date) //date format "2014-08-20"
+        //{
+        //    string qry = SERVER + "GetEvents.php?Token=" + loginData.token
+        //                 + "&Devid=" + deviceID
+        //                 + "&Platform=" + OSVersion.ToString()
+        //                 + "&Query={" + quote + "aday" + quote + ":" + quote + date + quote + "}";
+        //    MakeQueryToServer(qry);
+        //    return getEvents;
+        //}
         public string GetDataFromString(string sParametr, string StringResponse)
         {
             int i;
@@ -245,12 +434,28 @@ namespace eDay
             return "NoData";
         }
 
-        public async void MakeQueryToServer(string qry)
-        {
-            HttpClient client = new HttpClient();
-            response = await client.GetStringAsync(new Uri(qry));
-            SUCCESS = GetDataFromString("success", response) == "1" ? 1 : 0;
-        }
+        //public async void MakeQueryToServer(string qry)
+        //{
+        //    HttpClient client = new HttpClient();
+        //    response = await client.GetStringAsync(new Uri(qry));
+        //    SUCCESS = GetDataFromString("success", response) == "1" ? 1 : 0;
+        //}
+
+        //public class GroupEvents
+        //{
+        //    public int success { get; set; }
+        //    public string a_day_string { get; set; }
+        //    public int a_day_date { get; set; }
+        //    public ObservableCollection<Event> events { get; set; }
+        //    public int a_day_events_count { get; set; }
+        //    public bool DevMode { get; set; }
+        //    public Result result { get; set; }
+        //    public Debug debug { get; set; }
+        //    public override string ToString()
+        //    {
+        //        return "Events count " + events.Count;
+        //    }
+        //}
 
         private string GetDeviceID2()
         {

@@ -72,8 +72,9 @@ namespace eDay
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
-            var eDayDataGroup = await eDayDataSource.GetGroupAsync("2016-02-20"); // ("");
-            DefaultViewModel[FirstGroupName] = eDayDataGroup;
+            // var eDayDataGroup = await eDayDataSource.GetEventsByDateAsync("2016-02-20"); // ("");
+            var eDayDataGroup = await eDayDataSource.GetGroupEventsAsync();
+             DefaultViewModel[FirstGroupName] = eDayDataGroup;
             await LoginEveryday();
         }
 
@@ -102,7 +103,7 @@ namespace eDay
                      + "&Query={" + quote + "aday" + quote + ":" + quote + "2016-02-24" + quote + "}";// DateTime.Today.Date.ToString("yyyy-MM-dd")
 
                 response = await HttpQuery(qry);
-                GetEvents events = JsonConvert.DeserializeObject<GetEvents>(response);
+                //Events events = JsonConvert.DeserializeObject<Events>(response);
                 //PivotItem1.DataContext = events;
                 //listView.DataContext = events;
                 //listView.ItemsSource = events.events;
@@ -198,7 +199,7 @@ namespace eDay
         {
             // Переход к соответствующей странице назначения и настройка новой страницы
             // путем передачи необходимой информации в виде параметра навигации
-            var itemId = ((EverydayEvent)e.ClickedItem).Caption;
+            var itemId = ((Event)e.ClickedItem).event_name;
             if (!Frame.Navigate(typeof(ItemPage), itemId))
             {
                 throw new Exception(resourceLoader.GetString("NavigationFailedExceptionMessage"));
@@ -210,7 +211,7 @@ namespace eDay
         /// </summary>
         private async void SecondPivot_Loaded(object sender, RoutedEventArgs e)
         {
-            var sampleDataGroup = await eDayDataSource.GetGroupAsync("Group-2");
+            var sampleDataGroup = await eDayDataSource.GetEventsByDateAsync("Group-2");
             DefaultViewModel[SecondGroupName] = sampleDataGroup;
         }
 
