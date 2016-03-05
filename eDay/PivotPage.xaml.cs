@@ -73,8 +73,10 @@ namespace eDay
         {
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
             // var eDayDataGroup = await eDayDataSource.GetEventsByDateAsync("2016-02-20"); // ("");
+            
             var eDayDataGroup = await eDayDataSource.GetGroupEventsAsync();
-             DefaultViewModel[FirstGroupName] = eDayDataGroup;
+            DefaultViewModel[FirstGroupName] = eDayDataGroup;
+            
             await LoginEveryday();
         }
 
@@ -230,9 +232,10 @@ namespace eDay
         /// </summary>
         /// <param name="e">Предоставляет данные для методов навигации и обработчики
         /// событий, которые не могут отменить запрос навигации.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
+            //await LoginEveryday();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

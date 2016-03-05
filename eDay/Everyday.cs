@@ -133,9 +133,9 @@ namespace eDay
     /// <summary>
     /// Универсальная модель данных групп.
     /// </summary>
-    public class GroupEvents
+    public class Events
     {
-        public GroupEvents()
+        public Events()
         {
             events = new ObservableCollection<Event>();
         }
@@ -150,10 +150,10 @@ namespace eDay
             return "Events count " + events.Count;
         }
     }
-    public class Events
-    {
-        public ObservableCollection<Event> events { get; set; }
-    }
+    //public class Events
+    //{
+    //    public ObservableCollection<Event> events { get; set; }
+    //}
     public class Item
     {
         public string id { get; set; }
@@ -255,25 +255,19 @@ namespace eDay
         public string descr { get; set; }
         public object assoc_client { get; set; }
         public ObservableCollection<Performer> performers { get; set; }
+        public override string ToString()
+        {
+            string sBuffer = string.Empty;
+            foreach(Item i in items)
+            {
+                sBuffer += "- " + i.caption + "\r\n";
+            }
+            return sBuffer;
+        }
+
     }
     //public class Event : INotifyPropertyChanged
     //{
-    //    public Event(int event_id, string img, string time,string expert, string caption, bool confirmed)
-    //    {
-    //        Event_id = event_id;
-    //        Img = img;
-    //        Time = time;
-    //        Expert = expert;
-    //        Caption = caption;
-    //        Items = new ObservableCollection<Items>();
-    //        Confirmed = confirmed;
-    //    }
-
-    //    private string _caption;
-    //    public int Event_id { get; set; }
-    //    public string Img { get; set; }
-    //    public string Time { get; set; }
-    //    public string Expert { get; set; }
     //    public string Caption
     //    {
     //        get
@@ -289,8 +283,6 @@ namespace eDay
     //            }
     //        }
     //    }
-    //    public bool Confirmed { get; set; }
-    //    public ObservableCollection<Items> Items { get; set; }
     //    public override string ToString()
     //    {
     //        return Caption;
@@ -307,83 +299,11 @@ namespace eDay
 
     //}
 
-    //public class Events
-    //{
-    //    public string a_day_date { get; set; }
-    //    public ObservableCollection<Event> events { get; set; }
-    //    public override string ToString()
-    //    {
-    //        return "Events count " + events.Count;
-    //    }
-    //}
-    //public class AppSettings
-    //{
-    //    public bool confirm_events { get; set; } // true,
-    //    public bool enable_report_eating { get; set; } // true,
-    //    public bool enable_report_preparats { get; set; } // true,
-    //    public int cache_period { get; set; } // 7
-    //}
-    //public class GetUserInfo : INotifyPropertyChanged
-    //{
-    //    private string _UserF;
-    //    private string _UserI;
-    //    private string _UserO;
-    //    public int success { get; set; }
-
-    //    public string UserId { get; set; }
-    //    public string UserLogin { get; set; } // "elchukov",
-    //    public string UserImg { get; set; } //"avatars/1.png",
-    //    public string UserF
-    //    {
-    //        get { return _UserF; }
-    //        set
-    //        {
-    //            _UserF = value;
-    //            NotifyPropertyChanged("UserF");
-    //        }
-    //    } //"Ельчуков",
-    //    public string UserI
-    //    {
-    //        get { return _UserI; }
-    //        set
-    //        {
-    //            _UserI = value;
-    //            NotifyPropertyChanged("UserI");
-    //        }
-    //    } // "Сергей",
-    //    public string UserO
-    //    {
-    //        get { return _UserO; }
-    //        set
-    //        {
-    //            _UserO = value;
-    //            NotifyPropertyChanged("UserO");
-    //        }
-    //    } // "Викторович",
-    //    public string UserDateReg { get; set; } //"2014-06-23 14:37:46",
-    //    public AppSettings Settings { get; set; }
-    //    public int not_confirmed_events_count { get; set; } // 12,          
-    //    public int new_notifications_count { get; set; } // 5,
-    //    public float working_time { get; set; } // 0.002
-
-    //    public event PropertyChangedEventHandler PropertyChanged;
-    //    private void NotifyPropertyChanged(string propertyName)
-    //    {
-    //        if (PropertyChanged != null)
-    //        {
-    //            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-    //        }
-    //    }
-    //}
 
     public sealed class Everyday
     {
         public LoginData loginData = new LoginData();
         public ErrorStatus errStatus = new ErrorStatus();
-        //public Events getEvents = new Events();
-       // public GetUserInfo getUserInfo = new GetUserInfo();
-        //public Events Ev;
-
 
         public string OSVersion = "Windows Phone";//Environment.OSVersion.ToString();
         public string SERVER = "http://api.go.pl.ua/"; //"http://everyday.mk.ua/";
@@ -409,16 +329,6 @@ namespace eDay
         {
             deviceID = GetDeviceId();
         }
-        //==================================================================
-        //public Events GetEventsByData(string date) //date format "2014-08-20"
-        //{
-        //    string qry = SERVER + "GetEvents.php?Token=" + loginData.token
-        //                 + "&Devid=" + deviceID
-        //                 + "&Platform=" + OSVersion.ToString()
-        //                 + "&Query={" + quote + "aday" + quote + ":" + quote + date + quote + "}";
-        //    MakeQueryToServer(qry);
-        //    return getEvents;
-        //}
         public string GetDataFromString(string sParametr, string StringResponse)
         {
             int i;
@@ -433,29 +343,6 @@ namespace eDay
             }
             return "NoData";
         }
-
-        //public async void MakeQueryToServer(string qry)
-        //{
-        //    HttpClient client = new HttpClient();
-        //    response = await client.GetStringAsync(new Uri(qry));
-        //    SUCCESS = GetDataFromString("success", response) == "1" ? 1 : 0;
-        //}
-
-        //public class GroupEvents
-        //{
-        //    public int success { get; set; }
-        //    public string a_day_string { get; set; }
-        //    public int a_day_date { get; set; }
-        //    public ObservableCollection<Event> events { get; set; }
-        //    public int a_day_events_count { get; set; }
-        //    public bool DevMode { get; set; }
-        //    public Result result { get; set; }
-        //    public Debug debug { get; set; }
-        //    public override string ToString()
-        //    {
-        //        return "Events count " + events.Count;
-        //    }
-        //}
 
         private string GetDeviceID2()
         {
