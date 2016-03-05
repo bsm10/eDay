@@ -122,9 +122,11 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\archive2.png" />
     <Content Include="Assets\BadgeLogo.scale-100.png" />
     <Content Include="Assets\BadgeLogo.scale-140.png" />
     <Content Include="Assets\BadgeLogo.scale-240.png" />
+    <Content Include="Assets\bell78.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-140.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />
@@ -161,7 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DataModel\eDayData.json" />
-    <None Include="DataModel\EventsData.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -174,11 +175,7 @@
     <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties DataModel_4eDayData_1json__JSONSchema="http://json.schemastore.org/project" />
-    </VisualStudio>
-  </ProjectExtensions>
+  <ProjectExtensions />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

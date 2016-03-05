@@ -43,5 +43,9 @@ namespace eDay
             Application.Current.Exit();
         }
 
+        private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

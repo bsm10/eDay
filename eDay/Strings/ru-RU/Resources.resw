@@ -142,7 +142,7 @@
     <value>Календарь</value>
   </data>
   <data name="SecondaryButton1.Label" xml:space="preserve">
-    <value>второстепенная команда 1</value>
+    <value>Обновить данные с сервера</value>
   </data>
   <data name="SecondaryButton2.Label" xml:space="preserve">
     <value>второстепенная команда 2</value>
