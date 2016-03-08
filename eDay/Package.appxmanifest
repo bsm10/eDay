@@ -3,7 +3,7 @@
   <Identity Name="e0073cdc-db8b-4fd5-8ee2-76060e969d51" Publisher="CN=Boris" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="e0073cdc-db8b-4fd5-8ee2-76060e969d51" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>eDay</DisplayName>
+    <DisplayName>Everyday</DisplayName>
     <PublisherDisplayName>Boris</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -16,7 +16,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="eDay.App">
-      <m3:VisualElements DisplayName="eDay" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="eDay" ForegroundText="light" BackgroundColor="transparent">
+      <m3:VisualElements DisplayName="Everyday" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="eDay" ForegroundText="light" BackgroundColor="transparent">
         <m3:LockScreen Notification="badge" BadgeLogo="Assets\BadgeLogo.png" />
         <m3:DefaultTile Square71x71Logo="Assets\Square71x71Logo.png">
           <m3:ShowNameOnTiles>

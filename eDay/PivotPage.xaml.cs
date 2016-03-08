@@ -23,9 +23,6 @@ namespace eDay
 {
     public sealed partial class PivotPage : Page
     {
-        //public Everyday EVERYDAY { get; set; }
-        //string response;
-        //LoginData loginData;
         private string token;
         private const string quote = "\"";
         Everyday eday;
@@ -39,7 +36,8 @@ namespace eDay
         public PivotPage()
         {
             InitializeComponent();
-            eday = new Everyday();
+            App thisApp = Application.Current as App;
+            eday = thisApp.eday;
             NavigationCacheMode = NavigationCacheMode.Required;
             navigationHelper = new NavigationHelper(this);
             navigationHelper.LoadState += NavigationHelper_LoadState;
@@ -77,8 +75,6 @@ namespace eDay
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
-            // var eDayDataGroup = await eDayDataSource.GetEventsByDateAsync("2016-02-20"); // ("");
-            
             var eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
             //var eDayDataGroup = await eDayDataSource.GetGroupEventsAsync();
             DefaultViewModel[FirstGroupName] = eDayDataGroup;
@@ -199,6 +195,7 @@ namespace eDay
                 case "SettingsButton":
                     break;
                 case "AddEventButton":
+
                     break;
                 case "UpdateButton":
                     break;
@@ -206,30 +203,4 @@ namespace eDay
             }
         }
     }
-    public class DoubleToBool : IValueConverter
-    {
-        // This converts the DateTime object to the string to display.
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            if (value != null && value is double)
-            {
-                var val = (double)value; return (val == 0) ? false : true;
-            }
-            return null;
-        }
-
-        // No need to implement converting back on a one-way binding 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            if (value != null && value is bool)
-            {
-                var val = (bool)value; return val ? 1 : 0;
-            }
-            return null;
-            //throw new NotImplementedException();
-        }
-
-
-    }
-
 }

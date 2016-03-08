@@ -40,7 +40,7 @@
                     IsItemClickEnabled="True"
                     ItemClick="ItemView_ItemClick"
                     ContinuumNavigationTransitionInfo.ExitElementContainer="True"
-                    Margin="0,0,0,-10.833" ItemsSource="{Binding}" Width="381" Background="#FFD2DDAC" DoubleTapped="listView_DoubleTapped">
+                    Margin="0,0,0,-10.833" ItemsSource="{Binding}" Width="Auto" Background="#FFD2DDAC" DoubleTapped="listView_DoubleTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid x:Name="grid" Margin="0,0,0,9.5">
@@ -136,8 +136,30 @@
                 Header="Календарь"
                 DataContext="{Binding SecondGroup}"
                 d:DataContext="{Binding Groups[0], Source={d:DesignData Source=/DataModel/eDayData.json, Type=data:eDayDataSource}}">
-                <DatePicker HorizontalAlignment="Left" Height="70" Margin="10,0,0,0" VerticalAlignment="Top" Width="361"/>
                 <!--Двухстрочный список без переноса текста на новую строку-->
+                <ListView
+                    ItemsSource="{Binding Items}"
+                    IsItemClickEnabled="True"
+                    ItemClick="ItemView_ItemClick"
+                    Loaded="SecondPivot_Loaded"
+                    ContinuumNavigationTransitionInfo.ExitElementContainer="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,9.5">
+                                <TextBlock
+                                    Text="{Binding Title}"
+                                    Pivot.SlideInAnimationGroup="1"
+                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
+                                    Style="{StaticResource ListViewItemTextBlockStyle}"/>
+                                <TextBlock
+                                    Text="{Binding Description}"
+                                    Pivot.SlideInAnimationGroup="2"
+                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
+                                    Style="{StaticResource ListViewItemContentTextBlockStyle}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </PivotItem>
             <PivotItem Header="Настройки"/>
         </Pivot>
@@ -145,8 +167,8 @@
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton x:Uid="AddAppBarButton" x:Name="AddEventButton" Label="добавить" Icon="Add" Click="AddAppBarButton_Click" />
-            <AppBarButton x:Uid="AddAppBarButton" x:Name="UpdateButton" Label="обновить" Icon="Refresh" Click="UpdateButton_Click" Tapped="UpdateButton_Tapped" />
-            <AppBarButton x:Uid="AddAppBarButton" x:Name="LoginButton" Label="войти" Icon="Contact" Click="UpdateButton_Click" Tapped="UpdateButton_Tapped" />
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="UpdateButton" Label="обновить" Icon="Refresh" Click="UpdateButton_Click" />
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="LoginButton" Label="войти" Icon="Contact" Click="UpdateButton_Click" />
             <AppBarButton x:Uid="AddAppBarButton" x:Name="SettingsButton" Label="настройки" Icon="Setting" Click="AddAppBarButton_Click" />
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Uid="SecondaryButton1" x:Name="SecondaryButton1" Label="Login" Click="SecondaryButton1_Click">

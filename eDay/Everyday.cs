@@ -11,10 +11,12 @@ using Windows.Storage.Streams;
 using Windows.Security.Cryptography.Core;
 using Windows.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Threading;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
 using Newtonsoft.Json;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Data;
 
 namespace eDay
 {
@@ -46,20 +48,6 @@ namespace eDay
 
 
     }
-    //public class Result
-    //{
-    //    public int success { get; set; }
-    //}
-    //public class Items
-    //{
-    //    public string id { get; set; }
-    //    public string name { get; set; }
-    //    public override string ToString()
-    //    {
-    //        return name;
-    //    }
-
-    //}
 
     /// <summary>
     /// Универсальная модель данных элементов.
@@ -155,10 +143,6 @@ namespace eDay
             return "Events count " + events.Count;
         }
     }
-    //public class Events
-    //{
-    //    public ObservableCollection<Event> events { get; set; }
-    //}
     public class Item
     {
         public string id { get; set; }
@@ -183,7 +167,6 @@ namespace eDay
         }
 
     }
-
     public class Event
     {
         public int event_class { get; set; }
@@ -203,14 +186,12 @@ namespace eDay
         }
 
     }
-
     public class Result
     {
         public ObservableCollection<object> errors { get; set; }
         public ObservableCollection<object> warnings { get; set; }
         public ObservableCollection<object> notifies { get; set; }
     }
-
     public class Messages
     {
         public ObservableCollection<object> errors { get; set; }
@@ -242,7 +223,6 @@ namespace eDay
         public string expert_id { get; set; }
         public string mail { get; set; }
     }
-
     public class Details
     {
         public Details()
@@ -303,8 +283,6 @@ namespace eDay
     //    }
 
     //}
-
-
     public sealed class Everyday
     {
         public LoginData loginData = new LoginData();
@@ -393,6 +371,7 @@ namespace eDay
                 }
                 loginData = JsonConvert.DeserializeObject<LoginData>(response);
                 Token = loginData.token;
+                //Взять события на 5 дней
                 await GetEvents(DateTime.Today.ToString("yyyy-MM-dd"), (DateTime.Today+TimeSpan.FromDays(5)).ToString("yyyy-MM-dd"));
             }
         }
@@ -488,6 +467,31 @@ namespace eDay
 
             return text;
         }
+    }
+    public class DoubleToBool : IValueConverter
+    {
+        // This converts the DateTime object to the string to display.
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value != null && value is double)
+            {
+                var val = (double)value; return (val == 0) ? false : true;
+            }
+            return null;
+        }
+
+        // No need to implement converting back on a one-way binding 
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            if (value != null && value is bool)
+            {
+                var val = (bool)value; return val ? 1 : 0;
+            }
+            return null;
+            //throw new NotImplementedException();
+        }
+
 
     }
+
 }
