@@ -10,6 +10,11 @@ using Windows.System.Profile;
 using Windows.Storage.Streams;
 using Windows.Security.Cryptography.Core;
 using Windows.Security.Cryptography;
+using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.UI.Xaml.Controls;
+using Newtonsoft.Json;
+using Windows.UI.Popups;
 
 namespace eDay
 {
@@ -328,6 +333,7 @@ namespace eDay
         public Everyday()
         {
             deviceID = GetDeviceId();
+
         }
         public string GetDataFromString(string sParametr, string StringResponse)
         {
@@ -366,5 +372,122 @@ namespace eDay
 
             return BitConverter.ToString(bytes).Replace("-", "");
         }//Note: This function may throw an exception. 
+
+        public async Task LoginEveryday()
+        {
+            //EVERYDAY = new Everyday();
+            LoginDialog loginDialog = new LoginDialog();
+            //loginDialog.EVERYDAY = EVERYDAY;
+            login_now:
+            // Show Dialog если залогинились -> 
+            var result = await loginDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                await Login(loginDialog.Login, loginDialog.Password);
+                ErrorStatus res = JsonConvert.DeserializeObject<ErrorStatus>(response) as ErrorStatus;
+                if (res.success == 0)
+                {
+                    MessageDialog msgbox = new MessageDialog(res.error_for_user, "Ошибка!");
+                    await msgbox.ShowAsync();
+                    goto login_now;
+                }
+                loginData = JsonConvert.DeserializeObject<LoginData>(response);
+                Token = loginData.token;
+                await GetEvents(DateTime.Today.ToString("yyyy-MM-dd"), (DateTime.Today+TimeSpan.FromDays(5)).ToString("yyyy-MM-dd"));
+            }
+        }
+        private async Task Login(string sLog, string sPass)
+        {
+            string qry;
+            qry = (SERVER
+                        + (("Login.php?&Devid="
+                        + (deviceID + ("&Platform="
+                        + (OSVersion + "&Query={\"login\":\""))))
+                        + (sLog + ("\",\"pass\":\""
+                        + (sPass + "\"}")))));
+            HttpClient client = new HttpClient();
+            response = await client.GetStringAsync(new Uri(qry));
+        }
+        public async Task GetEvents(string startDate, string endDate, bool save_data=true)
+        {
+            if (loginData == null) return;
+            string postData = string.Format("Token={0}&Devid={1}&Platform={2}&Query={{\"date_start\":\"{3}\",\"date_end\":\"{4}\"}}",
+                                        loginData.token, "bsm10", "Win 8.1", startDate, endDate);
+            HttpClient client = new HttpClient();
+            response = await client.GetStringAsync(new Uri(SERVER + "ios/rGetEvents.php?" + postData));
+            if (save_data) await saveStringToLocalFile(response);
+        }
+        private async Task<string> HttpQuery(string qry)
+        {
+            HttpClient client = new HttpClient();
+            return await client.GetStringAsync(new Uri(qry));
+        }
+
+        private async Task<byte[]> GetURLContentsAsync(string url)
+        {
+            // The downloaded resource ends up in the variable named content. 
+            var content = new MemoryStream();
+
+            // Initialize an HttpWebRequest for the current URL. 
+            var webReq = (HttpWebRequest)WebRequest.Create(url);
+
+            // Send the request to the Internet resource and wait for 
+            // the response.                 
+            using (WebResponse response = await webReq.GetResponseAsync())
+            {
+                // Get the data stream that is associated with the specified url. 
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    // Read the bytes in responseStream and copy them to content. 
+                    await responseStream.CopyToAsync(content);
+                }
+            }
+            // Return the result as a byte array. 
+            return content.ToArray();
+        }
+        private async Task saveStringToLocalFile(string content)
+        {
+
+            Uri fileUri = new Uri("ms-appx:///DataModel/eDayData.json");
+            // saves the string 'content' to a file 'filename' in the app's local storage folder
+            byte[] fileBytes = Encoding.UTF8.GetBytes(content.ToCharArray());
+            try
+            {
+                // create a file with the given filename in the local folder; replace any existing file with the same name
+                //StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(fileUri);
+                await FileIO.WriteTextAsync(file, content);
+                //using (var stream = await file.OpenStreamForWriteAsync())
+                //{
+                //    stream.Write(fileBytes, 0, fileBytes.Length);
+                //}
+
+
+
+            }
+            catch (Exception ex)
+            {
+                string f = ex.ToString();
+            }
+        }
+        private static async Task<string> readStringFromLocalFile(string filename)
+        {
+            // reads the contents of file 'filename' in the app's local storage folder and returns it as a string
+
+            // access the local folder
+            StorageFolder local = Windows.Storage.ApplicationData.Current.LocalFolder;
+            // open the file 'filename' for reading
+            Stream stream = await local.OpenStreamForReadAsync(filename);
+            string text;
+
+            // copy the file contents into the string 'text'
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                text = reader.ReadToEnd();
+            }
+
+            return text;
+        }
+
     }
 }

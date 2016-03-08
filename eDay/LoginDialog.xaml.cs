@@ -17,7 +17,7 @@ namespace eDay
         public string Password { get; set; }
 
         ///Everyday everyday;
-        public Everyday EVERYDAY { get; set; }
+        //public Everyday EVERYDAY { get; set; }
         public LoginDialog()
         {
             InitializeComponent();
@@ -32,10 +32,8 @@ namespace eDay
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            //Login(login.Text, password.Password);
             Login = login.Text;
             Password = password.Password;
-
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

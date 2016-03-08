@@ -40,7 +40,7 @@
                     IsItemClickEnabled="True"
                     ItemClick="ItemView_ItemClick"
                     ContinuumNavigationTransitionInfo.ExitElementContainer="True"
-                    Margin="0,0,0,-10.833" ItemsSource="{Binding}" Width="381" Background="#FFD2DDAC">
+                    Margin="0,0,0,-10.833" ItemsSource="{Binding}" Width="381" Background="#FFD2DDAC" DoubleTapped="listView_DoubleTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid x:Name="grid" Margin="0,0,0,9.5">
@@ -100,17 +100,21 @@
                                 <Rectangle
                                     Margin="17,-9,13,10" Grid.Row="2" Grid.ColumnSpan="3" Canvas.ZIndex="-3" Fill="#FFB1CA77" RadiusX="5" RadiusY="5">
                                 </Rectangle>
-                                <ListBox Grid.ColumnSpan="3"
+                                <ListBox x:Name="listItems" Grid.ColumnSpan="3"
                                     Margin="24,6,23,14"
                                     Grid.Row="2"
                                     Background="{x:Null}"
-                                    Foreground="#FF395668" ItemsSource="{Binding details.items}">
+                                    Foreground="#FF395668" ItemsSource="{Binding details.items}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock
                                                        SelectionHighlightColor="{x:Null}"
                                                         Text="{Binding caption}"
-                                                       Width="Auto"/>
+                                                       Width="Auto">
+                                                
+                                            </TextBlock>
+                                           
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
 
@@ -132,46 +136,25 @@
                 Header="Календарь"
                 DataContext="{Binding SecondGroup}"
                 d:DataContext="{Binding Groups[0], Source={d:DesignData Source=/DataModel/eDayData.json, Type=data:eDayDataSource}}">
+                <DatePicker HorizontalAlignment="Left" Height="70" Margin="10,0,0,0" VerticalAlignment="Top" Width="361"/>
                 <!--Двухстрочный список без переноса текста на новую строку-->
-                <ListView
-                    ItemsSource="{Binding Items}"
-                    IsItemClickEnabled="True"
-                    ItemClick="ItemView_ItemClick"
-                    Loaded="SecondPivot_Loaded"
-                    ContinuumNavigationTransitionInfo.ExitElementContainer="True">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="0,0,0,9.5">
-                                <TextBlock
-                                    Text="{Binding Title}"
-                                    Pivot.SlideInAnimationGroup="1"
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
-                                    Style="{StaticResource ListViewItemTextBlockStyle}"/>
-                                <TextBlock
-                                    Text="{Binding Description}"
-                                    Pivot.SlideInAnimationGroup="2"
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
-                                    Style="{StaticResource ListViewItemContentTextBlockStyle}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
             </PivotItem>
             <PivotItem Header="Настройки"/>
         </Pivot>
     </Grid>
-
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton x:Uid="AddAppBarButton" x:Name="AddAppBarButton" Label="add" Icon="Add" Click="AddAppBarButton_Click" />
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="AddEventButton" Label="добавить" Icon="Add" Click="AddAppBarButton_Click" />
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="UpdateButton" Label="обновить" Icon="Refresh" Click="UpdateButton_Click" Tapped="UpdateButton_Tapped" />
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="LoginButton" Label="войти" Icon="Contact" Click="UpdateButton_Click" Tapped="UpdateButton_Tapped" />
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="SettingsButton" Label="настройки" Icon="Setting" Click="AddAppBarButton_Click" />
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Uid="SecondaryButton1" x:Name="SecondaryButton1" Label="Обновить данные" Click="SecondaryButton1_Click" >
-                    <AppBarButton.Icon>
-                        <BitmapIcon UriSource="Assets/archive2.png"/>
-                    </AppBarButton.Icon>
+                <AppBarButton x:Uid="SecondaryButton1" x:Name="SecondaryButton1" Label="Login" Click="SecondaryButton1_Click">
+
                 </AppBarButton>
                 <AppBarButton x:Uid="SecondaryButton2" x:Name="SecondaryButton2" Label="secondary command 2" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
+
 </Page>

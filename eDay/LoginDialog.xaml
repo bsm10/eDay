@@ -11,13 +11,12 @@
     SecondaryButtonText="Отмена"
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
     SecondaryButtonClick="ContentDialog_SecondaryButtonClick" 
-    IsDoubleTapEnabled="False" FullSizeDesired="True">
+    IsDoubleTapEnabled="False" Height="Auto">
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="383" Margin="0,0,0.083,0">
         <TextBox x:Name="login" Header="Login"/>
         <PasswordBox x:Name="password" Header="Password"/>
         <HyperlinkButton Content="Регистрация" HorizontalAlignment="Left" Height="51" Width="362" RenderTransformOrigin="0.504,0.515" Click="HyperlinkButton_Click"/>
-
         <!-- Тело содержимого -->
     </StackPanel>
 </ContentDialog>

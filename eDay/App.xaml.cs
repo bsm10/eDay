@@ -26,6 +26,7 @@ namespace eDay
     /// </summary>
     public sealed partial class App : Application
     {
+        public Everyday eday;
         private TransitionCollection transitions;
 
         /// <summary>
@@ -35,6 +36,7 @@ namespace eDay
         public App()
         {
             this.InitializeComponent();
+            eday = new Everyday();
             this.Suspending += this.OnSuspending;
         }
 
@@ -46,6 +48,7 @@ namespace eDay
         /// <param name="e">Сведения о запросе и обработке запуска.</param>
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
+            
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -54,7 +57,7 @@ namespace eDay
 #endif
 
             Frame rootFrame = Window.Current.Content as Frame;
-
+            
             // Не повторяйте инициализацию приложения, если в окне уже имеется содержимое,
             // только обеспечьте активность окна.
             if (rootFrame == null)
@@ -100,7 +103,7 @@ namespace eDay
                         this.transitions.Add(c);
                     }
                 }
-
+                
                 rootFrame.ContentTransitions = null;
                 rootFrame.Navigated += this.RootFrame_FirstNavigated;
 
@@ -115,6 +118,7 @@ namespace eDay
 
             // Обеспечение активности текущего окна.
             Window.Current.Activate();
+
         }
 
         /// <summary>
@@ -125,6 +129,7 @@ namespace eDay
             var rootFrame = sender as Frame;
             rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new NavigationThemeTransition() };
             rootFrame.Navigated -= this.RootFrame_FirstNavigated;
+
         }
 
         /// <summary>

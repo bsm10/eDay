@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
+using Windows.UI.Xaml.Media;
 
 // Документацию по шаблону "Приложение с Pivot" см. по адресу http://go.microsoft.com/fwlink/?LinkID=391641
 
@@ -22,11 +23,12 @@ namespace eDay
 {
     public sealed partial class PivotPage : Page
     {
-        public Everyday EVERYDAY { get; set; }
-        string response;
-        LoginData loginData;
+        //public Everyday EVERYDAY { get; set; }
+        //string response;
+        //LoginData loginData;
+        private string token;
         private const string quote = "\"";
-
+        Everyday eday;
         private const string FirstGroupName = "FirstGroup";
         private const string SecondGroupName = "SecondGroup";
 
@@ -37,7 +39,7 @@ namespace eDay
         public PivotPage()
         {
             InitializeComponent();
-            
+            eday = new Everyday();
             NavigationCacheMode = NavigationCacheMode.Required;
             navigationHelper = new NavigationHelper(this);
             navigationHelper.LoadState += NavigationHelper_LoadState;
@@ -77,127 +79,10 @@ namespace eDay
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
             // var eDayDataGroup = await eDayDataSource.GetEventsByDateAsync("2016-02-20"); // ("");
             
-            var eDayDataGroup = await eDayDataSource.GetGroupEventsAsync();
+            var eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
+            //var eDayDataGroup = await eDayDataSource.GetGroupEventsAsync();
             DefaultViewModel[FirstGroupName] = eDayDataGroup;
-            await LoginEveryday();
-            //await GetEvents(DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Today.ToString("yyyy-MM-dd"));
-        }
-
-        private async Task LoginEveryday()
-        {
-            EVERYDAY = new Everyday();
-            LoginDialog loginDialog = new LoginDialog();
-            loginDialog.EVERYDAY = EVERYDAY;
-        login_now:
-            // Show Dialog если залогинились -> 
-            var result = await loginDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
-            {
-                await Login(loginDialog.Login, loginDialog.Password);
-                ErrorStatus res = JsonConvert.DeserializeObject<ErrorStatus>(response) as ErrorStatus;
-                if (res.success == 0)
-                {
-                    MessageDialog msgbox = new MessageDialog(res.error_for_user, "Ошибка!");
-                    await msgbox.ShowAsync();
-                    goto login_now;
-                }
-                loginData = JsonConvert.DeserializeObject<LoginData>(response);
-                
-            }
-        }
-        private async Task Login(string sLog, string sPass)
-        {
-            string qry;
-            qry = (EVERYDAY.SERVER
-                        + (("Login.php?&Devid="
-                        + (EVERYDAY.deviceID + ("&Platform="
-                        + (EVERYDAY.OSVersion + "&Query={\"login\":\""))))
-                        + (sLog + ("\",\"pass\":\""
-                        + (sPass + "\"}")))));
-            HttpClient client = new HttpClient();
-            response = await client.GetStringAsync(new Uri(qry));
-        }
-        private async Task GetEvents(string startDate, string endDate)
-        {
-            if (loginData == null) return;
-            string postData = string.Format("Token={0}&Devid={1}&Platform={2}&Query={{\"date_start\":\"{3}\",\"date_end\":\"{4}\"}}",
-                                        loginData.token, "bsm10", "Win 8.1", startDate, endDate);
-            HttpClient client = new HttpClient();
-            response = await client.GetStringAsync(new Uri(EVERYDAY.SERVER + "ios/rGetEvents.php?"+ postData));
-            await saveStringToLocalFile(response);
-        }
-
-
-        private async Task<string> HttpQuery(string qry)
-        {
-            HttpClient client = new HttpClient();
-            return await client.GetStringAsync(new Uri(qry));
-        }
-
-        private async Task<byte[]> GetURLContentsAsync(string url)
-        {
-            // The downloaded resource ends up in the variable named content. 
-            var content = new MemoryStream();
-
-            // Initialize an HttpWebRequest for the current URL. 
-            var webReq = (HttpWebRequest)WebRequest.Create(url);
-
-            // Send the request to the Internet resource and wait for 
-            // the response.                 
-            using (WebResponse response = await webReq.GetResponseAsync())
-            {
-                // Get the data stream that is associated with the specified url. 
-                using (Stream responseStream = response.GetResponseStream())
-                {
-                    // Read the bytes in responseStream and copy them to content. 
-                    await responseStream.CopyToAsync(content);
-                }
-            }
-            // Return the result as a byte array. 
-            return content.ToArray();
-        }
-        private async Task saveStringToLocalFile(string content)
-        {
-
-            Uri fileUri = new Uri ("ms-appx:///DataModel/eDayData.json");
-            // saves the string 'content' to a file 'filename' in the app's local storage folder
-            byte[] fileBytes = Encoding.UTF8.GetBytes(content.ToCharArray());
-            try
-            {
-                // create a file with the given filename in the local folder; replace any existing file with the same name
-                //StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(fileUri);
-                await FileIO.WriteTextAsync(file, content);
-                //using (var stream = await file.OpenStreamForWriteAsync())
-                //{
-                //    stream.Write(fileBytes, 0, fileBytes.Length);
-                //}
-
-
-
-            }
-            catch(Exception ex)
-            {
-                string f = ex.ToString();
-            }
-        }
-        private static async Task<string> readStringFromLocalFile(string filename)
-        {
-            // reads the contents of file 'filename' in the app's local storage folder and returns it as a string
-
-            // access the local folder
-            StorageFolder local = Windows.Storage.ApplicationData.Current.LocalFolder;
-            // open the file 'filename' for reading
-            Stream stream = await local.OpenStreamForReadAsync(filename);
-            string text;
-
-            // copy the file contents into the string 'text'
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                text = reader.ReadToEnd();
-            }
-
-            return text;
+            if (eday.Token==null) await eday.LoginEveryday();
         }
 
         /// <summary>
@@ -242,9 +127,10 @@ namespace eDay
         /// </summary>
         private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            // Переход к соответствующей странице назначения и настройка новой страницы
-            // путем передачи необходимой информации в виде параметра навигации
-            var itemId = ((Event)e.ClickedItem).event_name;
+            var itemId = ((Event)e.ClickedItem).id;
+            //// Переход к соответствующей странице назначения и настройка новой страницы
+            //// путем передачи необходимой информации в виде параметра навигации
+            //var itemId = ((Event)e.ClickedItem).event_name;
             if (!Frame.Navigate(typeof(ItemPage), itemId))
             {
                 throw new Exception(resourceLoader.GetString("NavigationFailedExceptionMessage"));
@@ -275,7 +161,7 @@ namespace eDay
         /// </summary>
         /// <param name="e">Предоставляет данные для методов навигации и обработчики
         /// событий, которые не могут отменить запрос навигации.</param>
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
         }
@@ -288,7 +174,36 @@ namespace eDay
 
         private async void SecondaryButton1_Click(object sender, RoutedEventArgs e)
         {
-            await GetEvents(DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Today.ToString("yyyy-MM-dd"));
+            await eday.LoginEveryday();
+        }
+
+        private void listView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            
+        }
+
+        private void listView_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+        {
+            //lst.Visibility = lst.Visibility== Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private async void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            AppBarButton b = sender as AppBarButton;
+            switch (b.Name)
+            {
+                case "LoginButton":
+                    await eday.LoginEveryday();
+                    token = eday.Token;
+                    break;
+                case "SettingsButton":
+                    break;
+                case "AddEventButton":
+                    break;
+                case "UpdateButton":
+                    break;
+
+            }
         }
     }
     public class DoubleToBool : IValueConverter
