@@ -353,9 +353,7 @@ namespace eDay
 
         public async Task LoginEveryday()
         {
-            //EVERYDAY = new Everyday();
             LoginDialog loginDialog = new LoginDialog();
-            //loginDialog.EVERYDAY = EVERYDAY;
             login_now:
             // Show Dialog если залогинились -> 
             var result = await loginDialog.ShowAsync();
@@ -373,6 +371,7 @@ namespace eDay
                 Token = loginData.token;
                 //Взять события на 5 дней
                 await GetEvents(DateTime.Today.ToString("yyyy-MM-dd"), (DateTime.Today+TimeSpan.FromDays(5)).ToString("yyyy-MM-dd"));
+                //await Task.Delay(5000);
             }
         }
         private async Task Login(string sLog, string sPass)

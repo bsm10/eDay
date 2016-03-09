@@ -42,14 +42,20 @@ namespace eDay
 
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             App thisApp = Application.Current as App;
             eday = thisApp.eday;
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            Loaded += OnLoaded; 
+            navigationHelper = new NavigationHelper(this);
+            navigationHelper.LoadState += NavigationHelper_LoadState;
+            navigationHelper.SaveState += NavigationHelper_SaveState;
         }
-
+        async void OnLoaded(object sender, RoutedEventArgs arg)        {
+            if (eday.Token == null) await eday.LoginEveryday();
+            eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
+            DefaultViewModel[FirstGroupName] = eDayDataGroup;
+            listView.ItemsSource = eDayDataGroup;
+        }
         /// <summary>
         /// Получает объект <see cref="NavigationHelper"/>, связанный с данным объектом <see cref="Page"/>.
         /// </summary>
@@ -78,12 +84,12 @@ namespace eDay
         /// <see cref="Frame.Navigate(Type, Object)"/> при первоначальном запросе этой страницы и
         /// словарь состояний, сохраненных этой страницей в ходе предыдущего
         /// сеанса.  Это состояние будет равно NULL при первом посещении страницы.</param>
-        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
-            DefaultViewModel[FirstGroupName] = eDayDataGroup;
-            if (eday.Token == null) await eday.LoginEveryday();
-            listView.ItemsSource = eDayDataGroup;
+            //eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
+            //DefaultViewModel[FirstGroupName] = eDayDataGroup;
+           // if (eday.Token == null) await eday.LoginEveryday();
+            //listView.ItemsSource = eDayDataGroup;
         }
 
         /// <summary>
@@ -115,12 +121,12 @@ namespace eDay
         /// событий, которые не могут отменить запрос навигации.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.navigationHelper.OnNavigatedTo(e);
+            navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            this.navigationHelper.OnNavigatedFrom(e);
+            navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion
@@ -130,11 +136,32 @@ namespace eDay
 
         }
 
+
         private async void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
         {
 
             eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(e.NewDate.ToString("yyyy-MM-dd"));
             listView.ItemsSource = eDayDataGroup;
         }
+
+        private async void AddAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            AppBarButton b = sender as AppBarButton;
+            switch (b.Name)
+            {
+                case "LoginButton":
+                    await eday.LoginEveryday();
+                    break;
+                case "SettingsButton":
+                    break;
+                case "AddEventButton":
+                    break;
+                case "UpdateButton":
+                    break;
+
+            }
+        }
+
     }
+
 }

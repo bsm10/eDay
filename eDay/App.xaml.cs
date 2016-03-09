@@ -35,9 +35,9 @@ namespace eDay
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             eday = new Everyday();
-            this.Suspending += this.OnSuspending;
+            Suspending += OnSuspending;
         }
 
         /// <summary>
@@ -115,10 +115,8 @@ namespace eDay
                     throw new Exception("Failed to create initial page");
                 }
             }
-
             // Обеспечение активности текущего окна.
             Window.Current.Activate();
-
         }
 
         /// <summary>
