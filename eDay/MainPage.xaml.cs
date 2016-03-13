@@ -164,17 +164,18 @@ namespace eDay
             listView.ItemsSource = eDayDataGroup;
         }
 
-        private async void AddAppBarButton_Click(object sender, RoutedEventArgs e)
+        private void AddAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             AppBarButton b = sender as AppBarButton;
             switch (b.Name)
             {
                 case "LoginButton":
-                    await eday.LoginEveryday();
                     break;
                 case "SettingsButton":
                     break;
                 case "AddEventButton":
+                    ScheduleToast("Test message!", DateTimeOffset.Now.DateTime.AddSeconds(5));
+                        
                     break;
                 case "UpdateButton":
                     break;
@@ -207,8 +208,11 @@ namespace eDay
                 }
             }
         }
-        void ScheduleToast(string updateString, DateTime dueTime, int idNumber)
+        void ScheduleToast(string updateString, DateTime dueTime)
         {
+            Random rand = new Random();
+            int idNumber = rand.Next(0, 10000000);
+
             // Scheduled toasts use the same toast templates as all other kinds of toasts.
             IToastText02 toastContent = ToastContentFactory.CreateToastText02();
             toastContent.TextHeading.Text = updateString;
@@ -230,7 +234,7 @@ namespace eDay
             //}
 
             ToastNotificationManager.CreateToastNotifier().AddToSchedule(toast);
-            NotifyUser("Scheduled a toast with ID: " + toast.Id, NotifyType.StatusMessage);
+            //NotifyUser("Scheduled a toast with ID: " + toast.Id, NotifyType.StatusMessage);
         }
         void ScheduleTile(String updateString, DateTime dueTime, int idNumber)
         {
@@ -335,6 +339,18 @@ namespace eDay
             ErrorMessage
         };
 
+        private void listItems_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var itemId = e.PointerDeviceType;
+            // Переход к соответствующей странице назначения и настройка новой страницы
+            // путем передачи необходимой информации в виде параметра навигации
+
+        }
+
+        private void txtItem_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+
+        }
     }
 
 }

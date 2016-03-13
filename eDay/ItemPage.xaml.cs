@@ -56,8 +56,8 @@ namespace eDay
         {
             // Получаем событие по которому кликнули
             Event _event = eDayDataSource.GetEvent((int)e.NavigationParameter);
-            HeaderEvent.DataContext = _event;
-            LayoutRoot.DataContext = _event.details;
+            //HeaderEvent.DataContext = _event;
+            LayoutRoot.DataContext = _event;
 
         }
 

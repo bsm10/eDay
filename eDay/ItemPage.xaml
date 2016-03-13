@@ -24,7 +24,7 @@
 
     <Grid x:Name="LayoutRoot" Width="399">
         <Grid.DataContext>
-            <local:Details/>
+            <local:Event/>
         </Grid.DataContext>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -48,7 +48,7 @@
         <!--Панель заголовка-->
         <StackPanel Grid.Row="0" Margin="19,0,0,0.444">
             <TextBlock x:Uid="Header" Text="Everyday" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-            <TextBlock x:Name="HeaderEvent" Text="{Binding assoc_client}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="0,-6.5,0,26.5" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}" />
+            <TextBlock x:Name="HeaderEvent" Text="{Binding event_name}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="0,-6.5,-212,26.5" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}" />
         </StackPanel>
         <Grid Grid.Row="1" Margin="19,9.556,19,49.444" Grid.RowSpan="2">
             <TextBlock x:Name="textBlock" TextWrapping="Wrap" 
@@ -64,7 +64,7 @@
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1" Margin="19,9.556,19,49.444" Grid.RowSpan="2">
             <TextBlock TextWrapping="Wrap" 
-                    Text="{Binding kkal}" FontSize="21.333" Width="Auto" Margin="0,0,0,0" VerticalAlignment="Center" Foreground="{Binding Foreground, ElementName=textBlock}" />
+                    Text="{Binding details.kkal}" FontSize="21.333" Width="Auto" Margin="0,0,0,0" VerticalAlignment="Center" Foreground="{Binding Foreground, ElementName=textBlock}" />
         </Grid>
 
         <Grid Grid.Row="2" Margin="19,9.556,19,49.444" Grid.RowSpan="2">
@@ -73,7 +73,7 @@
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1" Margin="19,9.556,19,49.444" Grid.RowSpan="2">
             <TextBlock TextWrapping="Wrap" 
-                    Text="{Binding fats}" FontSize="18.667" Width="Auto" Margin="0,0,0,0" VerticalAlignment="Center" />
+                    Text="{Binding details.fats}" FontSize="18.667" Width="Auto" Margin="0,0,0,0" VerticalAlignment="Center" />
         </Grid>
         <Grid Grid.Row="3" Margin="19,9.556,19,49.444" Grid.RowSpan="2">
             <TextBlock TextWrapping="Wrap" 
@@ -81,7 +81,7 @@
         </Grid>
         <Grid Grid.Row="3" Grid.Column="1" Margin="19,9.556,19,49.444" Grid.RowSpan="2">
             <TextBlock TextWrapping="Wrap" 
-                    Text="{Binding carbs}" FontSize="18.667" Width="Auto" Margin="0,0,0,0" VerticalAlignment="Center" />
+                    Text="{Binding details.carbs}" FontSize="18.667" Width="Auto" Margin="0,0,0,0" VerticalAlignment="Center" />
         </Grid>
         <Grid Grid.Row="4" Margin="19,9.556,19,49.444" Grid.RowSpan="2">
             <TextBlock TextWrapping="Wrap" 
@@ -89,7 +89,7 @@
         </Grid>
         <Grid Grid.Row="4" Grid.Column="1" Margin="19,9.556,19,49.444" Grid.RowSpan="2">
             <TextBlock TextWrapping="Wrap" 
-                    Text="{Binding cellulose}" FontSize="18.667" Width="Auto" Margin="0,0,0,0" VerticalAlignment="Center" />
+                    Text="{Binding details.cellulose}" FontSize="18.667" Width="Auto" Margin="0,0,0,0" VerticalAlignment="Center" />
         </Grid>
         <Grid Grid.Row="5" Margin="19,9.556,19,49.444" Grid.RowSpan="2">
             <TextBlock TextWrapping="Wrap" 
@@ -97,7 +97,7 @@
         </Grid>
         <Grid Grid.Row="5" Grid.Column="1" Margin="19,9.556,19,49.444" Grid.RowSpan="2">
             <TextBlock TextWrapping="Wrap" 
-                    Text="{Binding proteins}" FontSize="18.667" Width="Auto" Margin="0,0,0,0" VerticalAlignment="Center" />
+                    Text="{Binding details.proteins}" FontSize="18.667" Width="Auto" Margin="0,0,0,0" VerticalAlignment="Center" />
         </Grid>
 
     </Grid>

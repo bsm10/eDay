@@ -45,7 +45,7 @@
                     Margin="0,0,0,10" 
                     Width="Auto"
                     ItemsSource="{Binding}" 
-                    Background="#FFD2DDAC" >
+                    Background="#FFD2DDAC">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid x:Name="grid" Margin="0,0,0,9.5">
@@ -121,13 +121,13 @@
                                     Grid.Row="2"
                                     Background="{x:Null}"
                                     Foreground="#FF395668" ItemsSource="{Binding details.items}"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto" FontSize="14.667" ScrollViewer.VerticalScrollBarVisibility="Auto" Tapped="listItems_Tapped">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock
+                                        <TextBlock x:Name="txtItem"
                                                        SelectionHighlightColor="{x:Null}"
                                                         Text="{Binding caption}"
-                                                       Width="Auto">
+                                                       Width="Auto" Tapped="txtItem_Tapped">
 
                                         </TextBlock>
 
