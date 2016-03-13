@@ -52,11 +52,13 @@ namespace eDay
         /// <see cref="Frame.Navigate(Type, Object)"/> при первоначальном запросе этой страницы, и
         /// словарь состояний, сохраненных этой страницей в ходе предыдущего
         /// сеанса.  Состояние будет равно значению NULL при первом посещении страницы.</param>
-        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            // TODO: Создайте соответствующую модель данных для своей проблемной области, чтобы заменить ими данные-пример.
-            var _event = await eDayDataSource.GetItemAsync((int)e.NavigationParameter);
-            DefaultViewModel["Event"] = _event;
+            // Получаем событие по которому кликнули
+            Event _event = eDayDataSource.GetEvent((int)e.NavigationParameter);
+            HeaderEvent.DataContext = _event;
+            LayoutRoot.DataContext = _event.details;
+
         }
 
         /// <summary>

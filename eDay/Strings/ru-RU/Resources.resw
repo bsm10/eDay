@@ -126,16 +126,4 @@
   <data name="NewItemDescription" xml:space="preserve">
     <value>Описание элемента: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.</value>
   </data>
-  <data name="NewItemTitle" xml:space="preserve">
-    <value>Заголовок элемента: {0}</value>
-  </data>
-  <data name="Pivot.Title" xml:space="preserve">
-    <value>EVERYDAY</value>
-  </data>
-  <data name="PivotItem1.Header" xml:space="preserve">
-    <value>Расписание</value>
-  </data>
-  <data name="PivotItem2.Header" xml:space="preserve">
-    <value>Календарь</value>
-  </data>
 </root>

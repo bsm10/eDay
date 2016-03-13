@@ -16,8 +16,7 @@
     <Grid x:Name="LayoutRoot"
           d:DataContext="{Binding events, 
           Source={d:DesignData Source=/DataModel/eDayData.json,
-                               Type = data:eDayDataSource}}"
-          >
+                               Type = data:eDayDataSource}}">
 
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -31,19 +30,22 @@
         </Grid.RowDefinitions>
 
         <!--Панель заголовка-->
-        <StackPanel Grid.Row="0" Margin="19,0,0,10.444">
-            <TextBlock Text="Everyday" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-            <TextBlock Text="Расписание" Margin="0,-6.5,0.111,26.5" Style="{ThemeResource HeaderTextBlockStyle}" Height="65"/>
+        <StackPanel x:Name="stackHeader" Grid.Row="0" Margin="19,0,0,10.444">
+            <TextBlock x:Name="AppHeader" Text="Everyday" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock x:Name="MainHeader" Text="Расписание" Margin="0,-6.5,-0.889,26.5" Style="{ThemeResource HeaderTextBlockStyle}"/>
         </StackPanel>
 
         <!--TODO: Содержимое должно размещаться в следующей сетке-->
         <Grid
-            Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            Grid.Row="1" x:Name="ContentRoot" Margin="19,9.778,10,-0.111" d:LayoutOverrides="TopPosition, BottomPosition">
             <ListView x:Name="listView"
                     IsItemClickEnabled="True"
                     ItemClick="ItemView_ItemClick"
                     ContinuumNavigationTransitionInfo.ExitElementContainer="True"
-                    Margin="0,0,0,10" Width="Auto" ItemsSource="{Binding}" Background="#FFD2DDAC">
+                    Margin="0,0,0,10" 
+                    Width="Auto"
+                    ItemsSource="{Binding}" 
+                    Background="#FFD2DDAC" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid x:Name="grid" Margin="0,0,0,9.5">
@@ -53,9 +55,9 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="77.087" />
-                                <ColumnDefinition Width="203" />
-                                <ColumnDefinition Width="85" />
+                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition Width="230" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="1" Grid.Row="1"
                                     TextWrapping="Wrap"
@@ -95,12 +97,11 @@
                                     TextWrapping="WrapWholeWords"
                                     Pivot.SlideInAnimationGroup="2" 
                                     CommonNavigationTransitionInfo.IsStaggerElement="True" 
-                                    Style="{ThemeResource ListViewItemContentTextBlockStyle}"
-                                    Margin="77,0,145.087,30" 
+                                    Style="{ThemeResource ListViewItemContentTextBlockStyle}" 
                                     FontSize="10"
                                        Width="Auto"
                                     Text="{Binding date}"
-                                    Foreground="#FF030303" FontWeight="Bold" Grid.ColumnSpan="2"/>
+                                    Foreground="#FF030303" FontWeight="Bold" Grid.Column="1"/>
                             <Rectangle
                                            Fill="#FFFAFAFA" Canvas.ZIndex="-2"
                                            Grid.ColumnSpan="3"
@@ -141,20 +142,21 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        <DatePicker HorizontalAlignment="Left" Height="50" Margin="17,92,0,0" VerticalAlignment="Top" Width="364" DateChanged="DatePicker_DateChanged"/>
+        <DatePicker HorizontalAlignment="Left" Height="50" Margin="17,92,0,0" VerticalAlignment="Top" Width="373" DateChanged="DatePicker_DateChanged"/>
+        <Border x:Name="StatusBorder" Grid.Row="1" Visibility="Collapsed">
+            <TextBlock x:Name="StatusBlock" Foreground="White" FontWeight="Bold" Margin="12, 10, 12, 10" TextWrapping="Wrap"/>
+        </Border>
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton x:Uid="AddAppBarButton" x:Name="AddEventButton" Label="добавить" Icon="Add" Click="AddAppBarButton_Click" />
-            <AppBarButton x:Uid="AddAppBarButton" x:Name="UpdateButton" Label="обновить" Icon="Refresh"  />
-            <AppBarButton x:Uid="AddAppBarButton" x:Name="LoginButton" Label="войти" Icon="Contact" />
+            <!--<AppBarButton x:Uid="AddAppBarButton" x:Name="UpdateButton" Label="обновить" Icon="Refresh"  />-->
+            <!--<AppBarButton x:Uid="AddAppBarButton" x:Name="LoginButton" Label="войти" Icon="Contact" />-->
             <AppBarButton x:Uid="AddAppBarButton" x:Name="SettingsButton" Label="настройки" Icon="Setting" />
-            <CommandBar.SecondaryCommands>
-                <AppBarButton x:Uid="SecondaryButton1" x:Name="SecondaryButton1" Label="Login" >
-
-                </AppBarButton>
+            <!--<CommandBar.SecondaryCommands>
+                <AppBarToggleButton x:Uid="RepeatBox" x:Name="RepeatBox" Label="Повторять напоминание"/>
                 <AppBarButton x:Uid="SecondaryButton2" x:Name="SecondaryButton2" Label="secondary command 2" />
-            </CommandBar.SecondaryCommands>
+            </CommandBar.SecondaryCommands>-->
         </CommandBar>
     </Page.BottomAppBar>
 
