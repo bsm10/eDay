@@ -25,7 +25,6 @@ namespace eDay
     {
         private string token;
         private const string quote = "\"";
-        Everyday eday;
         private const string FirstGroupName = "FirstGroup";
         private const string SecondGroupName = "SecondGroup";
 
@@ -36,8 +35,6 @@ namespace eDay
         public PivotPage()
         {
             InitializeComponent();
-            App thisApp = Application.Current as App;
-            eday = thisApp.eday;
             NavigationCacheMode = NavigationCacheMode.Required;
             navigationHelper = new NavigationHelper(this);
             navigationHelper.LoadState += NavigationHelper_LoadState;
@@ -78,7 +75,7 @@ namespace eDay
             var eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
             //var eDayDataGroup = await eDayDataSource.GetGroupEventsAsync();
             DefaultViewModel[FirstGroupName] = eDayDataGroup;
-            if (eday.Token==null) await eday.LoginEveryday();
+            if (Everyday.Token==null) await Everyday.LoginEveryday();
         }
 
         /// <summary>
@@ -170,7 +167,7 @@ namespace eDay
 
         private async void SecondaryButton1_Click(object sender, RoutedEventArgs e)
         {
-            await eday.LoginEveryday();
+            await Everyday.LoginEveryday();
         }
 
         private void listView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
@@ -189,8 +186,8 @@ namespace eDay
             switch (b.Name)
             {
                 case "LoginButton":
-                    await eday.LoginEveryday();
-                    token = eday.Token;
+                    await Everyday.LoginEveryday();
+                    token = Everyday.Token;
                     break;
                 case "SettingsButton":
                     break;

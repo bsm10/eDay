@@ -55,10 +55,7 @@ namespace eDay
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // Получаем событие по которому кликнули
-            Event _event = eDayDataSource.GetEvent((int)e.NavigationParameter);
-            //HeaderEvent.DataContext = _event;
-            LayoutRoot.DataContext = _event;
-
+            LayoutRoot.DataContext = eDayDataSource.GetEvent((int)e.NavigationParameter);
         }
 
         /// <summary>
@@ -97,6 +94,7 @@ namespace eDay
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedFrom(e);
+            
         }
 
         #endregion

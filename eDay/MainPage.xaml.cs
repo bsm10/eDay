@@ -13,6 +13,7 @@ using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.UI;
 using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -32,13 +33,8 @@ namespace eDay
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        //private string token;
-        //private const string quote = "\"";
-        Everyday eday;
         private const string FirstGroupName = "FirstGroup";
-        private const string SecondGroupName = "SecondGroup";
         IEnumerable<Event> eDayDataGroup;
-
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
@@ -47,8 +43,6 @@ namespace eDay
         {
             InitializeComponent();
             listView.Visibility = Visibility.Collapsed;
-            App thisApp = Application.Current as App;
-            eday = thisApp.eday;
             Loaded += OnLoaded; 
             navigationHelper = new NavigationHelper(this);
             navigationHelper.LoadState += NavigationHelper_LoadState;
@@ -58,13 +52,26 @@ namespace eDay
 
         async void OnLoaded(object sender, RoutedEventArgs arg)
         {
-            AppHeader.Text = "Обновляю данные...";
-            if (eday.Token == null) await eday.LoginEveryday();
-            eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
-            DefaultViewModel[FirstGroupName] = eDayDataGroup;
+            
+            if (Everyday.Token == null)
+            {
+                NotifyUser("Обновляю данные...", NotifyType.StatusMessage);
+                await Everyday.LoginEveryday();
+                eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
+                DefaultViewModel[FirstGroupName] = eDayDataGroup;
+                foreach (Event e in eDayDataGroup)
+                {
+                    ScheduleToast(e.event_name, DateTime.Parse(e.date + " " + e.time));
+                }
+                NotifyUser("", NotifyType.StatusMessage);
+            }
             listView.ItemsSource = eDayDataGroup;
-            AppHeader.Text = "Everyday";
             listView.Visibility = Visibility.Visible;
+            MonthCalendar mcal = new MonthCalendar();
+            //mcal.days = CalendarFo.GetDaysOfMonth(DateTime.Now.Year, DateTime.Now.Month);
+            //mcal.month = DateTime.Now.Month;
+            //mcal.year = DateTime.Now.Year;
+            //calendar.DataContext = mcal;
         }
 
         void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
@@ -99,9 +106,9 @@ namespace eDay
         /// <see cref="Frame.Navigate(Type, Object)"/> при первоначальном запросе этой страницы и
         /// словарь состояний, сохраненных этой страницей в ходе предыдущего
         /// сеанса.  Это состояние будет равно NULL при первом посещении страницы.</param>
-        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            DefaultViewModel[FirstGroupName] = eDayDataGroup;
+            listView.ItemsSource = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
         }
 
         /// <summary>
@@ -148,7 +155,6 @@ namespace eDay
             var itemId = ((Event)e.ClickedItem).id;
             //// Переход к соответствующей странице назначения и настройка новой страницы
             //// путем передачи необходимой информации в виде параметра навигации
-            //var itemId = ((Event)e.ClickedItem).event_name;
             if (!Frame.Navigate(typeof(ItemPage), itemId))
             {
                 throw new Exception(resourceLoader.GetString("NavigationFailedExceptionMessage"));
@@ -174,15 +180,14 @@ namespace eDay
                 case "SettingsButton":
                     break;
                 case "AddEventButton":
-                    ScheduleToast("Test message!", DateTimeOffset.Now.DateTime.AddSeconds(5));
-                        
+                    ScheduleToast("Test message!", DateTime.Now.AddSeconds(3));
                     break;
                 case "UpdateButton":
                     break;
 
             }
         }
-
+        #region Notifications
         public void NotifyUser(string strMessage, NotifyType type)
         {
             if (StatusBlock != null)
@@ -190,10 +195,10 @@ namespace eDay
                 switch (type)
                 {
                     case NotifyType.StatusMessage:
-                        StatusBorder.Background = new SolidColorBrush(Windows.UI.Colors.Green);
+                        StatusBorder.Background = new SolidColorBrush(Colors.Green);
                         break;
                     case NotifyType.ErrorMessage:
-                        StatusBorder.Background = new SolidColorBrush(Windows.UI.Colors.Red);
+                        StatusBorder.Background = new SolidColorBrush(Colors.Red);
                         break;
                 }
                 StatusBlock.Text = strMessage;
@@ -210,6 +215,7 @@ namespace eDay
         }
         void ScheduleToast(string updateString, DateTime dueTime)
         {
+            if (dueTime < DateTime.Now) return;
             Random rand = new Random();
             int idNumber = rand.Next(0, 10000000);
 
@@ -219,6 +225,7 @@ namespace eDay
             toastContent.TextBodyWrap.Text = "Received: " + dueTime.ToLocalTime();
 
             ScheduledToastNotification toast;
+            //Этот код нужен если отложить напоминайку
             //if (RepeatBox.IsChecked != null && (bool)RepeatBox.IsChecked)
             //{
             //    toast = new ScheduledToastNotification(toastContent.GetXml(), dueTime, TimeSpan.FromSeconds(60), 5);
@@ -229,12 +236,14 @@ namespace eDay
             //}
             //else
             //{
+           
                 toast = new ScheduledToastNotification(toastContent.GetXml(), dueTime);
                 toast.Id = "Toast" + idNumber;
-            //}
 
+            //}
+            Everyday.listNotrfications.Add(toast.Id);
             ToastNotificationManager.CreateToastNotifier().AddToSchedule(toast);
-            //NotifyUser("Scheduled a toast with ID: " + toast.Id, NotifyType.StatusMessage);
+            NotifyUser("Event scheduled on "+ dueTime + ", a toast with ID: " + toast.Id, NotifyType.StatusMessage);
         }
         void ScheduleTile(String updateString, DateTime dueTime, int idNumber)
         {
@@ -338,17 +347,38 @@ namespace eDay
             StatusMessage,
             ErrorMessage
         };
+        #endregion
 
         private void listItems_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var itemId = e.PointerDeviceType;
             // Переход к соответствующей странице назначения и настройка новой страницы
             // путем передачи необходимой информации в виде параметра навигации
-
         }
 
         private void txtItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
+
+        }
+
+        private void StatusBorder_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            NotifyUser("", NotifyType.StatusMessage);
+        }
+
+        private void CalendarButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (!Frame.Navigate(typeof(CalendarPage), null))
+            {
+                throw new Exception(resourceLoader.GetString("NavigationFailedExceptionMessage"));
+            }
+        }
+
+        private void CalendarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!Frame.Navigate(typeof(CalendarPage), null))
+            {
+                throw new Exception(resourceLoader.GetString("NavigationFailedExceptionMessage"));
+            }
 
         }
     }

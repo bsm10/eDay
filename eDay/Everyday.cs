@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Controls;
 using Newtonsoft.Json;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Data;
+using System.Collections.Generic;
 
 namespace eDay
 {
@@ -283,37 +284,35 @@ namespace eDay
     //    }
 
     //}
-    public sealed class Everyday
+    public static class Everyday
     {
-        public LoginData loginData = new LoginData();
-        public ErrorStatus errStatus = new ErrorStatus();
-
-        public string OSVersion = "Windows Phone";//Environment.OSVersion.ToString();
-        public string SERVER = "http://api.go.pl.ua/"; //"http://everyday.mk.ua/";
-        public string deviceID { get; set; }
-        public string response { get; set; }
-        public string qry;
-
-        //public Bitmap UserImg;
-
+        private static LoginData loginData = new LoginData();
+        private static ErrorStatus errStatus = new ErrorStatus();
+        public static string OSVersion = "Windows Phone";//Environment.OSVersion.ToString();
+        public static string SERVER = "http://api.go.pl.ua/"; //"http://everyday.mk.ua/";
+        public static List<string> listNotrfications = new List<string>();
+        public static string deviceID
+        {
+            get
+            {
+                return GetDeviceID2();
+            }
+        }
+        private static string response { get; set; }
+        //private static string qry;
         private const string quote = "\"";
-
-        public int SUCCESS
+        public static int SUCCESS
         {
             get; set;
         }
-
-        public string Token
+        public static string Token
         {
-            get; set;
+            get
+            {
+                return loginData.token;
+            }
         }
-
-        public Everyday()
-        {
-            deviceID = GetDeviceId();
-
-        }
-        public string GetDataFromString(string sParametr, string StringResponse)
+        public static string GetDataFromString(string sParametr, string StringResponse)
         {
             int i;
             int j;
@@ -327,8 +326,7 @@ namespace eDay
             }
             return "NoData";
         }
-
-        private string GetDeviceID2()
+        private static string GetDeviceID2()
         {
             HardwareToken token = HardwareIdentification.GetPackageSpecificToken(null);
             IBuffer hardwareId = token.Id;
@@ -339,7 +337,7 @@ namespace eDay
             string hashedString = CryptographicBuffer.EncodeToHexString(hashed);
             return hashedString;
         }
-        private string GetDeviceId()
+        private static string GetDeviceId()
         {
             var token = HardwareIdentification.GetPackageSpecificToken(null);
             var hardwareId = token.Id;
@@ -350,8 +348,7 @@ namespace eDay
 
             return BitConverter.ToString(bytes).Replace("-", "");
         }//Note: This function may throw an exception. 
-
-        public async Task LoginEveryday()
+        public static async Task LoginEveryday()
         {
             LoginDialog loginDialog = new LoginDialog();
             login_now:
@@ -368,25 +365,31 @@ namespace eDay
                     goto login_now;
                 }
                 loginData = JsonConvert.DeserializeObject<LoginData>(response);
-                Token = loginData.token;
                 //Взять события на 5 дней
                 await GetEvents(DateTime.Today.ToString("yyyy-MM-dd"), (DateTime.Today+TimeSpan.FromDays(5)).ToString("yyyy-MM-dd"));
                 //await Task.Delay(5000);
             }
         }
-        private async Task Login(string sLog, string sPass)
+        private static async Task Login(string sLog, string sPass)
         {
             string qry;
-            qry = (SERVER
-                        + (("Login.php?&Devid="
+            qry = (SERVER + "ios/Login.php?"
+                        + (("&Devid="
                         + (deviceID + ("&Platform="
                         + (OSVersion + "&Query={\"login\":\""))))
                         + (sLog + ("\",\"pass\":\""
                         + (sPass + "\"}")))));
-            HttpClient client = new HttpClient();
-            response = await client.GetStringAsync(new Uri(qry));
+            try
+            {
+                HttpClient client = new HttpClient();
+                response = await client.GetStringAsync(new Uri(qry));
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
-        public async Task GetEvents(string startDate, string endDate, bool save_data=true)
+        public static async Task GetEvents(string startDate, string endDate, bool save_data=true)
         {
             if (loginData == null) return;
             string postData = string.Format("Token={0}&Devid={1}&Platform={2}&Query={{\"date_start\":\"{3}\",\"date_end\":\"{4}\"}}",
@@ -395,13 +398,12 @@ namespace eDay
             response = await client.GetStringAsync(new Uri(SERVER + "ios/rGetEvents.php?" + postData));
             if (save_data) await saveStringToLocalFile(response);
         }
-        private async Task<string> HttpQuery(string qry)
+        private static async Task<string> HttpQuery(string qry)
         {
             HttpClient client = new HttpClient();
             return await client.GetStringAsync(new Uri(qry));
         }
-
-        private async Task<byte[]> GetURLContentsAsync(string url)
+        private static async Task<byte[]> GetURLContentsAsync(string url)
         {
             // The downloaded resource ends up in the variable named content. 
             var content = new MemoryStream();
@@ -423,7 +425,7 @@ namespace eDay
             // Return the result as a byte array. 
             return content.ToArray();
         }
-        private async Task saveStringToLocalFile(string content)
+        private static async Task saveStringToLocalFile(string content)
         {
 
             Uri fileUri = new Uri("ms-appx:///DataModel/eDayData.json");
@@ -489,8 +491,6 @@ namespace eDay
             return null;
             //throw new NotImplementedException();
         }
-
-
     }
 
 }

@@ -8,7 +8,7 @@
     xmlns:data="using:eDay.Data"
     mc:Ignorable="d"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalContentAlignment="Stretch">
     <Page.Resources>
         <local:DoubleToBool x:Key="DoubleToBool"/>
     </Page.Resources>
@@ -16,7 +16,7 @@
     <Grid x:Name="LayoutRoot"
           d:DataContext="{Binding events, 
           Source={d:DesignData Source=/DataModel/eDayData.json,
-                               Type = data:eDayDataSource}}">
+                               Type = data:eDayDataSource}}" Background="#FF38401C">
 
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -25,27 +25,27 @@
         </Grid.ChildrenTransitions>
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="139.444"/>
+            <RowDefinition/>
+            <!--<RowDefinition Height="150"/>-->
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--Панель заголовка-->
-        <StackPanel x:Name="stackHeader" Grid.Row="0" Margin="19,0,0,10.444">
+        <StackPanel x:Name="stackHeader" Grid.Row="0" Margin="19,0,0,0.444">
             <TextBlock x:Name="AppHeader" Text="Everyday" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-            <TextBlock x:Name="MainHeader" Text="Расписание" Margin="0,-6.5,-0.889,26.5" Style="{ThemeResource HeaderTextBlockStyle}"/>
+            <TextBlock x:Name="MainHeader" Text="Расписание" Margin="0,-6.5,10.111,26.5" Style="{ThemeResource HeaderTextBlockStyle}"/>
         </StackPanel>
 
         <!--TODO: Содержимое должно размещаться в следующей сетке-->
-        <Grid
-            Grid.Row="1" x:Name="ContentRoot" Margin="19,9.778,10,-0.111" d:LayoutOverrides="TopPosition, BottomPosition">
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,10.556,10,-0.111" Grid.RowSpan="2">
             <ListView x:Name="listView"
                     IsItemClickEnabled="True"
                     ItemClick="ItemView_ItemClick"
-                    ContinuumNavigationTransitionInfo.ExitElementContainer="True"
-                    Margin="0,0,0,10" 
+                    ContinuumNavigationTransitionInfo.ExitElementContainer="True" 
                     Width="Auto"
                     ItemsSource="{Binding}" 
-                    Background="#FFD2DDAC">
+                    Background="#FFD2DDAC" Margin="0,0,0,10">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid x:Name="grid" Margin="0,0,0,9.5">
@@ -81,8 +81,6 @@
                                           Foreground="#FF3D6C85" Background="{x:Null}" 
                                           RequestedTheme="Light" Grid.RowSpan="2"
                                           />
-
-
                             <TextBlock Grid.Column="1" Grid.Row="0"
                                     TextWrapping="WrapWholeWords"
                                     Pivot.SlideInAnimationGroup="2" 
@@ -92,7 +90,6 @@
                                     FontSize="24"
                                     Text="{Binding event_name}"
                                     Foreground="#FF030303" FontWeight="Bold"/>
-
                             <TextBlock Grid.Row="1"
                                     TextWrapping="WrapWholeWords"
                                     Pivot.SlideInAnimationGroup="2" 
@@ -142,22 +139,37 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        <DatePicker HorizontalAlignment="Left" Height="50" Margin="17,92,0,0" VerticalAlignment="Top" Width="373" DateChanged="DatePicker_DateChanged"/>
-        <Border x:Name="StatusBorder" Grid.Row="1" Visibility="Collapsed">
+        <!--<Grid xmlns:src="using:eDay" Grid.Row="2" x:Name="ContentRoot2" Margin="19,9.778,10,-0.111" d:LayoutOverrides="TopPosition, BottomPosition"/>-->
+        <DatePicker HorizontalAlignment="Center" Height="50" VerticalAlignment="Top" Width="165" DateChanged="DatePicker_DateChanged" Margin="225,0,10,0" HorizontalContentAlignment="Center"/>
+        <Border x:Name="StatusBorder" Grid.Row="2" Visibility="Collapsed" Tapped="StatusBorder_Tapped" Margin="0,0.111,0,-0.111">
             <TextBlock x:Name="StatusBlock" Foreground="White" FontWeight="Bold" Margin="12, 10, 12, 10" TextWrapping="Wrap"/>
         </Border>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar>
+        <CommandBar Background="#FF38401C" AllowDrop="True" BorderBrush="#FF7F9A71" ClosedDisplayMode="Compact">
             <AppBarButton x:Uid="AddAppBarButton" x:Name="AddEventButton" Label="добавить" Icon="Add" Click="AddAppBarButton_Click" />
-            <!--<AppBarButton x:Uid="AddAppBarButton" x:Name="UpdateButton" Label="обновить" Icon="Refresh"  />-->
-            <!--<AppBarButton x:Uid="AddAppBarButton" x:Name="LoginButton" Label="войти" Icon="Contact" />-->
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="MessageButton" Label="уведомления" Icon="Message"  />
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="ProfileButton" Label="профиль" Icon="Contact" />
             <AppBarButton x:Uid="AddAppBarButton" x:Name="SettingsButton" Label="настройки" Icon="Setting" />
-            <!--<CommandBar.SecondaryCommands>
+            <CommandBar.SecondaryCommands>
                 <AppBarToggleButton x:Uid="RepeatBox" x:Name="RepeatBox" Label="Повторять напоминание"/>
-                <AppBarButton x:Uid="SecondaryButton2" x:Name="SecondaryButton2" Label="secondary command 2" />
-            </CommandBar.SecondaryCommands>-->
+                <AppBarButton x:Uid="CalendarButton" x:Name="CalendarButton" Label="Календарь" Tapped="CalendarButton_Tapped" Click="CalendarButton_Click" />
+            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
+    <!--<Page.TopAppBar>
+        <CommandBar Background="{x:Null}" AllowDrop="True" BorderBrush="{x:Null}" ClosedDisplayMode="Compact">
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="AddEventButton1" Label="добавить" Icon="Add" Click="AddAppBarButton_Click" />
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="MessageButton1" Label="уведомления" Icon="Message"  />
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="ProfileButton1" Label="профиль" Icon="Contact" />
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="SettingsButton1" Label="настройки" Icon="Setting" />
+            
+            <CommandBar.SecondaryCommands>
+                <AppBarToggleButton x:Uid="RepeatBox" x:Name="RepeatBox" Label="Повторять напоминание"/>
+                <AppBarButton x:Uid="SecondaryButton2" x:Name="SecondaryButton2" Label="secondary command 2" />
+            </CommandBar.SecondaryCommands>
+    
+        </CommandBar>
+    </Page.TopAppBar>-->
 
 </Page>

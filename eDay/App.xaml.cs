@@ -26,7 +26,7 @@ namespace eDay
     /// </summary>
     public sealed partial class App : Application
     {
-        public Everyday eday;
+        //public Everyday eday;
         private TransitionCollection transitions;
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace eDay
         public App()
         {
             InitializeComponent();
-            eday = new Everyday();
+            //eday = new Everyday();
             Suspending += OnSuspending;
         }
 
