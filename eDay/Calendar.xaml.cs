@@ -71,11 +71,12 @@ namespace eDay
             }
             return dd;
         }
-
     }
 
     public sealed partial class Calendar : UserControl
     {
+        public event RoutedEventHandler ClickCalendarHandler;
+        public DateTime TappedDate { get; private set; }
 
         public Calendar()
         {
@@ -83,6 +84,30 @@ namespace eDay
             InitializeComponent();
             
         }
-        
+        private void gridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+
+        }
+        public GridView GridCalendar
+        {
+            get { return gridView; }
+        }
+
+        private void gridView_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            //if (ClickCalendarHandler != null)
+            //    ClickCalendarHandler(sender, e);
+        }
+
+        private void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            TextBlock t = (TextBlock)e.OriginalSource;
+            MonthDay day_tapped = (MonthDay)t.DataContext;
+            TappedDate = day_tapped.datetime;
+
+            if (ClickCalendarHandler != null)
+                ClickCalendarHandler(sender, e);
+
+        }
     }
 }

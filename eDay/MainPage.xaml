@@ -149,7 +149,7 @@
         <CommandBar Background="#FF38401C" AllowDrop="True" BorderBrush="#FF7F9A71" ClosedDisplayMode="Compact">
             <AppBarButton x:Uid="AddAppBarButton" x:Name="AddEventButton" Label="добавить" Icon="Add" Click="AddAppBarButton_Click" />
             <AppBarButton x:Uid="AddAppBarButton" x:Name="MessageButton" Label="уведомления" Icon="Message"  />
-            <AppBarButton x:Uid="AddAppBarButton" x:Name="ProfileButton" Label="профиль" Icon="Contact" />
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="ProfileButton"  Label="профиль" Icon="ContactPresence" />
             <AppBarButton x:Uid="AddAppBarButton" x:Name="SettingsButton" Label="настройки" Icon="Setting" />
             <CommandBar.SecondaryCommands>
                 <AppBarToggleButton x:Uid="RepeatBox" x:Name="RepeatBox" Label="Повторять напоминание"/>

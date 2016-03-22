@@ -15,7 +15,21 @@
                 <GradientStop Color="#FFB1C297" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <local:Calendar x:Name="calendar" Grid.Row="0" Margin="10,10,10,265" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        <local:Calendar 
+            x:Name="calendar"
+            Grid.Row="0" 
+            Margin="10,10,10,265"
+            HorizontalContentAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            ClickCalendarHandler ="calendar_ClickCalendarHandler" />
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="105" Margin="45,438,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="315" FontSize="32">
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF2384FF" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
 
     </Grid>
 </Page>

@@ -95,10 +95,11 @@ namespace eDay
             InitializeComponent();
             Loaded += OnLoaded;
             navigationHelper = new NavigationHelper(this);
-            navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            navigationHelper.SaveState += this.NavigationHelper_SaveState;
-        }
+            navigationHelper.LoadState += NavigationHelper_LoadState;
+            navigationHelper.SaveState += NavigationHelper_SaveState;
+            //calendar.ClickCalendarHandler += calendar_ClickCalendarHandler;
 
+        }
         void OnLoaded(object sender, RoutedEventArgs arg)
         {
             MonthCalendar mcal = new MonthCalendar();
@@ -179,5 +180,12 @@ namespace eDay
 
         }
         #endregion
+
+        private void calendar_ClickCalendarHandler(object sender, RoutedEventArgs e)
+        {
+            //TextBlock t = (TextBlock)e.OriginalSource;
+            //MonthDay day_tapped = (MonthDay)t.DataContext;
+            textBlock.Text = calendar.TappedDate.ToString("dd-MM-yyyy");
+        }
     }
 }
