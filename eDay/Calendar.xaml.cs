@@ -19,10 +19,39 @@ using Windows.UI.Xaml.Navigation;
 
 namespace eDay
 {
-    public static class CalendarFo
+    /// <summary>
+    /// Класс возвращает 35 дней календаря 7х5 для заданного годы и месяца
+    /// </summary>
+    public sealed class MonthCalendar
     {
-        public static ObservableCollection<MonthDay> GetDaysOfMonth(int year = 2016, int month = 1)
+        public ObservableCollection<MonthDay> days { get; set; }
+        public int currentYear { get; private set; }
+        public int currentMonth { get; private set; }
+        /// <summary>
+        /// Добавляет месяц (может быть отрицательным)
+        /// </summary>
+        public void AddMonth(int month)
         {
+            days = GetDaysOfMonth(currentYear, currentMonth+ month);
+        }
+        public void AddYear(int year)
+        {
+            days = GetDaysOfMonth(currentYear+year, currentMonth);
+        }
+
+        public MonthCalendar()
+        {
+            days = GetDaysOfMonth(DateTime.Now.Year, DateTime.Now.Month);
+
+        }
+        public MonthCalendar(int year = 2016,int month=1)
+        {
+            days = GetDaysOfMonth(year, month);
+        }
+        public ObservableCollection<MonthDay> GetDaysOfMonth(int year = 2016, int month = 1)
+        {
+            currentYear = year;
+            currentMonth = month;
             ObservableCollection<MonthDay> dd = new ObservableCollection<MonthDay>();
             DateTime date = new DateTime(year, month, 1);
             int firstDay = (int)date.DayOfWeek;
@@ -65,11 +94,38 @@ namespace eDay
                 }
                 if (d.datetime.Month != month)
                 {
-                    d.colorDay.Opacity = 0.35; 
+                    d.colorDay.Opacity = 0.35;
                 }
+                d.VisibilityBorderToday = d.datetime.Date == DateTime.Now.Date ? Visibility.Visible : Visibility.Collapsed;
+
                 dd.Add(d);
             }
             return dd;
+        }
+
+        //public string monthMMMMyyyy
+        //{
+        //    get
+        //    {
+        //        if (year == 0) year = DateTime.Now.Year;
+        //        if (month == 0) month = DateTime.Now.Month;
+        //        return new DateTime(year, month, 1).ToString("MMMM yyyy");
+        //    }
+        //}
+    }
+    public class MonthDay
+    {
+        public DateTime datetime { get; set; }
+        //public Color color { get; set; }
+        public SolidColorBrush colorDay { get; set; }
+        public Visibility VisibilityBorderToday { get; set; }
+        public MonthDay(DateTime date)
+        {
+            datetime = date;
+        }
+        public override string ToString()
+        {
+            return datetime.Day.ToString();
         }
     }
 
@@ -80,9 +136,12 @@ namespace eDay
 
         public Calendar()
         {
-
             InitializeComponent();
             
+        }
+        public void SetMonth(int year,int month)
+        {
+            DataContext = new MonthCalendar(year, month);
         }
         private void gridView_ItemClick(object sender, ItemClickEventArgs e)
         {

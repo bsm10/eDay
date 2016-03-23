@@ -20,67 +20,6 @@ using Windows.UI.Xaml.Navigation;
 
 namespace eDay
 {
-    //public class DateTimeToString : IValueConverter
-    //{
-    //    // This converts the DateTime object to the string to display.
-    //    public object Convert(object value, Type targetType, object parameter, string language)
-    //    {
-    //        if (value != null && value is DateTime)
-    //        {
-    //            DateTime val = (DateTime)value;
-
-    //            return val.Day.ToString();
-    //        }
-    //        return null;
-    //    }
-
-    //    // No need to implement converting back on a one-way binding 
-    //    public object ConvertBack(object value, Type targetType, object parameter, string language)
-    //    {
-    //        if (value != null && value is DateTime)
-    //        {
-    //            string val = (string)value;
-    //            //тут неправильно возвращает дату, но это пока как заглушка
-    //            return DateTime.Now.Day;
-    //        }
-    //        return null;
-    //        //throw new NotImplementedException();
-    //    }
-    //}
-    public class MonthCalendar
-    {
-        public ObservableCollection<MonthDay> days { get; set; }
-        public int year { get; set; }
-        public int month { get; set; }
-
-        public MonthCalendar()
-        {
-            days = CalendarFo.GetDaysOfMonth(DateTime.Now.Year, DateTime.Now.Month);
-        }
-        public string monthMMMMyyyy
-        {
-            get
-            {
-                if (year == 0) year = DateTime.Now.Year;
-                if (month == 0) month = DateTime.Now.Month;
-                return new DateTime(year, month, 1).ToString("MMMM yyyy");
-            }
-        }
-    }
-    public class MonthDay
-    {
-        public DateTime datetime { get; set; }
-        //public Color color { get; set; }
-        public SolidColorBrush colorDay { get; set; }
-        public MonthDay(DateTime date)
-        {
-            datetime = date;
-        }
-        public override string ToString()
-        {
-            return datetime.Day.ToString();
-        }
-    }
 
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
@@ -102,11 +41,7 @@ namespace eDay
         }
         void OnLoaded(object sender, RoutedEventArgs arg)
         {
-            MonthCalendar mcal = new MonthCalendar();
-            //mcal.days = CalendarFo.GetDaysOfMonth(DateTime.Now.Year, DateTime.Now.Month);
-            mcal.month = DateTime.Now.Month;
-            mcal.year = DateTime.Now.Year;
-            calendar.DataContext = mcal;
+            calendar.SetMonth(DateTime.Now.Year, DateTime.Now.Month);
         }
 
         /// <summary>

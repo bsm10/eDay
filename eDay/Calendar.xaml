@@ -14,6 +14,7 @@
     <UserControl.DataContext>
         <data:MonthCalendar/>
     </UserControl.DataContext>
+
     <Grid>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -37,7 +38,9 @@
 
             <GridView.ItemTemplate>
                 <DataTemplate>
+
                     <Grid Width="53" Height="50">
+                        
                         <TextBlock
                             TextAlignment="Center"
                             VerticalAlignment="Center"
@@ -47,12 +50,15 @@
                             Foreground="{Binding colorDay}"
                             FontFamily="MV Boli"
                             Width="50" Tapped="TextBlock_Tapped"/>
+                        <Border x:Name="borderNow" BorderBrush="#FF0DA0F9" BorderThickness="2" Margin="2.5" Visibility="{Binding VisibilityBorderToday}">
+                        </Border>
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
 
         </GridView>
-        <StackPanel Height="Auto" Grid.Row="0" Background="{Binding Background, ElementName=gridView}" Orientation="Horizontal" Margin="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalAlignment="Stretch" HorizontalAlignment="Center">
+        <StackPanel Height="Auto" Grid.Row="0" Background="{Binding Background, ElementName=gridView}" Orientation="Horizontal" Margin="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalAlignment="Stretch" HorizontalAlignment="Center" RenderTransformOrigin="-0.005,0.543">
+            <Button x:Name="buttonBackMonth" Margin="-180,0,-3,0" Content="&lt;" RenderTransformOrigin="0.505,0.448" Height="46" Width="50" HorizontalAlignment="Left" BorderThickness="0" Foreground="#FF09FC03"/>
             <TextBlock x:Name="textBlock" Margin="0" TextWrapping="Wrap" Text="{Binding monthMMMMyyyy, Mode=OneWay}" TextAlignment="Center" FontSize="30" IsDoubleTapEnabled="False" FontFamily="MV Boli" VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel Height="Auto" Grid.Row="1" Background="{Binding Background, ElementName=gridView}" Orientation="Horizontal" Margin="0,0,0,0.111" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalAlignment="Stretch">

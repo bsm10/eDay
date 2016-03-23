@@ -67,7 +67,7 @@ namespace eDay
             }
             listView.ItemsSource = eDayDataGroup;
             listView.Visibility = Visibility.Visible;
-            MonthCalendar mcal = new MonthCalendar();
+            //MonthCalendar mcal = new MonthCalendar();
             //mcal.days = CalendarFo.GetDaysOfMonth(DateTime.Now.Year, DateTime.Now.Month);
             //mcal.month = DateTime.Now.Month;
             //mcal.year = DateTime.Now.Year;
