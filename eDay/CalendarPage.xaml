@@ -6,7 +6,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:data="using:eDay.Data"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Flyout x:Name="flyOut" x:Key="FlyoutBase1" Placement="Bottom">
+             <Pivot>
+                <Pivot.DataContext>
+                    <local:Events/>
+                </Pivot.DataContext>
+
+            </Pivot>   
+        </Flyout>
+    </Page.Resources>
 
     <Grid>
         <Grid.Background>
@@ -21,7 +32,7 @@
             Margin="10,10,10,265"
             HorizontalContentAlignment="Stretch"
             HorizontalAlignment="Stretch"
-            ClickCalendarHandler ="calendar_ClickCalendarHandler" />
+            ClickCalendarHandler ="calendar_ClickCalendarHandler" FlyoutBase.AttachedFlyout="{StaticResource FlyoutBase1}" />
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="105" Margin="45,438,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="315" FontSize="32">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

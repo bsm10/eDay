@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 using Windows.UI.Xaml.Media;
+using System.Collections.Generic;
 
 // Документацию по шаблону "Приложение с Pivot" см. по адресу http://go.microsoft.com/fwlink/?LinkID=391641
 
@@ -27,6 +28,7 @@ namespace eDay
         private const string quote = "\"";
         private const string FirstGroupName = "FirstGroup";
         private const string SecondGroupName = "SecondGroup";
+        IEnumerable<Event> eDayDataGroup;
 
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -35,10 +37,30 @@ namespace eDay
         public PivotPage()
         {
             InitializeComponent();
+            Loaded += OnLoaded;
             NavigationCacheMode = NavigationCacheMode.Required;
             navigationHelper = new NavigationHelper(this);
             navigationHelper.LoadState += NavigationHelper_LoadState;
             navigationHelper.SaveState += NavigationHelper_SaveState;
+        }
+        async void OnLoaded(object sender, RoutedEventArgs arg)
+        {
+
+            if (Everyday.Token == null)
+            {
+                //NotifyUser("Обновляю данные...", NotifyType.StatusMessage);
+                await Everyday.LoginEveryday();
+                eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
+                DefaultViewModel[FirstGroupName] = eDayDataGroup;
+                pivot.ItemsSource = eDayDataGroup;
+                //foreach (Event e in eDayDataGroup)
+                //{
+                //    ScheduleToast(e.event_name, DateTime.Parse(e.date + " " + e.time));
+                //}
+                //NotifyUser("", NotifyType.StatusMessage);
+            }
+            //listView.ItemsSource = eDayDataGroup;
+            //listView.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -74,8 +96,8 @@ namespace eDay
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
             var eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
             //var eDayDataGroup = await eDayDataSource.GetGroupEventsAsync();
-            DefaultViewModel[FirstGroupName] = eDayDataGroup;
-            if (Everyday.Token==null) await Everyday.LoginEveryday();
+            //DefaultViewModel[FirstGroupName] = eDayDataGroup;
+            //if (Everyday.Token==null) await Everyday.LoginEveryday();
         }
 
         /// <summary>

@@ -121,6 +121,8 @@ namespace eDay
             //TextBlock t = (TextBlock)e.OriginalSource;
             //MonthDay day_tapped = (MonthDay)t.DataContext;
             textBlock.Text = calendar.TappedDate.ToString("dd-MM-yyyy");
+            
+            flyOut.ShowAt(calendar);
         }
     }
 }
