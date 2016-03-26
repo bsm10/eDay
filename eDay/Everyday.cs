@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Data;
 using System.Collections.Generic;
+using Windows.Networking.Connectivity;
 
 namespace eDay
 {
@@ -468,7 +469,19 @@ namespace eDay
 
             return text;
         }
+
+        /// <summary>
+        /// Возвращает Истину если есть подключение к интернету
+        /// </summary>
+        /// <returns></returns>
+        public static bool InternetAvailable()
+        {
+            var connectionProfile = NetworkInformation.GetInternetConnectionProfile();
+            return (connectionProfile != null &&
+                    connectionProfile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
+        }
     }
+
     public class DoubleToBool : IValueConverter
     {
         // This converts the DateTime object to the string to display.

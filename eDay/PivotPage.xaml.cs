@@ -180,28 +180,23 @@ namespace eDay
         {
             navigationHelper.OnNavigatedTo(e);
         }
-
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedFrom(e);
         }
         #endregion
-
         private async void SecondaryButton1_Click(object sender, RoutedEventArgs e)
         {
             await Everyday.LoginEveryday();
         }
-
         private void listView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             
         }
-
         private void listView_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
         {
             //lst.Visibility = lst.Visibility== Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
         }
-
         private async void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             AppBarButton b = sender as AppBarButton;

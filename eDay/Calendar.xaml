@@ -38,9 +38,7 @@
 
             <GridView.ItemTemplate>
                 <DataTemplate>
-
                     <Grid Width="53" Height="50">
-                        
                         <TextBlock
                             TextAlignment="Center"
                             VerticalAlignment="Center"

@@ -22,114 +22,38 @@
             </NavigationThemeTransition>
         </TransitionCollection>
     </Page.Transitions>
-    <Grid>
+    <Grid x:Name="LayoutRoot"
+          d:DataContext="{Binding events, 
+          Source={d:DesignData Source=/DataModel/eDayData.json,
+                               Type = data:eDayDataSource}}" >
         <Pivot x:Uid="Pivot" Title="EVERYDAY" x:Name="pivot"
-               CommonNavigationTransitionInfo.IsStaggerElement="True" Margin="0,1,0,-1"
-                d:DataContext="{Binding events, 
-                Source={d:DesignData Source=/DataModel/eDayData.json,
-                                     Type = data:eDayDataSource}}" ItemsSource="{Binding}"
+               CommonNavigationTransitionInfo.IsStaggerElement="True" 
+               Margin="0,1,0,-1" ItemsSource="{Binding}"
                >
             <Pivot.HeaderTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding event_name}"/>
+                    <TextBlock FontSize="48" Text="{Binding date}"/>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
-
             <Pivot.ItemTemplate>
                 <DataTemplate>
-                    <Grid x:Name="grid" Margin="0,0,0,9.5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="90" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="70" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="1" Grid.Row="0"
-                                    TextWrapping="Wrap"
+                    <GridView>
+                        <StackPanel Width="100" Height="100">
+                            <TextBlock TextWrapping="Wrap"
                                     Pivot.SlideInAnimationGroup="1"
                                     CommonNavigationTransitionInfo.IsStaggerElement="True"
                                     Style="{ThemeResource ListViewItemTextBlockStyle}"
-                                    Margin="0,9" FontSize="24" HorizontalAlignment="Left" Text="{Binding time}" Foreground="#FFA87A52" RenderTransformOrigin="0.491,0.57" FontWeight="Bold" Width="91" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="1"
-                                    TextWrapping="WrapWholeWords"
-                                    Pivot.SlideInAnimationGroup="2" 
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True" 
-                                    Style="{ThemeResource ListViewItemContentTextBlockStyle}"
-                                    Margin="0" FontSize="21.333" Text="{Binding date}" Foreground="#FF488790" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Grid.Row="1"
-                                    TextWrapping="Wrap"
-                                    Pivot.SlideInAnimationGroup="1"
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
-                                    Style="{ThemeResource ListViewItemTextBlockStyle}"
-                                    Margin="0" FontSize="16" Foreground="#FF2E422C" RenderTransformOrigin="0.491,0.57" d:LayoutOverrides="Height, LeftPosition, RightPosition, TopPosition, BottomPosition" HorizontalAlignment="Left" Text="{Binding expert_name}" VerticalAlignment="Center"/>
-                        <CheckBox Grid.Column="2"
-                                          IsChecked="{Binding confirmed, Converter={StaticResource DoubleToBool}, Mode=TwoWay}" 
-                                          Margin="9.778,-1,-108.778,-15" 
-                                          Width="169" 
-                                          Height="66"
-                                          Grid.Row="1" 
-                                          BorderBrush="#FF368B56"
-                                          HorizontalAlignment="Center" 
-                                          Foreground="#FF3D6C85" Background="{x:Null}" 
-                                          RequestedTheme="Light" VerticalAlignment="Center"
-                                          />
-                        <TextBlock Grid.Column="1" Grid.Row="2"
-                                    TextWrapping="WrapWholeWords"
-                                    Pivot.SlideInAnimationGroup="2" 
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True" 
-                                    Style="{ThemeResource ListViewItemContentTextBlockStyle}"
-                                    Margin="0" FontSize="21.333" Text="{Binding comment}" Foreground="#FF030303" FontWeight="Bold" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="2" Grid.Row="2"
-                                    TextWrapping="WrapWholeWords"
-                                    Pivot.SlideInAnimationGroup="2" 
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True" 
-                                    Style="{ThemeResource ListViewItemContentTextBlockStyle}"
-                                    Margin="0" FontSize="16" 
-                                   Text="{Binding details.kkal}"
-                                   Foreground="#FF030303" VerticalAlignment="Center"/>
-
-                        <Rectangle
-                                           Fill="#FFFAFAFA" Canvas.ZIndex="-2"
-                                           Grid.ColumnSpan="3"
-                                    Grid.RowSpan="3"
-                                           RadiusY="10" 
-                                           RadiusX="10" 
-                                           StrokeThickness="1.5" 
-                                           Margin="2,2,2,2"
-                                           d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin, LeftPosition, RightPosition, TopPosition, BottomPosition" Stroke="#FF3D883E"/>
-                        <Rectangle
-                                    Margin="17,-9,13,10" Grid.Row="3" Grid.ColumnSpan="3" Canvas.ZIndex="-3" Fill="#FFB1CA77" RadiusX="5" RadiusY="5">
-                        </Rectangle>
-                        <ListBox x:Name="listItems" Grid.ColumnSpan="3"
-                                    Margin="24,6,23,14"
-                                    Grid.Row="3"
-                                    Background="{x:Null}"
-                                    Foreground="#FF395668" ItemsSource="{Binding details.items}"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                     <TextBlock
-                                          SelectionHighlightColor="{x:Null}"
-                                          Text="{Binding caption}"
-                                          Width="Auto" FontSize="16">
-                                    </TextBlock>
-
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-
-                        </ListBox>
-                        <Image x:Name="image" Margin="17,21,10,17"
-                                       d:LayoutOverrides="LeftPosition, RightPosition" Grid.RowSpan="3" 
-                                       Source="{Binding img.path}"/>
-
-                    </Grid>
+                                    Margin="0" FontSize="24" HorizontalAlignment="Center"
+                                    Text="{Binding time}" Foreground="#FFA87A52" RenderTransformOrigin="0.491,0.57" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <Image x:Name="image" Margin="0"
+                                       d:LayoutOverrides="LeftPosition, RightPosition"
+                                       Source="{Binding img.path}" Width="70" Height="70"/>
+                        </StackPanel>
+                    </GridView>
                 </DataTemplate>
             </Pivot.ItemTemplate>
+
+
             <!--Сводный элемент один-->
             <!--<PivotItem x:Name="PivotItem1"
                 x:Uid="PivotItem1"
@@ -232,42 +156,6 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </PivotItem>-->
-            <!--Сводный элемент два-->
-            <!--
-            <PivotItem
-                x:Uid="PivotItem2"
-                Margin="19,14.5,0,0"
-                Header="Календарь"
-                DataContext="{Binding SecondGroup}"
-                d:DataContext="{Binding Groups[0], Source={d:DesignData Source=/DataModel/eDayData.json, Type=data:eDayDataSource}}">
-                -->
-            <!--Двухстрочный список без переноса текста на новую строку-->
-            <!--
-                <ListView
-                    ItemsSource="{Binding Items}"
-                    IsItemClickEnabled="True"
-                    ItemClick="ItemView_ItemClick"
-                    Loaded="SecondPivot_Loaded"
-                    ContinuumNavigationTransitionInfo.ExitElementContainer="True">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="0,0,0,9.5">
-                                <TextBlock
-                                    Text="{Binding Title}"
-                                    Pivot.SlideInAnimationGroup="1"
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
-                                    Style="{StaticResource ListViewItemTextBlockStyle}"/>
-                                <TextBlock
-                                    Text="{Binding Description}"
-                                    Pivot.SlideInAnimationGroup="2"
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
-                                    Style="{StaticResource ListViewItemContentTextBlockStyle}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </PivotItem>
-            <PivotItem Header="Настройки"/>-->
         </Pivot>
     </Grid>
     <Page.BottomAppBar>
