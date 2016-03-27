@@ -37,20 +37,42 @@
             </Pivot.HeaderTemplate>
             <Pivot.ItemTemplate>
                 <DataTemplate>
-                    <GridView ItemsSource="{Binding Mode=OneWay}">
+                    <GridView ItemsSource="{Binding Mode=OneWay}" 
+                              HorizontalAlignment="Center"
+                              VerticalContentAlignment="Stretch" Header="{Binding Count, Mode=OneWay}" 
+                              >
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Width="100" Height="100">
-                                    <TextBlock TextWrapping="Wrap"
-                                    Pivot.SlideInAnimationGroup="1"
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
-                                    Style="{ThemeResource ListViewItemTextBlockStyle}"
-                                    Margin="0" FontSize="24" HorizontalAlignment="Center"
-                                    Text="{Binding time}" Foreground="White" RenderTransformOrigin="0.491,0.57" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <Grid Width="Auto">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="80"/>
+                                        <ColumnDefinition Width="100"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="100"/>
+                                    </Grid.RowDefinitions>
+                                    <Border Background="White" Grid.ColumnSpan="2"></Border>
+                                    <StackPanel Width="Auto" Height="Auto" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                            <TextBlock TextWrapping="Wrap"
+                                                Pivot.SlideInAnimationGroup="1"
+                                                CommonNavigationTransitionInfo.IsStaggerElement="True"
+                                                Style="{ThemeResource ListViewItemTextBlockStyle}"
+                                                Margin="0" FontSize="24" HorizontalAlignment="Left"
+                                                Text="{Binding time}" Foreground="Black" RenderTransformOrigin="0.491,0.57" FontWeight="Bold"/>
+                                            <TextBlock
+                                                Pivot.SlideInAnimationGroup="1"
+                                                CommonNavigationTransitionInfo.IsStaggerElement="True"
+                                                Style="{ThemeResource ListViewItemTextBlockStyle}"
+                                                Margin="0" FontSize="18"
+                                                Text="{Binding event_name}" 
+                                                FontWeight="Bold" 
+                                                TextTrimming="None" TextAlignment="Center" 
+                                                Width="Auto" Foreground="#FF1B1B1B" TextWrapping="WrapWholeWords" HorizontalAlignment="Left"/>
+                                    </StackPanel>
                                     <Image x:Name="image" Margin="0"
                                        d:LayoutOverrides="LeftPosition, RightPosition"
-                                       Source="{Binding img.path}" Width="70" Height="70"/>
-                                </StackPanel>
+                                       Source="{Binding img.path}" Width="60" Height="60"/>
+                                </Grid>
                             </DataTemplate>
                             </GridView.ItemTemplate>
                     </GridView>

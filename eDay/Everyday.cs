@@ -132,14 +132,10 @@ namespace eDay
     {
         public Events()
         {
-            //events = new ObservableCollection<ObservableCollection<Event>>();
             events = new ObservableCollection<ObservableCollection<Event>>();
-
         }
-
         public int success { get; set; }
         public string last_events_update { get; set; }
-        //public ObservableCollection<ObservableCollection<Event>> events { get; set; }
         public ObservableCollection<ObservableCollection<Event>> events { get; set; }
         public bool DevMode { get; set; }
         public Result result { get; set; }
