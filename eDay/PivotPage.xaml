@@ -22,33 +22,37 @@
             </NavigationThemeTransition>
         </TransitionCollection>
     </Page.Transitions>
-    <Grid x:Name="LayoutRoot"
-          d:DataContext="{Binding events, 
-          Source={d:DesignData Source=/DataModel/eDayData.json,
-                               Type = data:eDayDataSource}}" >
+    <Grid>
         <Pivot x:Uid="Pivot" Title="EVERYDAY" x:Name="pivot"
+               d:DataContext="{Binding events, 
+                Source={d:DesignData Source=/DataModel/eDayData.json,
+                               Type = data:eDayDataSource}}" 
                CommonNavigationTransitionInfo.IsStaggerElement="True" 
                Margin="0,1,0,-1" ItemsSource="{Binding}"
                >
             <Pivot.HeaderTemplate>
                 <DataTemplate>
-                    <TextBlock FontSize="48" Text="{Binding date}"/>
+                    <TextBlock FontSize="48" Text="{Binding Count, Mode=OneWay}"/>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
             <Pivot.ItemTemplate>
                 <DataTemplate>
-                    <GridView>
-                        <StackPanel Width="100" Height="100">
-                            <TextBlock TextWrapping="Wrap"
+                    <GridView ItemsSource="{Binding Mode=OneWay}">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Width="100" Height="100">
+                                    <TextBlock TextWrapping="Wrap"
                                     Pivot.SlideInAnimationGroup="1"
                                     CommonNavigationTransitionInfo.IsStaggerElement="True"
                                     Style="{ThemeResource ListViewItemTextBlockStyle}"
                                     Margin="0" FontSize="24" HorizontalAlignment="Center"
-                                    Text="{Binding time}" Foreground="#FFA87A52" RenderTransformOrigin="0.491,0.57" FontWeight="Bold" VerticalAlignment="Center"/>
-                            <Image x:Name="image" Margin="0"
+                                    Text="{Binding time}" Foreground="White" RenderTransformOrigin="0.491,0.57" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <Image x:Name="image" Margin="0"
                                        d:LayoutOverrides="LeftPosition, RightPosition"
                                        Source="{Binding img.path}" Width="70" Height="70"/>
-                        </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                            </GridView.ItemTemplate>
                     </GridView>
                 </DataTemplate>
             </Pivot.ItemTemplate>

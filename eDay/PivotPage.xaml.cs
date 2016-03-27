@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 using Windows.UI.Xaml.Media;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 // Документацию по шаблону "Приложение с Pivot" см. по адресу http://go.microsoft.com/fwlink/?LinkID=391641
 
@@ -28,7 +29,7 @@ namespace eDay
         private const string quote = "\"";
         private const string FirstGroupName = "FirstGroup";
         private const string SecondGroupName = "SecondGroup";
-        IEnumerable<Event> eDayDataGroup;
+        ObservableCollection<ObservableCollection<Event>> eDayDataGroup = new ObservableCollection<ObservableCollection<Event>>();
 
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -50,7 +51,9 @@ namespace eDay
             {
                 //NotifyUser("Обновляю данные...", NotifyType.StatusMessage);
                 await Everyday.LoginEveryday();
-                eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
+                //eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
+                Events ev = await eDayDataSource.GetGroupEventsAsync();
+                eDayDataGroup = ev.events;
                 DefaultViewModel[FirstGroupName] = eDayDataGroup;
                 pivot.ItemsSource = eDayDataGroup;
                 //foreach (Event e in eDayDataGroup)
@@ -96,7 +99,7 @@ namespace eDay
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
             var eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
             //var eDayDataGroup = await eDayDataSource.GetGroupEventsAsync();
-            //DefaultViewModel[FirstGroupName] = eDayDataGroup;
+           // DefaultViewModel[FirstGroupName] = eDayDataGroup;
             //if (Everyday.Token==null) await Everyday.LoginEveryday();
         }
 

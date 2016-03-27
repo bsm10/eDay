@@ -132,11 +132,15 @@ namespace eDay
     {
         public Events()
         {
-            events = new ObservableCollection<Event>();
+            //events = new ObservableCollection<ObservableCollection<Event>>();
+            events = new ObservableCollection<ObservableCollection<Event>>();
+
         }
+
         public int success { get; set; }
         public string last_events_update { get; set; }
-        public ObservableCollection<Event> events { get; set; }
+        //public ObservableCollection<ObservableCollection<Event>> events { get; set; }
+        public ObservableCollection<ObservableCollection<Event>> events { get; set; }
         public bool DevMode { get; set; }
         public Result result { get; set; }
         public Debug debug { get; set; }
@@ -145,6 +149,17 @@ namespace eDay
             return "Events count " + events.Count;
         }
     }
+    public class EventsByDay
+    {
+        //public ObservableCollection<ObservableCollection<Event>> eventsByDay { get; set; }
+        //public override string ToString()
+        //{
+        //    var d = from Event ev in eventsByDay. select ev;
+        //    return eventsByDay.
+        //}
+
+    }
+
     public class Item
     {
         public string id { get; set; }
@@ -393,7 +408,7 @@ namespace eDay
         public static async Task GetEvents(string startDate, string endDate, bool save_data=true)
         {
             if (loginData == null) return;
-            string postData = string.Format("Token={0}&Devid={1}&Platform={2}&Query={{\"date_start\":\"{3}\",\"date_end\":\"{4}\"}}",
+            string postData = string.Format("Token={0}&Devid={1}&Platform={2}&Query={{\"date_start\":\"{3}\",\"date_end\":\"{4}\", \"grouped\":true}}",
                                         loginData.token, "bsm10", "Win 8.1", startDate, endDate);
             HttpClient client = new HttpClient();
             response = await client.GetStringAsync(new Uri(SERVER + "ios/rGetEvents.php?" + postData));
