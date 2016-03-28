@@ -41,23 +41,23 @@ namespace eDay.Data
         {
             get { return _events; }
         }
-
-        //public static async Task<Events> GetGroupEventsAsync()
-        //{
-        //    return await _eventsDataSource.GetEventsGroupAsync();
-        //    //return _eventsDataSource.events;
-        //}
+        /// <summary>
+        /// Возвращает группу событий на определенную дату
+        /// </summary>
+        /// <param name="day_date"></param>
+        /// <returns></returns>
         public static async Task<IEnumerable<Event>> GetEventsByDateAsync(string day_date)
         {
             await GetGroupsEventsAsync();
             var matches = from IEnumerable<Event> ev in group_events.events where ev.First().date.Equals(day_date) select ev;
-
-            //var matches = _eventsDataSource.events.Where(group => group.date.Equals(day_date));
             if (matches.Count() > 0) return matches.First(); 
             return null;
         }
-
-        //Получить данные одного, выбранного события
+        /// <summary>
+        /// Получает данные одного, выбранного события по его id
+        /// </summary>
+        /// <param name="idEvent"></param>
+        /// <returns></returns>
         public static Event GetEvent(int idEvent)
         {
             var matches = from Event ev in _eventsDataSource.events
@@ -67,6 +67,10 @@ namespace eDay.Data
             return null;
         }
 
+        /// <summary>
+        /// Возвращает коллекцию групп событий по дням. Данные берутся из файла eDayData.json
+        /// </summary>
+        /// <returns></returns>
         public static async Task<ObservableCollection<EventsByDay>> GetGroupsEventsAsync()
         {
             Uri dataUri = new Uri("ms-appx:///DataModel/eDayData.json");
@@ -86,6 +90,27 @@ namespace eDay.Data
                 group_events =
                     JsonConvert.DeserializeObject<Events>(jsonText);
                 _events = group_events.events;
+                foreach (EventsByDay evDay in _events)
+                {
+                    foreach (Event ev in evDay)
+                    {
+                        switch (ev.event_class)
+                        {
+                            case 1:
+                                ev.img.path = "ms-appx:///Assets/1.png";
+                                break;
+                            case 2:
+                                ev.img.path = "ms-appx:///Assets/2.png";
+                                break;
+                            case 3:
+                                ev.img.path = "ms-appx:///Assets/3.png";
+                                break;
+                            case 9:
+                                ev.img.path = "ms-appx:///Assets/9.png";
+                                break;
+                        }
+                    }
+                }
             }
             catch (Exception e)
                 {

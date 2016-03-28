@@ -36,11 +36,12 @@
             </Pivot.HeaderTemplate>
             <Pivot.ItemTemplate>
                 <DataTemplate>
-                    <GridView 
+                    <GridView x:Name="gridView" 
                         HorizontalAlignment="Center"
                         VerticalContentAlignment="Stretch" 
                         Header="{Binding Date, Mode=OneWay}" 
-                        ItemsSource="{Binding eventsByDay}" 
+                        ItemsSource="{Binding eventsByDay}"
+                        ItemClick="GridView_ItemClick" IsItemClickEnabled="True" 
                                                       >
                         <GridView.ItemTemplate>
                             <DataTemplate>
@@ -52,14 +53,19 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="100"/>
                                     </Grid.RowDefinitions>
-                                    <Border Background="White" Grid.ColumnSpan="2"></Border>
+                                    <Border Grid.ColumnSpan="2"/>
                                     <StackPanel Width="Auto" Height="Auto" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                            <TextBlock TextWrapping="Wrap"
+                                        <TextBlock TextWrapping="Wrap"
                                                 Pivot.SlideInAnimationGroup="1"
                                                 CommonNavigationTransitionInfo.IsStaggerElement="True"
                                                 Style="{ThemeResource ListViewItemTextBlockStyle}"
                                                 Margin="0" FontSize="24" HorizontalAlignment="Left"
-                                                Text="{Binding time}" Foreground="Black" RenderTransformOrigin="0.491,0.57" FontWeight="Bold"/>
+                                                Text="{Binding time}" RenderTransformOrigin="0.491,0.57" FontWeight="Bold">
+                                            <TextBlock.Foreground>
+                                                <SolidColorBrush Color="{ThemeResource PhoneTextHighColor}"/>
+                                            </TextBlock.Foreground>
+                                        </TextBlock>
+                                        <ScrollViewer>
                                             <TextBlock
                                                 Pivot.SlideInAnimationGroup="1"
                                                 CommonNavigationTransitionInfo.IsStaggerElement="True"
@@ -68,16 +74,21 @@
                                                 Text="{Binding event_name}" 
                                                 FontWeight="Bold" 
                                                 TextTrimming="None" TextAlignment="Center" 
-                                                Width="Auto" Foreground="#FF1B1B1B"
+                                                Width="Auto"
                                                 TextWrapping="WrapWholeWords"
-                                                HorizontalAlignment="Left"/>
+                                                HorizontalAlignment="Left">
+                                                <TextBlock.Foreground>
+                                                    <SolidColorBrush Color="{ThemeResource PhoneTextHighColor}"/>
+                                                </TextBlock.Foreground>
+                                            </TextBlock>
+                                        </ScrollViewer>
                                     </StackPanel>
                                     <Image x:Name="image" Margin="0"
                                        d:LayoutOverrides="LeftPosition, RightPosition"
-                                       Source="{Binding img.path}" Width="60" Height="60"/>
+                                       Source="{Binding img.path}" Width="60" Height="60" Stretch="UniformToFill"/>
                                 </Grid>
                             </DataTemplate>
-                            </GridView.ItemTemplate>
+                        </GridView.ItemTemplate>
                     </GridView>
                 </DataTemplate>
             </Pivot.ItemTemplate>

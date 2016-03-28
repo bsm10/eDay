@@ -98,7 +98,7 @@ namespace eDay
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
             var eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
             //var eDayDataGroup = await eDayDataSource.GetGroupEventsAsync();
-           // DefaultViewModel[FirstGroupName] = eDayDataGroup;
+            // DefaultViewModel[FirstGroupName] = eDayDataGroup;
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace eDay
         }
         private void listView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            
+
         }
         private void listView_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
         {
@@ -216,6 +216,16 @@ namespace eDay
                     break;
 
             }
+        }
+
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Event ev = (Event)e.ClickedItem;
+
+            GridView gv = e.OriginalSource as GridView;
+
+            (e.ClickedItem as FrameworkElement).Visibility = Visibility.Collapsed;
+            int test = gv.Items.IndexOf((e.ClickedItem as FrameworkElement).Parent);
         }
     }
 }
