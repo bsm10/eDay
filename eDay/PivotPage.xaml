@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:eDay.Data"
     mc:Ignorable="d"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <!--<JumpListItemBackgroundConverter x:Key="JumpListItemBackgroundConverter"/>-->
@@ -22,25 +21,27 @@
             </NavigationThemeTransition>
         </TransitionCollection>
     </Page.Transitions>
-    <Grid>
+    <Grid   d:DataContext="{Binding events, 
+            Source={d:DesignData Source=/DataModel/eDayData.json,IsDesignTimeCreatable=True,
+                               Type = data:eDayDataSource}}"  
+>
         <Pivot x:Uid="Pivot" Title="EVERYDAY" x:Name="pivot"
-               d:DataContext="{Binding events, 
-                Source={d:DesignData Source=/DataModel/eDayData.json,
-                               Type = data:eDayDataSource}}" 
                CommonNavigationTransitionInfo.IsStaggerElement="True" 
                Margin="0,1,0,-1" ItemsSource="{Binding}"
                >
             <Pivot.HeaderTemplate>
                 <DataTemplate>
-                    <TextBlock FontSize="48" Text="{Binding Count, Mode=OneWay}"/>
+                    <TextBlock FontSize="48" Text="{Binding Date, Mode=OneWay}"/>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
             <Pivot.ItemTemplate>
                 <DataTemplate>
-                    <GridView ItemsSource="{Binding Mode=OneWay}" 
-                              HorizontalAlignment="Center"
-                              VerticalContentAlignment="Stretch" Header="{Binding Count, Mode=OneWay}" 
-                              >
+                    <GridView 
+                        HorizontalAlignment="Center"
+                        VerticalContentAlignment="Stretch" 
+                        Header="{Binding Date, Mode=OneWay}" 
+                        ItemsSource="{Binding eventsByDay}" 
+                                                      >
                         <GridView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Width="Auto">
@@ -67,7 +68,9 @@
                                                 Text="{Binding event_name}" 
                                                 FontWeight="Bold" 
                                                 TextTrimming="None" TextAlignment="Center" 
-                                                Width="Auto" Foreground="#FF1B1B1B" TextWrapping="WrapWholeWords" HorizontalAlignment="Left"/>
+                                                Width="Auto" Foreground="#FF1B1B1B"
+                                                TextWrapping="WrapWholeWords"
+                                                HorizontalAlignment="Left"/>
                                     </StackPanel>
                                     <Image x:Name="image" Margin="0"
                                        d:LayoutOverrides="LeftPosition, RightPosition"

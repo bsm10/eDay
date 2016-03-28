@@ -34,58 +34,22 @@ namespace eDay.Data
     public sealed class eDayDataSource
     {
         private static eDayDataSource _eventsDataSource = new eDayDataSource();
-        public static Events group_events;
+        private static Events group_events { get; set; }
 
-        private static ObservableCollection<ObservableCollection<Event>> _events = new ObservableCollection<ObservableCollection<Event>>();
-        private ObservableCollection<Item> _items = new ObservableCollection<Item>();
-        public ObservableCollection<ObservableCollection<Event>> events
+        private static ObservableCollection<EventsByDay> _events = new ObservableCollection<EventsByDay>();
+        public ObservableCollection<EventsByDay> events
         {
             get { return _events; }
         }
-        //public ObservableCollection<ObservableCollection<Event>> eventsByDays
+
+        //public static async Task<Events> GetGroupEventsAsync()
         //{
-        //    get
-        //    {
-
-        //        var evnts = from Event ev in events group ev by ev.date;
-        //        var query = evnts.GroupBy(
-        //        evnt => evnt.date,
-        //        pet => pet.Age,
-        //        (baseAge, ages) => new
-        //        {
-        //            Key = baseAge,
-        //            Count = ages.Count(),
-        //            Min = ages.Min(),
-        //            Max = ages.Max()
-        //        });
-
-
-        //        //string date  = evnts.First().GroupBy;
-        //        //foreach (Event evn in evnts)
-        //        //{
-        //        //    date = evn.date;
-        //        //    if (evn.date == "")
-        //        //    {
-
-        //        //    }
-        //        //}
-
-        //        //return evnts;
-        //    }
+        //    return await _eventsDataSource.GetEventsGroupAsync();
+        //    //return _eventsDataSource.events;
         //}
-
-        public ObservableCollection<Item> items
-        {
-            get { return _items; }
-        }
-        public static async Task<Events> GetGroupEventsAsync()
-        {
-            return await _eventsDataSource.GetEventsDataAsync();
-            //return _eventsDataSource.events;
-        }
         public static async Task<IEnumerable<Event>> GetEventsByDateAsync(string day_date)
         {
-            await _eventsDataSource.GetEventsDataAsync();
+            await GetGroupsEventsAsync();
             var matches = from IEnumerable<Event> ev in group_events.events where ev.First().date.Equals(day_date) select ev;
 
             //var matches = _eventsDataSource.events.Where(group => group.date.Equals(day_date));
@@ -102,7 +66,8 @@ namespace eDay.Data
             if (matches.Count() > 0) return matches.First();
             return null;
         }
-        private async Task<Events> GetEventsDataAsync()
+
+        public static async Task<ObservableCollection<EventsByDay>> GetGroupsEventsAsync()
         {
             Uri dataUri = new Uri("ms-appx:///DataModel/eDayData.json");
             try
@@ -120,7 +85,7 @@ namespace eDay.Data
                 }
                 group_events =
                     JsonConvert.DeserializeObject<Events>(jsonText);
-                //_events = group_events;
+                _events = group_events.events;
             }
             catch (Exception e)
                 {
@@ -131,7 +96,7 @@ namespace eDay.Data
                 // file not found
             }
 
-            return group_events;
+            return group_events.events;
 
         }
     }

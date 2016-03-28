@@ -29,7 +29,7 @@ namespace eDay
         private const string quote = "\"";
         private const string FirstGroupName = "FirstGroup";
         private const string SecondGroupName = "SecondGroup";
-        ObservableCollection<ObservableCollection<Event>> eDayDataGroup = new ObservableCollection<ObservableCollection<Event>>();
+        ObservableCollection<EventsByDay> eDayDataGroup = new ObservableCollection<EventsByDay>();
 
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -52,8 +52,7 @@ namespace eDay
                 //NotifyUser("Обновляю данные...", NotifyType.StatusMessage);
                 await Everyday.LoginEveryday();
                 //eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
-                Events ev = await eDayDataSource.GetGroupEventsAsync();
-                eDayDataGroup = ev.events;
+                eDayDataGroup = await eDayDataSource.GetGroupsEventsAsync();
                 DefaultViewModel[FirstGroupName] = eDayDataGroup;
                 pivot.ItemsSource = eDayDataGroup;
                 //foreach (Event e in eDayDataGroup)
@@ -100,7 +99,6 @@ namespace eDay
             var eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
             //var eDayDataGroup = await eDayDataSource.GetGroupEventsAsync();
            // DefaultViewModel[FirstGroupName] = eDayDataGroup;
-            //if (Everyday.Token==null) await Everyday.LoginEveryday();
         }
 
         /// <summary>

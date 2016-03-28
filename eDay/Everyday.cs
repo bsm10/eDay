@@ -19,6 +19,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml.Data;
 using System.Collections.Generic;
 using Windows.Networking.Connectivity;
+using System.Collections;
 
 namespace eDay
 {
@@ -132,11 +133,12 @@ namespace eDay
     {
         public Events()
         {
-            events = new ObservableCollection<ObservableCollection<Event>>();
+            events = new ObservableCollection<EventsByDay>();
+            
         }
         public int success { get; set; }
         public string last_events_update { get; set; }
-        public ObservableCollection<ObservableCollection<Event>> events { get; set; }
+        public ObservableCollection<EventsByDay> events { get; set; }
         public bool DevMode { get; set; }
         public Result result { get; set; }
         public Debug debug { get; set; }
@@ -145,15 +147,151 @@ namespace eDay
             return "Events count " + events.Count;
         }
     }
-    public class EventsByDay
+    public class EventsByDay : ICollection<Event>
     {
-        //public ObservableCollection<ObservableCollection<Event>> eventsByDay { get; set; }
-        //public override string ToString()
+        public EventsByDay()
+        {
+            eventsByDay = new ObservableCollection<Event>();
+        }
+
+        public int Count
+        {
+            get
+            {
+                return ((ICollection<Event>)eventsByDay).Count;
+            }
+        }
+
+        public string Date
+        {
+            get { return eventsByDay[0].date.ToString(); }
+        }
+        public ObservableCollection<Event> eventsByDay { get; set; }
+
+        public bool IsReadOnly
+        {
+            get
+            {
+                return ((ICollection<Event>)eventsByDay).IsReadOnly;
+            }
+        }
+
+        public void Add(Event item)
+        {
+            ((ICollection<Event>)eventsByDay).Add(item);
+        }
+
+        public void Clear()
+        {
+            ((ICollection<Event>)eventsByDay).Clear();
+        }
+
+        public bool Contains(Event item)
+        {
+            return ((ICollection<Event>)eventsByDay).Contains(item);
+        }
+
+        public void CopyTo(Event[] array, int arrayIndex)
+        {
+            ((ICollection<Event>)eventsByDay).CopyTo(array, arrayIndex);
+        }
+
+        public IEnumerator<Event> GetEnumerator()
+        {
+            return ((ICollection<Event>)eventsByDay).GetEnumerator();
+        }
+
+        public bool Remove(Event item)
+        {
+            return ((ICollection<Event>)eventsByDay).Remove(item);
+        }
+
+        //public Event this[int index]
         //{
-        //    var d = from Event ev in eventsByDay. select ev;
-        //    return eventsByDay.
+        //    get
+        //    {
+        //        return ((IList<Event>)eventsByDay)[index];
+        //    }
+
+        //    set
+        //    {
+        //        ((IList<Event>)eventsByDay)[index] = value;
+        //    }
         //}
 
+        //public int Count
+        //{
+        //    get
+        //    {
+        //        return ((IList<Event>)eventsByDay).Count;
+        //    }
+        //}
+        //public bool IsReadOnly
+        //{
+        //    get
+        //    {
+        //        return ((IList<Event>)eventsByDay).IsReadOnly;
+        //    }
+        //}
+
+        //public void Add(Event item)
+        //{
+        //    ((IList<Event>)eventsByDay).Add(item);
+        //}
+
+        //public void Clear()
+        //{
+        //    ((IList<Event>)eventsByDay).Clear();
+        //}
+
+        //public bool Contains(Event item)
+        //{
+        //    return ((IList<Event>)eventsByDay).Contains(item);
+        //}
+
+        //public void CopyTo(Event[] array, int arrayIndex)
+        //{
+        //    ((IList<Event>)eventsByDay).CopyTo(array, arrayIndex);
+        //}
+
+        //public IEnumerator<Event> GetEnumerator()
+        //{
+        //    return ((IList<Event>)eventsByDay).GetEnumerator();
+        //}
+
+        //public int IndexOf(Event item)
+        //{
+        //    return ((IList<Event>)eventsByDay).IndexOf(item);
+        //}
+
+        //public void Insert(int index, Event item)
+        //{
+        //    ((IList<Event>)eventsByDay).Insert(index, item);
+        //}
+
+        //public bool Remove(Event item)
+        //{
+        //    return ((IList<Event>)eventsByDay).Remove(item);
+        //}
+
+        //public void RemoveAt(int index)
+        //{
+        //    ((IList<Event>)eventsByDay).RemoveAt(index);
+        //}
+
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{
+        //    return ((IList<Event>)eventsByDay).GetEnumerator();
+        //}
+        public override string ToString()
+        {
+            return eventsByDay[0].date.ToString();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((ICollection<Event>)eventsByDay).GetEnumerator();
+        }
     }
 
     public class Item
