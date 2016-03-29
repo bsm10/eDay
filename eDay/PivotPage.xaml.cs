@@ -220,12 +220,12 @@ namespace eDay
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Event ev = (Event)e.ClickedItem;
+            //Event ev = (Event)e.ClickedItem;
 
-            GridView gv = e.OriginalSource as GridView;
+            //GridView gv = e.OriginalSource as GridView;
 
-            (e.ClickedItem as FrameworkElement).Visibility = Visibility.Collapsed;
-            int test = gv.Items.IndexOf((e.ClickedItem as FrameworkElement).Parent);
+            //(e.ClickedItem as FrameworkElement).Visibility = Visibility.Collapsed;
+            //int test = gv.Items.IndexOf((e.ClickedItem as FrameworkElement).Parent);
         }
     }
 }

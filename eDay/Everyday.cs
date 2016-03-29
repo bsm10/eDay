@@ -164,8 +164,13 @@ namespace eDay
 
         public string Date
         {
-            get { return eventsByDay[0].date.ToString(); }
+            get { return DateTime.Parse(eventsByDay[0].date).ToString("dd.MM.yyyy"); }
         }
+        public string Day
+        {
+            get { return DateTime.Parse(eventsByDay[0].date).ToString("dddd"); }
+        }
+
         public ObservableCollection<Event> eventsByDay { get; set; }
 
         public bool IsReadOnly

@@ -27,11 +27,14 @@
 >
         <Pivot x:Uid="Pivot" Title="EVERYDAY" x:Name="pivot"
                CommonNavigationTransitionInfo.IsStaggerElement="True" 
-               Margin="0,1,0,-1" ItemsSource="{Binding}"
+               Margin="0" ItemsSource="{Binding}" BorderThickness="0"
                >
             <Pivot.HeaderTemplate>
                 <DataTemplate>
-                    <TextBlock FontSize="48" Text="{Binding Date, Mode=OneWay}"/>
+                    <StackPanel>
+                        <TextBlock FontSize="26" Text="{Binding Day, Mode=OneWay}" Margin="0,5,0,0"/>
+                        <TextBlock FontSize="24" Text="{Binding Date, Mode=OneWay}"/>
+                    </StackPanel>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
             <Pivot.ItemTemplate>
@@ -39,9 +42,8 @@
                     <GridView x:Name="gridView" 
                         HorizontalAlignment="Center"
                         VerticalContentAlignment="Stretch" 
-                        Header="{Binding Date, Mode=OneWay}" 
                         ItemsSource="{Binding eventsByDay}"
-                        ItemClick="GridView_ItemClick" IsItemClickEnabled="True" 
+                        ItemClick="GridView_ItemClick" IsItemClickEnabled="True" FontSize="18.667" 
                                                       >
                         <GridView.ItemTemplate>
                             <DataTemplate>
@@ -65,7 +67,6 @@
                                                 <SolidColorBrush Color="{ThemeResource PhoneTextHighColor}"/>
                                             </TextBlock.Foreground>
                                         </TextBlock>
-                                        <ScrollViewer>
                                             <TextBlock
                                                 Pivot.SlideInAnimationGroup="1"
                                                 CommonNavigationTransitionInfo.IsStaggerElement="True"
@@ -81,11 +82,12 @@
                                                     <SolidColorBrush Color="{ThemeResource PhoneTextHighColor}"/>
                                                 </TextBlock.Foreground>
                                             </TextBlock>
-                                        </ScrollViewer>
                                     </StackPanel>
                                     <Image x:Name="image" Margin="0"
-                                       d:LayoutOverrides="LeftPosition, RightPosition"
-                                       Source="{Binding img.path}" Width="60" Height="60" Stretch="UniformToFill"/>
+                                       d:LayoutOverrides="LeftPosition, 
+                                           RightPosition" Width="60" Height="60"
+                                           Stretch="UniformToFill"
+                                           Source="{Binding img.path}"/>
                                 </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>
