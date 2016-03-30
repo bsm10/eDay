@@ -38,7 +38,32 @@ namespace eDay.Data
         private static ObservableCollection<EventsByDay> _events = new ObservableCollection<EventsByDay>();
         public ObservableCollection<EventsByDay> events
         {
-            get { return _events; }
+            get
+            {
+                foreach (EventsByDay evDay in _events)
+                {
+                    foreach (Event ev in evDay)
+                    {
+                        switch (ev.event_class)
+                        {
+                            case 1:
+                                ev.img.path = "ms-appx:///Assets/class1-128-w.png";
+                                break;
+                            case 2:
+                                ev.img.path = "ms-appx:///Assets/class2-128-w.png";
+                                break;
+                            case 3:
+                                ev.img.path = "ms-appx:///Assets/class3-128-w.png";
+                                break;
+                            case 9:
+                                ev.img.path = "ms-appx:///Assets/class9-128-w.png";
+                                break;
+                        }
+                    }
+                }
+
+                return _events;
+            }
         }
         /// <summary>
         /// Возвращает группу событий на определенную дату
