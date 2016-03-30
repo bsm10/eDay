@@ -20,6 +20,8 @@ using Windows.UI.Xaml.Data;
 using System.Collections.Generic;
 using Windows.Networking.Connectivity;
 using System.Collections;
+using Windows.UI.Xaml.Media;
+using Windows.UI;
 
 namespace eDay
 {
@@ -134,7 +136,6 @@ namespace eDay
         public Events()
         {
             events = new ObservableCollection<EventsByDay>();
-            
         }
         public int success { get; set; }
         public string last_events_update { get; set; }
@@ -298,7 +299,6 @@ namespace eDay
             return ((ICollection<Event>)eventsByDay).GetEnumerator();
         }
     }
-
     public class Item
     {
         public string id { get; set; }
@@ -325,7 +325,29 @@ namespace eDay
     }
     public class Event
     {
-        public int event_class { get; set; }
+        private int _event_class;
+        public int event_class
+            { get { return _event_class; }
+              set
+                {
+                _event_class = value;
+                switch (_event_class)
+                {
+                    case 1:
+                        ColorEvent = new SolidColorBrush(Color.FromArgb(0,255,100,80));
+                        break;
+                    case 2:
+                        ColorEvent = new SolidColorBrush(Color.FromArgb(0, 100, 50, 80));
+                        break;
+                    case 3:
+                        ColorEvent = new SolidColorBrush(Color.FromArgb(0, 150, 150, 180));
+                        break;
+                    case 9:
+                        ColorEvent = new SolidColorBrush(Color.FromArgb(0, 255, 255, 80));
+                        break;
+                }
+            }
+        }
         public int id { get; set; }
         public Img img { get; set; }
         public string date { get; set; }
@@ -336,6 +358,8 @@ namespace eDay
         public string comment { get; set; }
         public Details details { get; set; }
         public string data_md5 { get; set; }
+        public SolidColorBrush ColorEvent { get; set; }
+
         public override string ToString()
         {
             return string.Format("{0}, {1} - {2}", date, time, event_name);
@@ -625,7 +649,7 @@ namespace eDay
         }
 
         /// <summary>
-        /// Возвращает Истину если есть подключение к интернету
+        /// Проверяет есть ли подключение к интернету. Возвращает Истину если Да
         /// </summary>
         /// <returns></returns>
         public static bool InternetAvailable()

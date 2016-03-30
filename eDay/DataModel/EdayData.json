@@ -18,7 +18,7 @@
         "event_class": 1,
         "id": 55061,
         "img": {
-          "path": "http:\/\/api.go.pl.ua\/ios\/img\/640\/events\/1.png",
+          "path": "ms-appx:///Assets/class1-128-w.png",
           "md5": "fd62f65130e0f9149b581b2240bcab94"
         },
         "date": "2016-01-20",
@@ -108,7 +108,7 @@
         "event_class": 1,
         "id": 58079,
         "img": {
-          "path": "http:\/\/api.go.pl.ua\/ios\/img\/640\/events\/1.png",
+          "path": "ms-appx:///Assets/plitka1-310x150.png",
           "md5": "fd62f65130e0f9149b581b2240bcab94"
         },
         "date": "2016-01-20",

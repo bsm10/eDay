@@ -176,6 +176,13 @@
     <Content Include="Assets\class9-128-w.png" />
     <Content Include="Assets\class9-60-w.png" />
     <Content Include="Assets\class9-60.png" />
+    <Content Include="Assets\compon1-310x150.png" />
+    <Content Include="Assets\compon1.png" />
+    <Content Include="Assets\Logo310x150.scale-100.png" />
+    <Content Include="Assets\nonconf-w2.png" />
+    <Content Include="Assets\nonconf2.png" />
+    <Content Include="Assets\plitka1-310x150.png" />
+    <Content Include="Assets\plitka9-310x150.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-140.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />

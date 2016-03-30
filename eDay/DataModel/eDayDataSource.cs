@@ -35,7 +35,6 @@ namespace eDay.Data
     {
         private static eDayDataSource _eventsDataSource = new eDayDataSource();
         private static Events group_events { get; set; }
-
         private static ObservableCollection<EventsByDay> _events = new ObservableCollection<EventsByDay>();
         public ObservableCollection<EventsByDay> events
         {
