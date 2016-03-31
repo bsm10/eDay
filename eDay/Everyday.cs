@@ -695,16 +695,16 @@ namespace eDay
                 switch (val)
                 {
                     case 1:
-                        strColor = "#5090F0";
+                        strColor = "#FF7194BF";
                         break;
                     case 2:
-                        strColor = "#00FFD0";
+                        strColor = "#FFB872A4";
                         break;
                     case 3:
-                        strColor = "#D070FF";
+                        strColor = "#FFEF9B49";
                         break;
                     case 9:
-                        strColor = "#А090F0";
+                        strColor = "#FF9ECD6F";
                         break;
                 }
 
