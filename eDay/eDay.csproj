@@ -140,6 +140,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NotifyAndSchedule.cs" />
     <Compile Include="PivotPage.xaml.cs">
       <DependentUpon>PivotPage.xaml</DependentUpon>
     </Compile>
@@ -179,6 +180,13 @@
     <Content Include="Assets\compon1-310x150.png" />
     <Content Include="Assets\compon1.png" />
     <Content Include="Assets\Logo310x150.scale-100.png" />
+    <Content Include="Assets\new-1.png" />
+    <Content Include="Assets\new-2.png" />
+    <Content Include="Assets\new-3.png" />
+    <Content Include="Assets\new-9-1.png" />
+    <Content Include="Assets\new-9.png" />
+    <Content Include="Assets\new-alarm.png" />
+    <Content Include="Assets\new-item.png" />
     <Content Include="Assets\nonconf-w2.png" />
     <Content Include="Assets\nonconf2.png" />
     <Content Include="Assets\plitka1-310x150.png" />

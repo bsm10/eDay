@@ -54,16 +54,16 @@ namespace eDay.Data
                     switch (ev.event_class)
                     {
                         case 1:
-                            ev.img.path = "ms-appx:///Assets/class1-128-w.png";
+                            ev.img.path = "ms-appx:///Assets/new-1.png";
                             break;
                         case 2:
-                            ev.img.path = "ms-appx:///Assets/class2-128-w.png";
+                            ev.img.path = "ms-appx:///Assets/new-2.png";
                             break;
                         case 3:
-                            ev.img.path = "ms-appx:///Assets/class3-128-w.png";
+                            ev.img.path = "ms-appx:///Assets/new-3.png";
                             break;
                         case 9:
-                            ev.img.path = "ms-appx:///Assets/class9-128-w.png";
+                            ev.img.path = "ms-appx:///Assets/new-9.png";
                             break;
                     }
                 }

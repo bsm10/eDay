@@ -18,6 +18,8 @@ using Windows.Web.Http;
 using Windows.UI.Xaml.Media;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using static eDay.NotifyAndSchedule;
+using Windows.UI.Xaml.Input;
 
 // Документацию по шаблону "Приложение с Pivot" см. по адресу http://go.microsoft.com/fwlink/?LinkID=391641
 
@@ -50,20 +52,18 @@ namespace eDay
 
             if (Everyday.Token == null)
             {
-                //NotifyUser("Обновляю данные...", NotifyType.StatusMessage);
+                NotifyUser("Обновляю данные...", NotifyType.StatusMessage, StatusBorder,StatusBlock);
                 await Everyday.LoginEveryday();
                 //eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
                 eDayDataGroup = await eDayDataSource.GetGroupsEventsAsync();
                 DefaultViewModel[FirstGroupName] = eDayDataGroup;
                 pivot.ItemsSource = eDayDataGroup;
-                //foreach (Event e in eDayDataGroup)
-                //{
-                //    ScheduleToast(e.event_name, DateTime.Parse(e.date + " " + e.time));
-                //}
-                //NotifyUser("", NotifyType.StatusMessage);
+                foreach (Event e in eDayDataGroup[0].eventsByDay)
+                {
+                    ScheduleToast(e.event_name, DateTime.Parse(e.date + " " + e.time));
+                }
+                NotifyUser("", NotifyType.StatusMessage, StatusBorder, StatusBlock);
             }
-            //listView.ItemsSource = eDayDataGroup;
-            //listView.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -199,6 +199,11 @@ namespace eDay
         {
             //lst.Visibility = lst.Visibility== Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
         }
+        private void StatusBorder_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            NotifyUser("", NotifyType.StatusMessage,StatusBorder,StatusBlock);
+        }
+
         private async void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             AppBarButton b = sender as AppBarButton;

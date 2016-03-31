@@ -24,6 +24,12 @@
         </TransitionCollection>
     </Page.Transitions>
     <Grid>
+        <Border x:Name="StatusBorder" Grid.Row="1" 
+                Visibility="Collapsed" Tapped="StatusBorder_Tapped" Margin="0,0,0,0"
+                Height="50">
+            <TextBlock x:Name="StatusBlock" Foreground="White" Margin="12, 10, 12, 10" TextWrapping="Wrap" FontSize="18.667"/>
+        </Border>
+
         <Pivot x:Uid="Pivot" Title="EVERYDAY" x:Name="pivot"
                d:DataContext="{Binding events, 
                Source={d:DesignData Source=/DataModel/eDayData.json, IsDesignTimeCreatable=True,
@@ -63,32 +69,27 @@
                                             Margin="2" Grid.RowSpan="2" Canvas.ZIndex="-1" 
                                             Background="{Binding event_class, Converter={StaticResource ClassToColor}}" 
                                             BorderThickness="2"/>
-                                        <TextBlock TextWrapping="Wrap"
+                                    <TextBlock TextWrapping="Wrap"
                                                 Pivot.SlideInAnimationGroup="1"
                                                 CommonNavigationTransitionInfo.IsStaggerElement="True"
                                                 Style="{ThemeResource ListViewItemTextBlockStyle}"
                                                 Margin="0" FontSize="24" HorizontalAlignment="Left"
-                                                Text="{Binding time}" RenderTransformOrigin="0.491,0.57" FontWeight="Bold" Grid.Column="1" VerticalAlignment="Center"/>
-                                        <TextBlock
+                                                Text="{Binding time}" RenderTransformOrigin="0.491,0.57" FontWeight="Bold" Grid.Column="1" VerticalAlignment="Center" FontFamily="Segoe WP Black" Foreground="White"/>
+                                    <TextBlock
                                                 Pivot.SlideInAnimationGroup="1"
                                                 CommonNavigationTransitionInfo.IsStaggerElement="True"
                                                 Style="{ThemeResource ListViewItemTextBlockStyle}"
-                                                Margin="10,0,0,0" FontSize="18"
+                                                Margin="15,0,0,0" FontSize="18"
                                                 Text="{Binding event_name}" 
                                                 FontWeight="Bold" 
                                                 TextTrimming="None" TextAlignment="Center" 
                                                 Width="Auto"
                                                 TextWrapping="WrapWholeWords"
-                                                HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.ColumnSpan="2">
-                                                <TextBlock.Foreground>
-                                                    <SolidColorBrush Color="{ThemeResource PhoneTextHighColor}"/>
-                                                </TextBlock.Foreground>
-                                            </TextBlock>
-                                        <Image x:Name="image" Margin="10,0,0,0"
+                                                HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.ColumnSpan="2" Foreground="White"/>
+                                    <Image x:Name="image" Margin="10,0,0,0"
                                        d:LayoutOverrides="LeftPosition, 
                                            RightPosition" Width="50" Height="50"
-                                           Stretch="UniformToFill"
-                                           Source="{Binding img.path}" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                           Source="{Binding img.path}" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
                                 </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>

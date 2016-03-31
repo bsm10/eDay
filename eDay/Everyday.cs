@@ -701,10 +701,10 @@ namespace eDay
                         strColor = "#FFB872A4";
                         break;
                     case 3:
-                        strColor = "#FFEF9B49";
+                        strColor = "#FFFF9B49";
                         break;
                     case 9:
-                        strColor = "#FF9ECD6F";
+                        strColor = "#FF75A456";
                         break;
                 }
 
