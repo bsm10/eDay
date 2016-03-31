@@ -30,6 +30,7 @@ namespace eDay
         private const string FirstGroupName = "FirstGroup";
         private const string SecondGroupName = "SecondGroup";
         ObservableCollection<EventsByDay> eDayDataGroup = new ObservableCollection<EventsByDay>();
+        //eDayDataSource GroupEvents = new eDayDataSource();
 
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();

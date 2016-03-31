@@ -683,5 +683,46 @@ namespace eDay
             //throw new NotImplementedException();
         }
     }
+    public class ClassToColor : IValueConverter
+    {
+        // This converts the Class (int) to the string to Color like ""#FF00D0"".
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            string strColor = string.Empty;
+            if (value != null && value is int)
+            {
+                var val = (int)value;
+                switch (val)
+                {
+                    case 1:
+                        strColor = "#5090F0";
+                        break;
+                    case 2:
+                        strColor = "#00FFD0";
+                        break;
+                    case 3:
+                        strColor = "#D070FF";
+                        break;
+                    case 9:
+                        strColor = "#А090F0";
+                        break;
+                }
+
+                return strColor;
+            }
+            return null;
+        }
+
+        // No need to implement converting back on a one-way binding 
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            //if (value != null && value is string)
+            //{
+            //    var val = (bool)value; return val ? 1 : 0;
+            //}
+            //return null;
+            throw new NotImplementedException();
+        }
+    }
 
 }

@@ -12,6 +12,7 @@
     <Page.Resources>
         <!--<JumpListItemBackgroundConverter x:Key="JumpListItemBackgroundConverter"/>-->
         <local:DoubleToBool x:Key="DoubleToBool"/>
+        <local:ClassToColor x:Key="ClassToColor"/>
     </Page.Resources>
     <Page.Transitions>
         <TransitionCollection>
@@ -59,9 +60,10 @@
                                         <RowDefinition Height="40"/>
                                     </Grid.RowDefinitions>
                                     <Border x:Name="border" Grid.ColumnSpan="2"
-                                            Background="{Binding ColorEvent}"
-                                            Margin="2"/>
-
+                                            Margin="2" Grid.RowSpan="2" Canvas.ZIndex="-1" 
+                                            Background="{Binding event_class, Converter={StaticResource ClassToColor}}" 
+                                            BorderBrush="#4E43B3" 
+                                            BorderThickness="2"/>
                                         <TextBlock TextWrapping="Wrap"
                                                 Pivot.SlideInAnimationGroup="1"
                                                 CommonNavigationTransitionInfo.IsStaggerElement="True"

@@ -40,31 +40,36 @@ namespace eDay.Data
         {
             get
             {
-                foreach (EventsByDay evDay in _events)
-                {
-                    foreach (Event ev in evDay)
-                    {
-                        switch (ev.event_class)
-                        {
-                            case 1:
-                                ev.img.path = "ms-appx:///Assets/class1-128-w.png";
-                                break;
-                            case 2:
-                                ev.img.path = "ms-appx:///Assets/class2-128-w.png";
-                                break;
-                            case 3:
-                                ev.img.path = "ms-appx:///Assets/class3-128-w.png";
-                                break;
-                            case 9:
-                                ev.img.path = "ms-appx:///Assets/class9-128-w.png";
-                                break;
-                        }
-                    }
-                }
-
+                ReplaceImg();
                 return _events;
             }
         }
+
+        private static void ReplaceImg()
+        {
+            foreach (EventsByDay evDay in _events)
+            {
+                foreach (Event ev in evDay)
+                {
+                    switch (ev.event_class)
+                    {
+                        case 1:
+                            ev.img.path = "ms-appx:///Assets/class1-128-w.png";
+                            break;
+                        case 2:
+                            ev.img.path = "ms-appx:///Assets/class2-128-w.png";
+                            break;
+                        case 3:
+                            ev.img.path = "ms-appx:///Assets/class3-128-w.png";
+                            break;
+                        case 9:
+                            ev.img.path = "ms-appx:///Assets/class9-128-w.png";
+                            break;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Возвращает группу событий на определенную дату
         /// </summary>
@@ -114,27 +119,7 @@ namespace eDay.Data
                 group_events =
                     JsonConvert.DeserializeObject<Events>(jsonText);
                 _events = group_events.events;
-                foreach (EventsByDay evDay in _events)
-                {
-                    foreach (Event ev in evDay)
-                    {
-                        switch (ev.event_class)
-                        {
-                            case 1:
-                                ev.img.path = "ms-appx:///Assets/class1-128-w.png";
-                                break;
-                            case 2:
-                                ev.img.path = "ms-appx:///Assets/class2-128-w.png";
-                                break;
-                            case 3:
-                                ev.img.path = "ms-appx:///Assets/class3-128-w.png";
-                                break;
-                            case 9:
-                                ev.img.path = "ms-appx:///Assets/class9-128-w.png";
-                                break;
-                        }
-                    }
-                }
+                ReplaceImg();
             }
             catch (Exception e)
                 {
