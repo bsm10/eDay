@@ -1,0 +1,131 @@
+﻿<Page
+    x:Class="eDay.EventPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:eDay"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <local:DoubleToBool x:Key="DoubleToBool"/>
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.DataContext>
+            <local:Event/>
+        </Grid.DataContext>
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Панель заголовка-->
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock Text="MY APPLICATION" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock Text="page title" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+        </StackPanel>
+
+        <!--TODO: Содержимое должно размещаться в следующей сетке-->
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <Grid x:Name="grid" Margin="0,0,0,9.5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="230" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1" Grid.Row="1"
+                                    TextWrapping="Wrap"
+                                    Pivot.SlideInAnimationGroup="1"
+                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
+                                    Style="{ThemeResource ListViewItemTextBlockStyle}"
+                                    Margin="0,8,0,12" FontSize="21.333" HorizontalAlignment="Left" Text="{Binding time}" Foreground="#FFA87A52" RenderTransformOrigin="0.491,0.57" FontWeight="Bold" Width="51"/>
+                <TextBlock Grid.Column="1" Grid.Row="1"
+                                    TextWrapping="Wrap"
+                                    Pivot.SlideInAnimationGroup="1"
+                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
+                                    Style="{ThemeResource ListViewItemTextBlockStyle}"
+                                    Margin="55.913,12,8.087,17" FontSize="14" Text="{Binding expert_name}" Foreground="#FF2E422C" RenderTransformOrigin="0.491,0.57" HorizontalAlignment="Center" Width="Auto"/>
+                <CheckBox Grid.Column="2"
+                                          IsChecked="{Binding confirmed, Converter={StaticResource DoubleToBool}, Mode=TwoWay}" 
+                                          Margin="0,21,-116.987,0" 
+                                          Width="169" 
+                                          Height="66" 
+                                          BorderBrush="#FF368B56"
+                                          HorizontalAlignment="Right" 
+                                          Foreground="#FF3D6C85" Background="{x:Null}" 
+                                          RequestedTheme="Light" Grid.RowSpan="2"
+                                          />
+                <TextBlock Grid.Column="1" Grid.Row="0"
+                                    TextWrapping="WrapWholeWords"
+                                    Pivot.SlideInAnimationGroup="2" 
+                                    CommonNavigationTransitionInfo.IsStaggerElement="True" 
+                                    Style="{ThemeResource ListViewItemContentTextBlockStyle}"
+                                    Margin="0,10,12.087,8" 
+                                    FontSize="24"
+                                    Text="{Binding event_name}"
+                                    Foreground="#FF030303" FontWeight="Bold"/>
+                <TextBlock Grid.Row="1"
+                                    TextWrapping="WrapWholeWords"
+                                    Pivot.SlideInAnimationGroup="2" 
+                                    CommonNavigationTransitionInfo.IsStaggerElement="True" 
+                                    Style="{ThemeResource ListViewItemContentTextBlockStyle}" 
+                                    FontSize="10"
+                                       Width="Auto"
+                                    Text="{Binding date}"
+                                    Foreground="#FF030303" FontWeight="Bold" Grid.Column="1"/>
+                <Rectangle
+                                           Fill="#FFFAFAFA" Canvas.ZIndex="-2"
+                                           Grid.ColumnSpan="3"
+                                    Grid.RowSpan="2"
+                                           RadiusY="10" 
+                                           RadiusX="10" 
+                                           StrokeThickness="1.5" 
+                                           Margin="10,2,10.087,2" 
+                                           Stroke="#FF3D883E"/>
+                <Rectangle
+                                    Margin="17,41,16.013,10"
+                                Grid.Row="1" Grid.ColumnSpan="3"
+                                Canvas.ZIndex="-4" Fill="#FFB1CA77" RadiusX="5" RadiusY="5" Grid.RowSpan="2">
+                </Rectangle>
+                <ListBox x:Name="listItems" Grid.ColumnSpan="3"
+                                    Margin="24,6,26.013,14"
+                                    Grid.Row="2"
+                                    Background="{x:Null}"
+                                    Foreground="#FF395668" 
+                                    ItemsSource="{Binding details.items}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                         FontSize="14.667" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock x:Name="txtItem"
+                                                       SelectionHighlightColor="{x:Null}"
+                                                        Text="{Binding caption}"
+                                                       Width="Auto" >
+
+                            </TextBlock>
+
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+                <Image x:Name="image" Margin="17,21,10.087,17" Grid.RowSpan="2" 
+                                       Source="{Binding img.path}"/>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Page>

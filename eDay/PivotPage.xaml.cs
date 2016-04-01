@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using static eDay.NotifyAndSchedule;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Controls.Primitives;
 
 // Документацию по шаблону "Приложение с Pivot" см. по адресу http://go.microsoft.com/fwlink/?LinkID=391641
 
@@ -54,7 +55,6 @@ namespace eDay
             {
                 NotifyUser("Обновляю данные...", NotifyType.StatusMessage, StatusBorder,StatusBlock);
                 await Everyday.LoginEveryday();
-                //eDayDataGroup = await eDayDataSource.GetEventsByDateAsync(DateTime.Today.ToString("yyyy-MM-dd"));
                 eDayDataGroup = await eDayDataSource.GetGroupsEventsAsync();
                 DefaultViewModel[FirstGroupName] = eDayDataGroup;
                 pivot.ItemsSource = eDayDataGroup;
@@ -204,14 +204,12 @@ namespace eDay
             NotifyUser("", NotifyType.StatusMessage,StatusBorder,StatusBlock);
         }
 
-        private async void UpdateButton_Click(object sender, RoutedEventArgs e)
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             AppBarButton b = sender as AppBarButton;
             switch (b.Name)
             {
                 case "LoginButton":
-                    await Everyday.LoginEveryday();
-                    token = Everyday.Token;
                     break;
                 case "SettingsButton":
                     break;
@@ -226,12 +224,10 @@ namespace eDay
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            //Event ev = (Event)e.ClickedItem;
+            Grid g = flyoutEvent.Content as Grid;
+            g.DataContext = (Event)e.ClickedItem;
+            flyoutEvent.ShowAt((FrameworkElement)sender);
 
-            //GridView gv = e.OriginalSource as GridView;
-
-            //(e.ClickedItem as FrameworkElement).Visibility = Visibility.Collapsed;
-            //int test = gv.Items.IndexOf((e.ClickedItem as FrameworkElement).Parent);
         }
     }
 }
