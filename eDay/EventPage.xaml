@@ -47,12 +47,16 @@
                                     CommonNavigationTransitionInfo.IsStaggerElement="True"
                                     Style="{ThemeResource ListViewItemTextBlockStyle}"
                                     Margin="0,6" FontSize="29.333" Text="{Binding time}" RenderTransformOrigin="0.491,0.57" FontWeight="Bold" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="1" Grid.Row="1"
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <TextBlock FontSize="13.333">Эксперт</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="1"
                                     TextWrapping="Wrap"
                                     Pivot.SlideInAnimationGroup="1"
                                     CommonNavigationTransitionInfo.IsStaggerElement="True"
                                     Style="{ThemeResource ListViewItemTextBlockStyle}"
                                     Margin="0" FontSize="18" Text="{Binding expert_name}" RenderTransformOrigin="0.491,0.57" HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Center" FontFamily="Segoe WP"/>
+
+                </StackPanel>
                 <CheckBox Grid.Column="2"
                                           IsChecked="{Binding confirmed, Converter={StaticResource DoubleToBool}, Mode=TwoWay}" 
                                           Margin="0,21,-116.987,0" 
@@ -84,23 +88,28 @@
 
                 </StackPanel>
                 <ListBox x:Name="listItems" Grid.ColumnSpan="3"
-                                    Margin="24,8,26.222,13.556"
+                                    Margin="0"
                                     Grid.Row="3" 
                                     ItemsSource="{Binding details.items}"
                                     ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                         FontSize="14.667" ScrollViewer.VerticalScrollBarVisibility="Auto" Background="{Binding ColorEvent}" Foreground="{ThemeResource ListBoxItemSelectedForegroundThemeBrush}"
+                         FontSize="14.667" ScrollViewer.VerticalScrollBarVisibility="Auto" Background="{Binding ColorEvent}" Foreground="{ThemeResource ListBoxItemSelectedForegroundThemeBrush}" BorderBrush="White" VerticalAlignment="Top"
                          >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock x:Name="txtItem"
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Assets/new-item.png" Width="25">
+                                    
+                                </Image>
+                                <TextBlock x:Name="txtItem"
                                                        SelectionHighlightColor="{x:Null}"
                                                         Text="{Binding caption}"
-                                                       Width="Auto" />
+                                                       Width="Auto" Margin="10,0,0,0" FontSize="16" />
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
 
                 </ListBox>
-                <Image x:Name="image" Margin="15" Grid.RowSpan="2" 
+                <Image x:Name="image" Margin="0" Grid.RowSpan="2" 
                                        Source="{Binding img.path}" Grid.Row="1"/>
             </Grid>
 
