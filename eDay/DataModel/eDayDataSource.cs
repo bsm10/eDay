@@ -44,7 +44,6 @@ namespace eDay.Data
                 return _events;
             }
         }
-
         private static void ReplaceImg()
         {
             foreach (EventsByDay evDay in _events)

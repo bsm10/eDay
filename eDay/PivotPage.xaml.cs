@@ -60,7 +60,7 @@ namespace eDay
                 pivot.ItemsSource = eDayDataGroup;
                 foreach (Event e in eDayDataGroup[0].eventsByDay)
                 {
-                    ScheduleToast(e.event_name, DateTime.Parse(e.date + " " + e.time));
+                    ScheduleToast("ID" + e.id + "; " + e.event_name, e.id, DateTime.Parse(e.date + " " + e.time));
                 }
                 NotifyUser("", NotifyType.StatusMessage, StatusBorder, StatusBlock);
             }
@@ -224,10 +224,8 @@ namespace eDay
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Grid g = flyoutEvent.Content as Grid;
-            g.DataContext = (Event)e.ClickedItem;
+            (flyoutEvent.Content as Grid).DataContext = (Event)e.ClickedItem;
             flyoutEvent.ShowAt((FrameworkElement)sender);
-
         }
     }
 }

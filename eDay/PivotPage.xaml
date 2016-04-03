@@ -218,10 +218,13 @@
             <AppBarButton x:Uid="AddAppBarButton" x:Name="ProfileButton"  Label="профиль" Icon="ContactPresence" />
             <AppBarButton x:Uid="AddAppBarButton" x:Name="SettingsButton" Label="настройки" Icon="Setting" />
             <CommandBar.SecondaryCommands>
+                <AppBarToggleButton x:Uid="AllTasks" x:Name="AllTasks" Label="Отображать все задачи" />
                 <AppBarToggleButton x:Uid="RepeatBox" x:Name="RepeatBox" Label="Повторять напоминание"/>
                 <AppBarButton x:Uid="CalendarButton" x:Name="CalendarButton" Label="Календарь" />
+
             </CommandBar.SecondaryCommands>
         </CommandBar>
+
     </Page.BottomAppBar>
 
 </Page>

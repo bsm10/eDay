@@ -41,16 +41,15 @@ namespace eDay
                 }
             }
         }
-        public static void ScheduleToast(string updateString, DateTime dueTime, bool RepeatToast = false)
+        public static void ScheduleToast(string updateString, int eventID, DateTime dueTime, bool RepeatToast = false)
         {
             if (dueTime < DateTime.Now) return;
-            Random rand = new Random();
-            int idNumber = rand.Next(0, 10000000);
-
+            //Random rand = new Random();
+            //int idNumber = rand.Next(0, 10000000);
             // Scheduled toasts use the same toast templates as all other kinds of toasts.
             IToastText02 toastContent = ToastContentFactory.CreateToastText02();
             toastContent.TextHeading.Text = updateString;
-            toastContent.TextBodyWrap.Text = "Received: " + dueTime.ToLocalTime();
+            //toastContent.TextBodyWrap.Text = "Received: " + dueTime.ToLocalTime();
 
             ScheduledToastNotification toast;
             //Этот код нужен если отложить напоминайку
@@ -60,18 +59,18 @@ namespace eDay
 
                 // You can specify an ID so that you can manage toasts later.
                 // Make sure the ID is 15 characters or less.
-                toast.Id = "Repeat" + idNumber;
+                toast.Id = "Repeat" + eventID;
             }
             else
             {
                 toast = new ScheduledToastNotification(toastContent.GetXml(), dueTime);
-                toast.Id = "Toast" + idNumber;
+                toast.Id = "Toast" + eventID;
             }
             Everyday.listNotrfications.Add(toast.Id);
             ToastNotificationManager.CreateToastNotifier().AddToSchedule(toast);
             //NotifyUser("Event scheduled on " + dueTime + ", a toast with ID: " + toast.Id, NotifyType.StatusMessage);
         }
-        public static void ScheduleTile(String updateString, DateTime dueTime, int idNumber)
+        public static void ScheduleTile(string updateString, DateTime dueTime, int idNumber)
         {
             // Set up the wide tile text
             ITileWide310x150Text09 tileContent = TileContentFactory.CreateTileWide310x150Text09();
