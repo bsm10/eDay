@@ -28,7 +28,6 @@ namespace eDay
 {
     public sealed partial class PivotPage : Page
     {
-        private string token;
         private const string quote = "\"";
         private const string FirstGroupName = "FirstGroup";
         private const string SecondGroupName = "SecondGroup";
@@ -47,17 +46,18 @@ namespace eDay
             navigationHelper = new NavigationHelper(this);
             navigationHelper.LoadState += NavigationHelper_LoadState;
             navigationHelper.SaveState += NavigationHelper_SaveState;
+            
         }
         async void OnLoaded(object sender, RoutedEventArgs arg)
         {
-
             if (Everyday.Token == null)
             {
                 NotifyUser("Обновляю данные...", NotifyType.StatusMessage, StatusBorder,StatusBlock);
                 await Everyday.LoginEveryday();
-                eDayDataGroup = await eDayDataSource.GetGroupsEventsAsync();
-                DefaultViewModel[FirstGroupName] = eDayDataGroup;
-                pivot.ItemsSource = eDayDataGroup;
+                //eDayDataGroup = await eDayDataSource.GetGroupsEventsAsync();
+                //DefaultViewModel[FirstGroupName] = eDayDataGroup;
+                //pivot.ItemsSource = eDayDataGroup;
+                await UpdateData();
                 foreach (Event e in eDayDataGroup[0].eventsByDay)
                 {
                     ScheduleToast("ID" + e.id + "; " + e.event_name, e.id, DateTime.Parse(e.date + " " + e.time));
@@ -195,7 +195,7 @@ namespace eDay
         {
 
         }
-        private void listView_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+        private void listView_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             //lst.Visibility = lst.Visibility== Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -226,6 +226,43 @@ namespace eDay
         {
             (flyoutEvent.Content as Grid).DataContext = (Event)e.ClickedItem;
             flyoutEvent.ShowAt((FrameworkElement)sender);
+        }
+
+        private async void flyoutEvent_Closed(object sender, object e)
+        {
+            //Event event_ForConfirm  = (flyoutEvent.Content as Grid).DataContext as Event;
+            //if (event_ForConfirm != null)
+            //{
+            //    await Everyday.ConfirmEvent(event_ForConfirm, event_ForConfirm.confirmed);
+            //    //удаление из списка напоминаний!
+            //    UnScheduleToast(event_ForConfirm.id.ToString());
+            //}
+            await UpdateData();
+            
+        }
+
+        private async Task UpdateData()
+        {
+            await Everyday.GetEvents(DateTime.Today.ToString("yyyy-MM-dd"), (DateTime.Today + TimeSpan.FromDays(5)).ToString("yyyy-MM-dd"));
+            eDayDataGroup = await eDayDataSource.GetGroupsEventsAsync();
+            DefaultViewModel[FirstGroupName] = eDayDataGroup;
+            pivot.ItemsSource = eDayDataGroup;
+        }
+
+        private void checkBoxCofirm_Checked(object sender, RoutedEventArgs e)
+        {
+            eventConfirm();
+        }
+
+        private void checkBoxCofirm_Unchecked(object sender, RoutedEventArgs e)
+        {
+            eventConfirm();
+        }
+        private async void eventConfirm()
+        {
+            Event event_ForConfirm = (flyoutEvent.Content as Grid).DataContext as Event;
+            await Everyday.ConfirmEvent(event_ForConfirm, event_ForConfirm.confirmed);
+            if (event_ForConfirm.confirmed==1)UnScheduleToast(event_ForConfirm.id.ToString());
         }
     }
 }

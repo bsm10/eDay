@@ -22,8 +22,8 @@ namespace eDay
         {
             InitializeComponent();
 #if DEBUG
-            login.Text = "elchukov";
-            password.Password = "4444";
+            login.Text = "malyiy";
+            password.Password = "12345";
 #endif
 
         }

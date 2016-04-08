@@ -70,7 +70,7 @@ namespace eDay.Data
         }
 
         /// <summary>
-        /// Возвращает группу событий на определенную дату
+        /// Возвращает группу событий на определенную дату. Данные берутся из файла eDayData.json  
         /// </summary>
         /// <param name="day_date"></param>
         /// <returns></returns>
@@ -82,7 +82,7 @@ namespace eDay.Data
             return null;
         }
         /// <summary>
-        /// Получает данные одного, выбранного события по его id
+        /// Получает данные одного, выбранного события по его id. Данные берутся из файла eDayData.json
         /// </summary>
         /// <param name="idEvent"></param>
         /// <returns></returns>
@@ -94,7 +94,6 @@ namespace eDay.Data
             if (matches.Count() > 0) return matches.First();
             return null;
         }
-
         /// <summary>
         /// Возвращает коллекцию групп событий по дням. Данные берутся из файла eDayData.json
         /// </summary>

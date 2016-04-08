@@ -12,7 +12,7 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <local:DoubleToBool x:Key="DoubleToBool"/>
+        <local:IntToBool x:Key="DoubleToBool"/>
     </Page.Resources>
 
     <Grid x:Name="LayoutRoot" Background="{Binding [1].eventsByDay[2].ColorEvent}">
@@ -48,13 +48,13 @@
                                     Style="{ThemeResource ListViewItemTextBlockStyle}"
                                     Margin="0,6" FontSize="29.333" Text="{Binding time}" RenderTransformOrigin="0.491,0.57" FontWeight="Bold" VerticalAlignment="Center"/>
                 <StackPanel Grid.Row="1" Grid.Column="1">
-                    <TextBlock FontSize="13.333">Эксперт</TextBlock>
+                    <TextBlock FontSize="13.333" Margin="10,0,0,0">Эксперт</TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="1"
                                     TextWrapping="Wrap"
                                     Pivot.SlideInAnimationGroup="1"
                                     CommonNavigationTransitionInfo.IsStaggerElement="True"
                                     Style="{ThemeResource ListViewItemTextBlockStyle}"
-                                    Margin="0" FontSize="18" Text="{Binding expert_name}" RenderTransformOrigin="0.491,0.57" HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Center" FontFamily="Segoe WP"/>
+                                    Margin="10,0,0,0" FontSize="18" Text="{Binding expert_name}" RenderTransformOrigin="0.491,0.57" HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Center" FontFamily="Segoe WP"/>
 
                 </StackPanel>
                 <CheckBox Grid.Column="2"
@@ -70,12 +70,12 @@
                                     Pivot.SlideInAnimationGroup="2" 
                                     CommonNavigationTransitionInfo.IsStaggerElement="True" 
                                     Style="{ThemeResource ListViewItemContentTextBlockStyle}"
-                                    Margin="0" 
+                                    Margin="10,0,0,0" 
                                     FontSize="24"
                                     Text="{Binding event_name}"
                                     Foreground="White" FontWeight="Bold" VerticalAlignment="Center"/>
                 <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Segoe WP">
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Segoe WP" Margin="10,0,0,0">
                         kkal
                     </TextBlock>
                     <TextBlock      TextWrapping="WrapWholeWords"

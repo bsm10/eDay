@@ -2,7 +2,7 @@
 using System.Text;
 using System.Net;
 using System.IO;
-using Windows.Web.Http;
+//using Windows.Web.Http;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 //using Microsoft.Phone.Info;
@@ -22,6 +22,8 @@ using Windows.Networking.Connectivity;
 using System.Collections;
 using Windows.UI.Xaml.Media;
 using Windows.UI;
+using System.Net.Http;
+using Windows.UI.Xaml;
 
 namespace eDay
 {
@@ -323,8 +325,10 @@ namespace eDay
         }
 
     }
-    public class Event
+    public class Event : INotifyPropertyChanged
     {
+        private double _confirmed;
+
         private int _event_class;
         public int event_class
             { get { return _event_class; }
@@ -355,6 +359,22 @@ namespace eDay
         public string event_name { get; set; }
         public string expert_name { get; set; }
         public int confirmed { get; set; }
+        public double Confirmed
+        {
+            get
+            {
+                return _confirmed;
+            }
+            set
+            {
+                if (_confirmed != value)
+                {
+                    _confirmed = value;
+                    OnPropertyChanged("_confirmed");
+                }
+            }
+        }
+
         public string comment { get; set; }
         public Details details { get; set; }
         public string data_md5 { get; set; }
@@ -363,6 +383,15 @@ namespace eDay
         public override string ToString()
         {
             return string.Format("{0}, {1} - {2}", date, time, event_name);
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string info)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(info));
+            }
         }
 
     }
@@ -545,106 +574,88 @@ namespace eDay
                 }
                 loginData = JsonConvert.DeserializeObject<LoginData>(response);
                 //Взять события на 5 дней
-                await GetEvents(DateTime.Today.ToString("yyyy-MM-dd"), (DateTime.Today+TimeSpan.FromDays(5)).ToString("yyyy-MM-dd"));
+                //await GetEvents(DateTime.Today.ToString("yyyy-MM-dd"), (DateTime.Today+TimeSpan.FromDays(5)).ToString("yyyy-MM-dd"));
                 //await Task.Delay(5000);
             }
         }
         private static async Task Login(string sLog, string sPass)
         {
-            string qry;
-            qry = (SERVER + "ios/Login.php?"
-                        + (("&Devid="
-                        + (deviceID + ("&Platform="
-                        + (OSVersion + "&Query={\"login\":\""))))
-                        + (sLog + ("\",\"pass\":\""
-                        + (sPass + "\"}")))));
+            string postData=
+            "&Devid=" + deviceID + 
+            "&Platform=" + OSVersion +
+            "&Query={\"login\":\"" + sLog + "\",\"pass\":\"" + sPass + "\"}";
             try
             {
                 HttpClient client = new HttpClient();
-                response = await client.GetStringAsync(new Uri(qry));
+                //response = await client.GetStringAsync(new Uri(postData));
+                HttpResponseMessage resp = await client.PostAsync(new Uri(SERVER + "ios/Login.php?"), new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded"));
+                resp.EnsureSuccessStatusCode();
+                response = await resp.Content.ReadAsStringAsync();
+
             }
             catch (Exception ex)
             {
 
             }
         }
+        /// <summary>
+        /// Данные берутся с сервера. Скрипт rGetEvents.php
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="save_data"></param>
+        /// <returns></returns>
         public static async Task GetEvents(string startDate, string endDate, bool save_data=true)
         {
+
             if (loginData == null) return;
             string postData = string.Format("Token={0}&Devid={1}&Platform={2}&Query={{\"date_start\":\"{3}\",\"date_end\":\"{4}\", \"grouped\":true}}",
                                         loginData.token, "bsm10", "Win 8.1", startDate, endDate);
             HttpClient client = new HttpClient();
-            response = await client.GetStringAsync(new Uri(SERVER + "ios/rGetEvents.php?" + postData));
+
+            //Этот метод посылает GET запрос
+            //response = await client.GetStringAsync(new Uri(SERVER + "ios/rGetEvents.php?" + postData));
+
+            HttpResponseMessage resp = await client.PostAsync(new Uri(SERVER + "ios/rGetEvents.php?"), new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded") );
+            resp.EnsureSuccessStatusCode();
+            response = await resp.Content.ReadAsStringAsync();
             if (save_data) await saveStringToLocalFile(response);
         }
-        private static async Task<string> HttpQuery(string qry)
+        public static async Task ConfirmEvent(Event eventForConfirm, int confirmed = 1)
         {
+            if (loginData == null) return;
+            string postData = string.Format("Token={0}&Devid={1}&Platform={2}&Query={{\"event_id\":{3},\"event_class\":{4}, \"confirmed\": {5}}}",
+                                        loginData.token, "bsm10", "Win 8.1", eventForConfirm.id.ToString(), eventForConfirm.event_class.ToString(), confirmed.ToString());
             HttpClient client = new HttpClient();
-            return await client.GetStringAsync(new Uri(qry));
+            HttpResponseMessage resp = await client.PostAsync(new Uri(SERVER + "ios/rConfirmEvent.php?"), new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded"));
+            resp.EnsureSuccessStatusCode();
+            response = await resp.Content.ReadAsStringAsync();
         }
-        private static async Task<byte[]> GetURLContentsAsync(string url)
-        {
-            // The downloaded resource ends up in the variable named content. 
-            var content = new MemoryStream();
 
-            // Initialize an HttpWebRequest for the current URL. 
-            var webReq = (HttpWebRequest)WebRequest.Create(url);
-
-            // Send the request to the Internet resource and wait for 
-            // the response.                 
-            using (WebResponse response = await webReq.GetResponseAsync())
-            {
-                // Get the data stream that is associated with the specified url. 
-                using (Stream responseStream = response.GetResponseStream())
-                {
-                    // Read the bytes in responseStream and copy them to content. 
-                    await responseStream.CopyToAsync(content);
-                }
-            }
-            // Return the result as a byte array. 
-            return content.ToArray();
-        }
         private static async Task saveStringToLocalFile(string content)
         {
-
             Uri fileUri = new Uri("ms-appx:///DataModel/eDayData.json");
-            // saves the string 'content' to a file 'filename' in the app's local storage folder
             byte[] fileBytes = Encoding.UTF8.GetBytes(content.ToCharArray());
             try
             {
-                // create a file with the given filename in the local folder; replace any existing file with the same name
-                //StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
                 StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(fileUri);
                 await FileIO.WriteTextAsync(file, content);
-                //using (var stream = await file.OpenStreamForWriteAsync())
-                //{
-                //    stream.Write(fileBytes, 0, fileBytes.Length);
-                //}
-
-
-
             }
             catch (Exception ex)
             {
                 string f = ex.ToString();
             }
         }
+
         private static async Task<string> readStringFromLocalFile(string filename)
         {
-            // reads the contents of file 'filename' in the app's local storage folder and returns it as a string
-
-            // access the local folder
-            StorageFolder local = Windows.Storage.ApplicationData.Current.LocalFolder;
-            // open the file 'filename' for reading
+            StorageFolder local = ApplicationData.Current.LocalFolder;
             Stream stream = await local.OpenStreamForReadAsync(filename);
             string text;
-
-            // copy the file contents into the string 'text'
             using (StreamReader reader = new StreamReader(stream))
             {
                 text = reader.ReadToEnd();
             }
-
             return text;
         }
 
@@ -660,14 +671,14 @@ namespace eDay
         }
     }
 
-    public class DoubleToBool : IValueConverter
+    public class IntToBool : IValueConverter
     {
         // This converts the DateTime object to the string to display.
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value != null && value is double)
+            if (value != null && value is int)
             {
-                var val = (double)value; return (val == 0) ? false : true;
+                var val = (int)value; return (val == 0) ? false : true;
             }
             return null;
         }
@@ -724,5 +735,26 @@ namespace eDay
             throw new NotImplementedException();
         }
     }
+    public class CheckToVisibility : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value != null && value is bool)
+            {
+                var val = (bool)value; return (val == false) ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return null;
+        }
 
+        // No need to implement converting back on a one-way binding 
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            //if (value != null && value is string)
+            //{
+            //    var val = (bool)value; return val ? 1 : 0;
+            //}
+            //return null;
+            throw new NotImplementedException();
+        }
+    }
 }

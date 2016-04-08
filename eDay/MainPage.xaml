@@ -10,7 +10,7 @@
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalContentAlignment="Stretch">
     <Page.Resources>
-        <local:DoubleToBool x:Key="DoubleToBool"/>
+        <local:IntToBool x:Key="DoubleToBool"/>
     </Page.Resources>
 
     <Grid x:Name="LayoutRoot"

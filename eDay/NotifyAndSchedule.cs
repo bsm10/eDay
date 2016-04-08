@@ -15,6 +15,8 @@ namespace eDay
 {
     public static class NotifyAndSchedule
     {
+        
+        
         #region Notifications
         public static void NotifyUser(string strMessage, NotifyType type, Border StatusBorder, TextBlock StatusBlock)
         {
@@ -59,16 +61,38 @@ namespace eDay
 
                 // You can specify an ID so that you can manage toasts later.
                 // Make sure the ID is 15 characters or less.
-                toast.Id = "Repeat" + eventID;
+                //toast.Id = "Repeat" + eventID;
             }
             else
             {
                 toast = new ScheduledToastNotification(toastContent.GetXml(), dueTime);
-                toast.Id = "Toast" + eventID;
+                
             }
+            toast.Id = eventID.ToString();
+            //это важно! удаление и по тэгу происходит
+            toast.Tag= eventID.ToString();
             Everyday.listNotrfications.Add(toast.Id);
-            ToastNotificationManager.CreateToastNotifier().AddToSchedule(toast);
+            ToastNotifier notifier = ToastNotificationManager.CreateToastNotifier();
+            notifier.AddToSchedule(toast);
             //NotifyUser("Event scheduled on " + dueTime + ", a toast with ID: " + toast.Id, NotifyType.StatusMessage);
+        }
+        public static void UnScheduleToast(string idToast)
+        {
+            ToastNotifier notifier = ToastNotificationManager.CreateToastNotifier();
+            IReadOnlyList<ScheduledToastNotification> scheduled = notifier.GetScheduledToastNotifications();
+            var q = from ScheduledToastNotification toast in scheduled where toast.Id == idToast select toast;
+            foreach (ScheduledToastNotification t in q)
+            {
+                notifier.RemoveFromSchedule(t);
+            }
+
+            //for (int j = 0; j < scheduled.Count; j++)
+            //{
+            //    if (scheduled[j].Id == idToast)
+            //    {
+            //        notifier.RemoveFromSchedule(scheduled[j]);
+            //    }
+            //}
         }
         public static void ScheduleTile(string updateString, DateTime dueTime, int idNumber)
         {

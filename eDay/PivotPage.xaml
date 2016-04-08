@@ -8,12 +8,17 @@
     xmlns:data="using:eDay.Data"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}">
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    d:DataContext="{Binding events, 
+    Source={d:DesignData Source=/DataModel/eDayData.json, IsDesignTimeCreatable=True,
+    Type = data:eDayDataSource}}"
+>
     <Page.Resources>
+        <local:CheckToVisibility x:Key="CheckToVisibility"/>
         <!--<JumpListItemBackgroundConverter x:Key="JumpListItemBackgroundConverter"/>-->
-        <local:DoubleToBool x:Key="DoubleToBool"/>
+        <local:IntToBool x:Key="IntToBool"/>
         <local:ClassToColor x:Key="ClassToColor"/>
-        <Flyout x:Name="flyoutEvent">
+        <Flyout x:Name="flyoutEvent" Closed="flyoutEvent_Closed">
             <Grid x:Name="EventLayoutRoot">
                 <Grid.DataContext>
                     <local:Event/>
@@ -60,33 +65,32 @@
                                 RenderTransformOrigin="0.491,0.57"
                                 FontWeight="Bold" VerticalAlignment="Center" Foreground="White"/>
                             <StackPanel Grid.Row="1" Grid.Column="1">
-                                <TextBlock FontSize="13.333">Эксперт</TextBlock>
+                                <TextBlock FontSize="13.333" Margin="10,0,0,0">
+                                	<Run Text="Эксперт"/>
+                                </TextBlock>
                                 <TextBlock Grid.Column="1" Grid.Row="1"
                                     TextWrapping="Wrap"
                                     Pivot.SlideInAnimationGroup="1"
                                     CommonNavigationTransitionInfo.IsStaggerElement="True"
                                     Style="{ThemeResource ListViewItemTextBlockStyle}"
-                                    Margin="0" FontSize="18" Text="{Binding expert_name}" RenderTransformOrigin="0.491,0.57" HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Center" FontFamily="Segoe WP"/>
+                                    Margin="10,0,0,0" FontSize="18" Text="{Binding expert_name}" RenderTransformOrigin="0.491,0.57" HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Center" FontFamily="Segoe WP"/>
 
                             </StackPanel>
-                            <CheckBox Grid.Column="2"
-                                          IsChecked="{Binding confirmed, Converter={StaticResource DoubleToBool}, Mode=TwoWay}" 
-                                          Margin="0,21,-116.987,0" 
-                                          Width="169" 
-                                          Height="66"
-                                          HorizontalAlignment="Right" 
-                                          RequestedTheme="Light" Grid.RowSpan="2"
-                                          >
-                                <CheckBox.BorderBrush>
-                                    <SolidColorBrush Color="White"/>
-                                </CheckBox.BorderBrush>
-                            </CheckBox>
+                            <CheckBox x:Name="checkBoxCofirm" Grid.Column="2"
+                                    IsChecked="{Binding confirmed, Converter={StaticResource IntToBool}, Mode=TwoWay}" 
+                                    Margin="0,21,-116.987,0" 
+                                    Width="169" 
+                                    Height="66"
+                                    HorizontalAlignment="Right" 
+                                    RequestedTheme="Light" Grid.RowSpan="2"
+                                    Checked="checkBoxCofirm_Checked"
+                                    Unchecked="checkBoxCofirm_Unchecked" BorderBrush="White"/>
                             <TextBlock Grid.Column="1" Grid.Row="0"
                                     TextWrapping="WrapWholeWords"
                                     Pivot.SlideInAnimationGroup="2" 
                                     CommonNavigationTransitionInfo.IsStaggerElement="True" 
                                     Style="{ThemeResource ListViewItemContentTextBlockStyle}"
-                                    Margin="0" 
+                                    Margin="10,0,0,0" 
                                     FontSize="24"
                                     Text="{Binding event_name}"
                                     Foreground="White" FontWeight="Bold" VerticalAlignment="Center"/>
@@ -94,8 +98,9 @@
                                 <TextBlock HorizontalAlignment="Left"
                                            VerticalAlignment="Center" FontSize="14" 
                                            Foreground="White"
+                                           Margin="10,0,0,0" 
                                            FontFamily="Segoe WP">
-                                    kkal
+                                	<Run Text="kkal"/>
                                 </TextBlock>
                                 <TextBlock      TextWrapping="WrapWholeWords"
                                     Pivot.SlideInAnimationGroup="2" 
@@ -114,14 +119,12 @@
                                     ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                                     FontSize="14.667" ScrollViewer.VerticalScrollBarVisibility="Auto" 
                                     Background="{Binding event_class, Converter={StaticResource ClassToColor}}"
-                                    Foreground="{ThemeResource ListBoxItemSelectedForegroundThemeBrush}" BorderBrush="White" VerticalAlignment="Top"
-                         >
+                                    Foreground="{ThemeResource ListBoxItemSelectedForegroundThemeBrush}" BorderBrush="White" VerticalAlignment="Top">
+
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Source="Assets/new-item.png" Width="25">
-
-                                            </Image>
+                                            <Image Source="Assets/new-item.png" Width="25"/>
                                             <TextBlock x:Name="txtItem"
                                                        SelectionHighlightColor="{x:Null}"
                                                         Text="{Binding caption}"
@@ -134,11 +137,9 @@
                             <Image x:Name="image" Margin="0" Grid.RowSpan="2" 
                                        Source="{Binding img.path}" Grid.Row="1"/>
                         </Grid>
-
                     </Grid>
                 </Grid>
             </Grid>
-
         </Flyout>
 
     </Page.Resources>
@@ -152,20 +153,15 @@
         </TransitionCollection>
     </Page.Transitions>
     <Grid>
-
-        <Border x:Name="StatusBorder" Grid.Row="1" 
+        <Border x:Name="StatusBorder" Grid.Row="0" 
                 Visibility="Collapsed" Tapped="StatusBorder_Tapped" Margin="0,0,0,0"
-                Height="50">
+                Height="50" VerticalAlignment="Bottom">
             <TextBlock x:Name="StatusBlock" Foreground="White" Margin="12, 10, 12, 10" TextWrapping="Wrap" FontSize="18.667"/>
         </Border>
         <Pivot x:Uid="Pivot" Title="EVERYDAY" x:Name="pivot"
-               d:DataContext="{Binding events, 
-               Source={d:DesignData Source=/DataModel/eDayData.json, IsDesignTimeCreatable=True,
-                               Type = data:eDayDataSource}}"  
                CommonNavigationTransitionInfo.IsStaggerElement="True" 
                Margin="0" ItemsSource="{Binding}" BorderThickness="0"
                >
-
             <Pivot.HeaderTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -181,12 +177,10 @@
                         VerticalContentAlignment="Stretch" 
                         ItemsSource="{Binding eventsByDay}"
                         ItemClick="GridView_ItemClick" 
-                        IsItemClickEnabled="True" FontSize="18.667" 
-                                                     >
-
+                        IsItemClickEnabled="True" FontSize="18.667" >
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Width="Auto" Margin="0"
+                                <Grid x:Name="gridItem" Width="Auto" Margin="0"
                                       FlyoutBase.AttachedFlyout="{StaticResource flyoutEvent}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="80"/>
@@ -227,8 +221,6 @@
                     </GridView>
                 </DataTemplate>
             </Pivot.ItemTemplate>
-
-
         </Pivot>
     </Grid>
     <Page.BottomAppBar>
