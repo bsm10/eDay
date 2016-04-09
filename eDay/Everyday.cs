@@ -727,11 +727,6 @@ namespace eDay
         // No need to implement converting back on a one-way binding 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            //if (value != null && value is string)
-            //{
-            //    var val = (bool)value; return val ? 1 : 0;
-            //}
-            //return null;
             throw new NotImplementedException();
         }
     }
@@ -749,12 +744,26 @@ namespace eDay
         // No need to implement converting back on a one-way binding 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            //if (value != null && value is string)
-            //{
-            //    var val = (bool)value; return val ? 1 : 0;
-            //}
-            //return null;
             throw new NotImplementedException();
         }
     }
+    public class ConfirmedToOpacity : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value != null && value is int)
+            {
+                var val = (int)value;
+                return (val == 0) ? 1 : 0.65;
+            }
+            return null;
+        }
+
+        // No need to implement converting back on a one-way binding 
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 }

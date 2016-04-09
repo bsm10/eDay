@@ -18,6 +18,7 @@
         <!--<JumpListItemBackgroundConverter x:Key="JumpListItemBackgroundConverter"/>-->
         <local:IntToBool x:Key="IntToBool"/>
         <local:ClassToColor x:Key="ClassToColor"/>
+        <local:ConfirmedToOpacity x:Key="CheckToOpacity"/>
         <Flyout x:Name="flyoutEvent" Closed="flyoutEvent_Closed">
             <Grid x:Name="EventLayoutRoot">
                 <Grid.DataContext>
@@ -83,8 +84,8 @@
                                     Height="66"
                                     HorizontalAlignment="Right" 
                                     RequestedTheme="Light" Grid.RowSpan="2"
-                                    Checked="checkBoxCofirm_Checked"
-                                    Unchecked="checkBoxCofirm_Unchecked" BorderBrush="White"/>
+                                    BorderBrush="White"
+                                    Tapped="checkBoxCofirm_Tapped"/>
                             <TextBlock Grid.Column="1" Grid.Row="0"
                                     TextWrapping="WrapWholeWords"
                                     Pivot.SlideInAnimationGroup="2" 
@@ -125,10 +126,19 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="Assets/new-item.png" Width="25"/>
-                                            <TextBlock x:Name="txtItem"
+                                            <ScrollViewer VerticalScrollMode="Disabled"
+                                                          HorizontalScrollMode="Enabled"
+                                                          BorderBrush="#FFCB2B2B"
+                                                          BorderThickness="1"
+                                                          Height="50" Width="200">
+                                                <TextBlock x:Name="txtItem"
                                                        SelectionHighlightColor="{x:Null}"
-                                                        Text="{Binding caption}"
-                                                       Width="Auto" Margin="10,0,0,0" FontSize="16" />
+                                                       Text="{Binding caption}"
+                                                       Margin="10,0,0,0"
+                                                       FontSize="16" HorizontalAlignment="Left" 
+                                                       >
+                                                </TextBlock>
+                                            </ScrollViewer> 
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -181,7 +191,9 @@
                         <GridView.ItemTemplate>
                             <DataTemplate>
                                 <Grid x:Name="gridItem" Width="Auto" Margin="0"
-                                      FlyoutBase.AttachedFlyout="{StaticResource flyoutEvent}">
+                                      FlyoutBase.AttachedFlyout="{StaticResource flyoutEvent}" 
+                                      Opacity="{Binding confirmed, 
+                                      Converter={StaticResource CheckToOpacity}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="80"/>
                                         <ColumnDefinition Width="100"/>

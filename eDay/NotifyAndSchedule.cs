@@ -69,8 +69,6 @@ namespace eDay
                 
             }
             toast.Id = eventID.ToString();
-            //это важно! удаление и по тэгу происходит
-            toast.Tag= eventID.ToString();
             Everyday.listNotrfications.Add(toast.Id);
             ToastNotifier notifier = ToastNotificationManager.CreateToastNotifier();
             notifier.AddToSchedule(toast);
@@ -85,14 +83,6 @@ namespace eDay
             {
                 notifier.RemoveFromSchedule(t);
             }
-
-            //for (int j = 0; j < scheduled.Count; j++)
-            //{
-            //    if (scheduled[j].Id == idToast)
-            //    {
-            //        notifier.RemoveFromSchedule(scheduled[j]);
-            //    }
-            //}
         }
         public static void ScheduleTile(string updateString, DateTime dueTime, int idNumber)
         {

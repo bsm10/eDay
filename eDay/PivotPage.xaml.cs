@@ -218,7 +218,6 @@ namespace eDay
                     break;
                 case "UpdateButton":
                     break;
-
             }
         }
 
@@ -228,17 +227,10 @@ namespace eDay
             flyoutEvent.ShowAt((FrameworkElement)sender);
         }
 
-        private async void flyoutEvent_Closed(object sender, object e)
+        private void flyoutEvent_Closed(object sender, object e)
         {
             //Event event_ForConfirm  = (flyoutEvent.Content as Grid).DataContext as Event;
             //if (event_ForConfirm != null)
-            //{
-            //    await Everyday.ConfirmEvent(event_ForConfirm, event_ForConfirm.confirmed);
-            //    //удаление из списка напоминаний!
-            //    UnScheduleToast(event_ForConfirm.id.ToString());
-            //}
-            await UpdateData();
-            
         }
 
         private async Task UpdateData()
@@ -249,20 +241,17 @@ namespace eDay
             pivot.ItemsSource = eDayDataGroup;
         }
 
-        private void checkBoxCofirm_Checked(object sender, RoutedEventArgs e)
-        {
-            eventConfirm();
-        }
-
-        private void checkBoxCofirm_Unchecked(object sender, RoutedEventArgs e)
-        {
-            eventConfirm();
-        }
         private async void eventConfirm()
         {
             Event event_ForConfirm = (flyoutEvent.Content as Grid).DataContext as Event;
             await Everyday.ConfirmEvent(event_ForConfirm, event_ForConfirm.confirmed);
             if (event_ForConfirm.confirmed==1)UnScheduleToast(event_ForConfirm.id.ToString());
+            await UpdateData();
+        }
+
+        private void checkBoxCofirm_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            eventConfirm();
         }
     }
 }
